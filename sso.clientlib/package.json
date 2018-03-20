@@ -4,6 +4,7 @@
   "description": "Angular module for use with a single sign on server.",
   "version": "0.1.0",
   "license": "MIT",
+  "repository": "https://github.com/vcpsh/single-sign-on",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -21,7 +22,6 @@
       }
     }
   },
-  "private": true,
   "dependencies": {
     "@angular/common": "^5.0.0",
     "@angular/compiler": "^5.0.0",
