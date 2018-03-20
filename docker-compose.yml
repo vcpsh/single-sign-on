@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  sh.vcp.sso.server:
+    image: vcpsh/ssoserver
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - dotnet
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+networks:
+  dotnet:
+   external:
+      name: dotnet

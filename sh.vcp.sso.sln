@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2017
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sh.vcp.sso.server", "sh.vcp.sso.server\sh.vcp.sso.server.csproj", "{A61EEDB2-7EFC-4193-BA57-2D277C92867E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sh.vcp.identity", "sh.vcp.identity\sh.vcp.identity.csproj", "{9319341E-52F8-4F8C-8BAF-3D55ACFF8D30}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sh.vcp.ldap", "sh.vcp.ldap\sh.vcp.ldap.csproj", "{45A0518C-7C60-4CD5-B9CD-9A709E7ABBB6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A61EEDB2-7EFC-4193-BA57-2D277C92867E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A61EEDB2-7EFC-4193-BA57-2D277C92867E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A61EEDB2-7EFC-4193-BA57-2D277C92867E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A61EEDB2-7EFC-4193-BA57-2D277C92867E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9319341E-52F8-4F8C-8BAF-3D55ACFF8D30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9319341E-52F8-4F8C-8BAF-3D55ACFF8D30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9319341E-52F8-4F8C-8BAF-3D55ACFF8D30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9319341E-52F8-4F8C-8BAF-3D55ACFF8D30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45A0518C-7C60-4CD5-B9CD-9A709E7ABBB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45A0518C-7C60-4CD5-B9CD-9A709E7ABBB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45A0518C-7C60-4CD5-B9CD-9A709E7ABBB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45A0518C-7C60-4CD5-B9CD-9A709E7ABBB6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
