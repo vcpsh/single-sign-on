@@ -29,6 +29,7 @@ namespace sh.vcp.sso.server
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
+                .UseUrls("http://0.0.0.0:80")
                 .Build();
         }
     }
