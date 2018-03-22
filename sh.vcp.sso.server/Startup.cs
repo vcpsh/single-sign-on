@@ -10,6 +10,8 @@ using IdentityServer4.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,10 +27,12 @@ namespace sh.vcp.sso.server
     public class Startup
     {
         private readonly IConfiguration _configuration;
+        private readonly IHostingEnvironment _env;
 
-        public Startup(IConfiguration configuration, ILoggerFactory loggerFactory)
+        public Startup(IConfiguration configuration, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             this._configuration = configuration;
+            this._env = env;
             loggerFactory.AddConsole(this._configuration.GetSection("Logging"));
         }
 
@@ -36,6 +40,14 @@ namespace sh.vcp.sso.server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            if (this._env.IsProduction())
+            {
+                services.Configure<MvcOptions>(options =>
+                {
+                    options.Filters.Add(new RequireHttpsAttribute());
+                });
+            }
+            
             services.AddMvc();
             services.AddVcpShLdap(this._configuration);
             services.AddVcpShIdentity();
@@ -82,6 +94,14 @@ namespace sh.vcp.sso.server
                 var configCtx = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
                 configCtx.Database.Migrate();
                 serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
+            }
+
+            if (env.IsProduction())
+            {
+                var options = new RewriteOptions()
+                .AddRedirectToHttps();
+
+                app.UseRewriter(options);
             }
         }
     }

@@ -5,8 +5,8 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Novell.Directory.Ldap;
 using sh.vcp.identity.Claims;
 using sh.vcp.identity.Extensions;
 using sh.vcp.identity.Model;
@@ -14,14 +14,14 @@ using sh.vcp.identity.Model.Tribe;
 using sh.vcp.identity.Models;
 using sh.vcp.ldap;
 using sh.vcp.ldap.Exceptions;
-using LdapConnection = Novell.Directory.Ldap.LdapConnection;
+using ILdapConnection = sh.vcp.ldap.ILdapConnection;
 
 namespace sh.vcp.identity.Stores
 {
     /// <summary>
     /// A user store using the vcpsh ldap backend.
     /// </summary>
-    internal class LdapUserStore : IUserStore<LdapUser>, IUserClaimStore<LdapUser>
+    internal class LdapUserStore : IUserClaimStore<LdapUser>
     {
         protected readonly ILdapConnection Connection;
         protected readonly LdapConfig Config;
@@ -50,7 +50,7 @@ namespace sh.vcp.identity.Stores
             return Task.FromResult(user.UserName);
         }
 
-        public async Task SetUserNameAsync(LdapUser user, string userName, CancellationToken cancellationToken)
+        public Task SetUserNameAsync(LdapUser user, string userName, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
@@ -60,23 +60,23 @@ namespace sh.vcp.identity.Stores
             return Task.FromResult(user.UserName.ToUpper());
         }
 
-        public async Task SetNormalizedUserNameAsync(LdapUser user, string normalizedName,
+        public Task SetNormalizedUserNameAsync(LdapUser user, string normalizedName,
             CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IdentityResult> CreateAsync(LdapUser user, CancellationToken cancellationToken)
+        public Task<IdentityResult> CreateAsync(LdapUser user, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IdentityResult> UpdateAsync(LdapUser user, CancellationToken cancellationToken)
+        public Task<IdentityResult> UpdateAsync(LdapUser user, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IdentityResult> DeleteAsync(LdapUser user, CancellationToken cancellationToken)
+        public Task<IdentityResult> DeleteAsync(LdapUser user, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
@@ -163,18 +163,16 @@ namespace sh.vcp.identity.Stores
                     .Select(div => new TribeClaim(div)));
                 
                 // load tribe admin
-                await claims.ForEachAsync(async claim =>
+                claims.ForEach(claim =>
                 {
-                    if (claim is TribeClaim tclaim)
+                    if (!(claim is TribeClaim tclaim)) return;
+                    if (tclaim.Tribe.Gs.MemberIds.Contains(user.Id))
                     {
-                        if (tclaim.Tribe.Gs.MemberIds.Contains(user.Id))
-                        {
-                            additionalClaims.Add(new IsTribeGsClaim(tclaim.Tribe));
-                        }
-                        if (tclaim.Tribe.Sl.MemberIds.Contains(user.Id)) 
-                        {
-                            additionalClaims.Add(new IsTribeSlClaim(tclaim.Tribe));
-                        }
+                        additionalClaims.Add(new IsTribeGsClaim(tclaim.Tribe));
+                    }
+                    if (tclaim.Tribe.Sl.MemberIds.Contains(user.Id)) 
+                    {
+                        additionalClaims.Add(new IsTribeSlClaim(tclaim.Tribe));
                     }
                 });
                 
@@ -192,22 +190,22 @@ namespace sh.vcp.identity.Stores
 
         public Task AddClaimsAsync(LdapUser user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Task ReplaceClaimAsync(LdapUser user, Claim claim, Claim newClaim, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Task RemoveClaimsAsync(LdapUser user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Task<IList<LdapUser>> GetUsersForClaimAsync(Claim claim, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }
