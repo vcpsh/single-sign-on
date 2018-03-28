@@ -47,8 +47,7 @@ namespace sh.vcp.sso.server
                     options.Filters.Add(new RequireHttpsAttribute());
                 });
             }
-
-            services.AddCors();
+            
             services.AddMvc();
             services.AddVcpShLdap(this._configuration);
             services.AddVcpShIdentity();
@@ -87,7 +86,6 @@ namespace sh.vcp.sso.server
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(b => { b.AllowAnyMethod(); });
             app.UseIdentityServer();
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
