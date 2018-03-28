@@ -15,11 +15,13 @@ namespace sh.vcp.ldap
         private LdapEntry _entry { get; set; }
         
         private string _objectClass;
+        
         /// <summary>
         /// Id of the object (cn=*).
         /// </summary>
         [JsonProperty("Id")]
         public string Id { get; set; }
+        
         /// <summary>
         /// Domainname of the object.
         /// </summary>
