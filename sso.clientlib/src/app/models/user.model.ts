@@ -14,6 +14,8 @@ export interface ProfileModel {
   division_member?: string | string[];
   is_division_lgs?: string | string[];
   tribe_member?: string | string[];
+  is_tribe_sl?: string | string[];
+  is_tribe_gs?: string | string[];
 }
 
 export interface UserModel extends User {
