@@ -23,8 +23,9 @@ namespace sh.vcp.ldap
             this._logger = logger;
         }
 
-        private LdapConnection(LdapConfig config, string dn, string password)
+        private LdapConnection(LdapConfig config, ILogger<LdapConnection> logger, string dn, string password)
         {
+            this._logger = logger;
             this._config = config ?? throw new ArgumentNullException(nameof(config));
             this._bindDn = dn ?? throw new ArgumentNullException(nameof(dn));
             this._bindPassword = password ?? throw new ArgumentNullException(nameof(password));
@@ -153,7 +154,7 @@ namespace sh.vcp.ldap
             {
                 try
                 {
-                    using (var con = new LdapConnection(this._config, dn, password))
+                    using (var con = new LdapConnection(this._config, this._logger, dn, password))
                     {
                         con.Connect();
                         return con.Bound;
