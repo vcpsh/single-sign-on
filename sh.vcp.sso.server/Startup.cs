@@ -96,13 +96,14 @@ namespace sh.vcp.sso.server
                 serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
             }
 
-            if (env.IsProduction())
-            {
-                var options = new RewriteOptions()
-                .AddRedirectToHttps();
-
-                app.UseRewriter(options);
-            }
+            // Disabled because of an issue
+//            if (env.IsProduction())
+//            {
+//                var options = new RewriteOptions()
+//                .AddRedirectToHttps();
+//
+//                app.UseRewriter(options);
+//            }
         }
     }
 }
