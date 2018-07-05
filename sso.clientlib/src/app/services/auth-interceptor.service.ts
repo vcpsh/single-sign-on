@@ -1,9 +1,8 @@
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import { Observable, from } from 'rxjs';
 import {OidcService} from './oidc.service';
-import 'rxjs/add/observable/fromPromise';
-import 'rxjs/add/operator/mergeMap';
+import {flatMap, mergeMap} from 'rxjs/operators';
 
 @Injectable()
 export class AuthInterceptorService implements HttpInterceptor {
@@ -12,13 +11,13 @@ export class AuthInterceptorService implements HttpInterceptor {
   }
 
   public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return Observable.fromPromise(this._oidc.User).flatMap(user => {
+    return from(this._oidc.User).pipe(flatMap(user => {
       if (user !== null && req.url.startsWith('/api/')) {
         const authReq = req.clone({headers: req.headers.set('Authorization', 'Bearer ' + user.access_token)});
         return next.handle(authReq);
       } else {
         return next.handle(req);
       }
-    });
+    }));
   }
 }

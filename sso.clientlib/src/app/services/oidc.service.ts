@@ -1,21 +1,23 @@
-import { Inject, Injectable } from "@angular/core";
+import { Inject, Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   CanActivate,
   Router,
-  RouterStateSnapshot
-} from "@angular/router";
-import { User, UserManager, UserManagerSettings } from "oidc-client";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { Observable } from "rxjs/Observable";
-import { UserModel } from "../models/user.model";
-import { SsoConfigToken } from "../config";
+  RouterStateSnapshot,
+} from '@angular/router';
+import { User, UserManager, UserManagerSettings } from 'oidc-client';
+import { BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
+import {ModuleConfig} from '../models/config.model';
+import { UserModel } from '../models/user.model';
+import { SsoConfigToken } from '../config';
+import * as Oidc from 'oidc-client';
 
 @Injectable()
 export class OidcService implements CanActivate {
   private _manager: UserManager;
   private _userChanged: ((user: UserModel | null) => void)[] = [];
-  private _lastUserJson = "";
+  private _lastUserJson = '';
   private _lastUser: UserModel | null = null;
 
   public get User(): Promise<UserModel | null> {
@@ -28,18 +30,21 @@ export class OidcService implements CanActivate {
 
   constructor(
     private _router: Router,
-    @Inject(SsoConfigToken) settings: UserManagerSettings
+    @Inject(SsoConfigToken) private _settings: ModuleConfig,
   ) {
-    this._manager = new UserManager(settings);
+    if (this._settings.debug === true) {
+      Oidc.Log.logger = console;
+    }
+    this._manager = new UserManager(_settings);
     this._manager.events.addSilentRenewError(ev => this.silentRenewError(ev));
     this._manager.events.addUserLoaded(ev => this.userLoaded(ev));
     this._manager.events.addUserUnloaded(ev => this.userUnloaded(ev));
     this._manager.events.addUserSignedOut(ev => this.userSignedOut(ev));
     this._manager.events.addAccessTokenExpired(ev =>
-      this.accessTokenEpired(ev)
+      this.accessTokenExpired(ev),
     );
     this._manager.events.addAccessTokenExpiring(ev =>
-      this.accessTokenExpiring(ev)
+      this.accessTokenExpiring(ev),
     );
     this.getUser();
   }
@@ -49,11 +54,11 @@ export class OidcService implements CanActivate {
    */
   public canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+    state: RouterStateSnapshot,
   ): Observable<boolean> | Promise<boolean> | boolean {
     return this.getUser().then(user => {
       if (user === null) {
-        this._router.navigate([""]);
+        this._router.navigate(['']);
         return false;
       }
       return true;
@@ -72,9 +77,9 @@ export class OidcService implements CanActivate {
     this._manager
       .signinRedirectCallback()
       .then(() => {
-        this._router.navigateByUrl("/start");
+        this._router.navigateByUrl('/start');
       })
-      .catch(e => console.error("RedirectError", e));
+      .catch(e => console.error('RedirectError', e));
   }
 
   private getUser(): Promise<UserModel | null> {
@@ -89,32 +94,38 @@ export class OidcService implements CanActivate {
   }
 
   private silentRenewError(...ev: any[]): void {
-    console.error("SilentRenewError", ev);
+    this.log('SilentRenewError', ev);
     this.getUser();
   }
 
   private userLoaded(...ev: any[]): void {
-    console.log("UserLoaded", ev);
+    this.log('UserLoaded', ev);
     this.getUser();
   }
 
   private userUnloaded(...ev: any[]): void {
-    console.log("UserUnloaded");
+    this.log('UserUnloaded');
     this.getUser();
   }
 
   private userSignedOut(...ev: any[]): void {
-    console.log("UserSignedOut");
+    this.log('UserSignedOut');
     this._manager.removeUser().then(() => this.getUser());
   }
 
-  private accessTokenEpired(...ev: any[]): void {
-    console.log("AccessTokenExpired", ev);
+  private accessTokenExpired(...ev: any[]): void {
+    this.log('AccessTokenExpired', ev);
     this._manager.removeUser().then(() => this.getUser());
   }
 
   private accessTokenExpiring(...ev: any[]): void {
-    console.log("AccessTokenExpiring", ev);
+    this.log('AccessTokenExpiring', ev);
     this.getUser();
+  }
+
+  private log(...objs: any[]) {
+    if (this._settings.debug === true) {
+      console.log(objs);
+    }
   }
 }

@@ -5,6 +5,7 @@ import { Route, RouterModule } from "@angular/router";
 import "babel-polyfill";
 import { UserManagerSettings } from "oidc-client";
 import { SigninCallbackComponent } from "./components/signin-callback.component";
+import {ModuleConfig} from './models/config.model';
 import { AuthInterceptorService } from "./services/auth-interceptor.service";
 import { OidcService } from "./services/oidc.service";
 import { SsoConfigToken } from "./config";
@@ -18,7 +19,10 @@ const routes: Route[] = [
 
 @NgModule({
   declarations: [SigninCallbackComponent],
-  imports: [CommonModule, RouterModule.forChild(routes)],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes)
+  ],
   providers: [
     OidcService,
     {
@@ -30,7 +34,7 @@ const routes: Route[] = [
   exports: [RouterModule]
 })
 export class VcpshSsoClientlib {
-  static forRoot(ssoConfig: UserManagerSettings): ModuleWithProviders {
+  static forRoot(ssoConfig: ModuleConfig): ModuleWithProviders {
     return {
       ngModule: VcpshSsoClientlib,
       providers: [
