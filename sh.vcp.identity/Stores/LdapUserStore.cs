@@ -82,7 +82,7 @@ namespace sh.vcp.identity.Stores
         }
 
         public async Task<LdapUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
-         {
+        {
             try
             {
                 return await this.Connection.SearchFirst<LdapUser>(this.Config.MemberDn,
@@ -102,6 +102,7 @@ namespace sh.vcp.identity.Stores
             {
                 this._logger.LogError(ex, IdentityErrorCodes.UserStoreFindById);
             }
+
             return null;
         }
 
@@ -126,9 +127,10 @@ namespace sh.vcp.identity.Stores
             {
                 this._logger.LogError(ex, IdentityErrorCodes.UserStoreFindByName);
             }
+
             return null;
         }
-        
+
         public async Task<IList<Claim>> GetClaimsAsync(LdapUser user, CancellationToken cancellationToken)
         {
             try
@@ -141,27 +143,32 @@ namespace sh.vcp.identity.Stores
                         $"{LdapProperties.Member}={user.Id}",
                         LdapObjectTypes.Division, LdapConnection.SCOPE_SUB, Division.LoadProperties, cancellationToken))
                     .Select(div => new DivisionClaim(div)));
-                
+
                 // load division lgs
-                await claims.ForEachAsync(async claim =>
-                {
-                    var div = ((DivisionClaim) claim).Division;
-                    List<string> divisionLgsGroups = this.Config.AuthorizationConfigurationSection.GetSection(div.Id).GetSection("lgs").GetChildren().Select(section => section.Value).ToList();
-                    await divisionLgsGroups.ExistsAsync(async groupString =>
+                List<string> divisionLgsGroups = this.Config.AuthorizationConfigurationSection.GetChildren().Select(
+                    child =>
                     {
-                        var group = await this.Connection.Read<VotedLdapGroup>($"{groupString},{this.Config.GroupDn}", cancellationToken);
-                        if (!group.MemberIds.Contains(user.Id)) return false;
-                        additionalClaims.Add(new IsDivisionLgsClaim(div));
-                        return true;
-                    });
+                        var subDn = child.GetSection("lgs").GetChildren().Select(section => section.Value).First();
+                        
+                        return $"{subDn},{this.Config.GroupDn}";
+                    }).ToList();
+                await divisionLgsGroups.ForEachAsync(async dn =>
+                {
+                    var group = await this.Connection.Read<VotedLdapGroup>(dn, cancellationToken);
+                    if (group.MemberIds.Contains(user.Id))
+                    {
+                        var divisionId = dn.Replace($",{this.Config.GroupDn}", "");
+                        divisionId = divisionId.Substring(divisionId.LastIndexOf(",")).Replace(",cn=", "");
+                        claims.Add(new IsDivisionLgsClaim(divisionId));
+                    }
                 });
-                
+
                 // load tribes
                 claims.AddRange((await this.Connection.Search<Tribe>(this.Config.GroupDn,
                         $"{LdapProperties.Member}={user.Id}",
                         LdapObjectTypes.Tribe, LdapConnection.SCOPE_SUB, Tribe.LoadProperties, cancellationToken))
                     .Select(div => new TribeClaim(div)));
-                
+
                 // load tribe admin
                 claims.ForEach(claim =>
                 {
@@ -170,19 +177,18 @@ namespace sh.vcp.identity.Stores
                     {
                         additionalClaims.Add(new IsTribeGsClaim(tclaim.Tribe));
                     }
-                    if (tclaim.Tribe.Sl.MemberIds.Contains(user.Id)) 
+
+                    if (tclaim.Tribe.Sl.MemberIds.Contains(user.Id))
                     {
                         additionalClaims.Add(new IsTribeSlClaim(tclaim.Tribe));
                     }
                 });
-                
-                
+
 
                 return claims.Concat(additionalClaims).ToList();
             }
             catch (Exception ex)
             {
-                
                 this._logger.LogError(ex, IdentityErrorCodes.UserStoreGetClaims);
                 return null;
             }

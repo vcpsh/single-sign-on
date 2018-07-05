@@ -14,6 +14,7 @@ namespace sh.vcp.identity.Models
 {
     public class VotedLdapGroup : LdapGroup, ILdapModelWithChildren
     {
+        protected override string __defaultObjectClass => LdapObjectTypes.VotedGroup;
         [JsonProperty("ActiveVoteEntries")]
         public ICollection<VoteEntry> ActiveVoteEntries { get; set; } = new List<VoteEntry>();
         
@@ -41,6 +42,11 @@ namespace sh.vcp.identity.Models
                 // TODO: Logging
                 throw ex;
             }
+        }
+
+        public ICollection<LdapModel> GetChildren()
+        {
+            return (ICollection<LdapModel>)this.ActiveVoteEntries.Concat(this.InactiveVoteEntries);
         }
     }
 }

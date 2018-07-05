@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Novell.Directory.Ldap;
 using sh.vcp.ldap;
 using sh.vcp.ldap.Extensions;
@@ -8,11 +10,13 @@ namespace sh.vcp.identity.Models
 {
     public class Division: LdapGroup
     {
+        protected override string __defaultObjectClass => LdapObjectTypes.Division;
         public new static readonly string[] LoadProperties = new[]
         {
             LdapProperties.DepartmentId
         }.Concat(LdapGroup.LoadProperties).ToArray();
         
+        [JsonProperty("DepartmentId")]
         public int DepartmentId { get; set; }
 
         public override void ProvideEntry(LdapEntry entry)

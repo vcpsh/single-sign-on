@@ -9,6 +9,11 @@ namespace sh.vcp.ldap.Extensions
     {
         public static LdapAttributeSet Add(this LdapAttributeSet set, string attributeName, string attributeValue)
         {
+            if (attributeValue == null)
+            {
+                throw new ArgumentNullException(nameof(attributeValue), $"Attribute \"{attributeName}\"");
+            }
+
             set.Add(new LdapAttribute(attributeName, attributeValue));
             return set;
         }
@@ -40,7 +45,7 @@ namespace sh.vcp.ldap.Extensions
         public static LdapAttributeSet AddOptional<TList>(this LdapAttributeSet set, string attributeName,
             TList attributeList) where TList : IEnumerable<string>, ICollection<string>
         {
-            if (attributeList.Count > 0)
+            if (attributeList != null && attributeList.Count > 0)
             {
                 set.Add(attributeName, attributeList);
             }

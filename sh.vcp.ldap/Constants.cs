@@ -13,6 +13,8 @@
         public const string VcpId = "x-sh-vcp-id";
         public const string DepartmentId = "departmentNumber";
         public const string Uid = "uid";
+        public const string FirstName = "givenName";
+        public const string LastName = "sn";
         public const string Member = "memberUid";
         public const string DisplayName = "displayName";
         public const string Active = "x-sh-vcp-active";

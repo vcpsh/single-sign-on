@@ -9,6 +9,7 @@ namespace sh.vcp.identity.Model
 {
     public class VoteEntry: LdapModel
     {
+        protected override string __defaultObjectClass => LdapObjectTypes.VotedEntry;
         public new static readonly string[] LoadProperties = new[]
         {
             LdapProperties.Active,

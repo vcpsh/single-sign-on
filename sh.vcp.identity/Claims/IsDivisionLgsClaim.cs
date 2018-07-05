@@ -9,5 +9,10 @@ namespace sh.vcp.identity.Claims
         {
             
         }
+        
+        public IsDivisionLgsClaim(string divisionId) : base(LdapClaims.IsDivisionLgsClaim, divisionId)
+        {
+            
+        }
     }
 }

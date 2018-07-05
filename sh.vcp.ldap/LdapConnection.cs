@@ -169,5 +169,74 @@ namespace sh.vcp.ldap
                 return false;
             }, cancellationToken);
         }
+
+        public Task<TModel> Add<TModel>(TModel model, CancellationToken cancellationToken) where TModel: LdapModel
+        {
+            return Task.Run(() =>
+            {
+                try
+                {
+                    if (!this._connected)
+                    {
+                        this.Connect();
+                    }
+
+                    this.Add(model.ToEntry());
+                    return model;
+                }
+                catch (LdapException ex)
+                {
+                    this._logger.LogError(ex, LdapLogCodes.LdapAddError);
+                    return null;
+                }
+            }, cancellationToken);
+        }
+
+        public async Task<TModel> AddChildren<TModel>(TModel model, CancellationToken cancellationToken)
+            where TModel : LdapModel, ILdapModelWithChildren
+        {
+            try
+            {
+                foreach (var ldapModel in model.GetChildren())
+                {
+                    await this.Add(ldapModel, cancellationToken);
+                }
+
+                return model;
+            }
+            catch (LdapException ex)
+            {
+                this._logger.LogError(ex, LdapLogCodes.LdapAddChildrenError);
+                return null;
+            }
+        }
+
+        public Task<bool> Mod<TModel>(TModel model, CancellationToken cancellationToken) where TModel : LdapModel
+        {
+            return Task.Run(() => this.Mod(model.Dn, model.GetModifications(), cancellationToken), cancellationToken);
+        }
+
+        public Task<bool> Mod(string dn, LdapModification[] ldapModifications, CancellationToken cancellationToken = default)
+        {
+            return Task.Run(() =>
+            {
+                try
+                {
+                    if (ldapModifications.Length <= 0) return true;
+                    if (!this._connected)
+                    {
+                        this.Connect();
+                    }
+                        
+                    this.Modify(dn, ldapModifications);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    this._logger.LogError(ex, LdapLogCodes.LdapModifyError);
+                    return false;
+                }
+            }, cancellationToken);
+        }
     }
 }
