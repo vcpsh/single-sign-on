@@ -14,10 +14,10 @@ namespace sh.vcp.sso.server
     {
         public static void Main(string[] args)
         {
-            Program.BuildWebHost(args).Run();
+            Program.CreateWebHostBuilder(args).Build().Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args)
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -28,8 +28,7 @@ namespace sh.vcp.sso.server
                 .UseConfiguration(config)
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseStartup<Startup>()
-                .Build();
+                .UseStartup<Startup>();
         }
     }
 }

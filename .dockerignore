@@ -3,8 +3,11 @@
 .git
 .gitignore
 .vs
+.idea
 .vscode
 docker-compose.yml
 docker-compose.*.yml
 */bin
 */obj
+angular
+sso-ui

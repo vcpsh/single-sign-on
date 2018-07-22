@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -47,8 +48,15 @@ namespace sh.vcp.sso.server
                     options.Filters.Add(new RequireHttpsAttribute());
                 });
             }
-            
-            services.AddMvc();
+
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddVcpShLdap(this._configuration);
             services.AddVcpShIdentity();
 
@@ -85,9 +93,18 @@ namespace sh.vcp.sso.server
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseHsts();
+            }
 
             app.UseIdentityServer();
             app.UseStaticFiles();
+            app.Run( async (context) =>
+            {
+                context.Response.ContentType = "text/html";
+                await context.Response.SendFileAsync(Path.Combine(this._env.WebRootPath,"index.html"));
+            });
             app.UseMvcWithDefaultRoute();
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {

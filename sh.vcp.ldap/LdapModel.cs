@@ -17,7 +17,7 @@ namespace sh.vcp.ldap
 
         protected LdapEntry _entry { get; set; }
 
-        private string _objectClass;
+        protected string ObjectClass;
         
         /// <summary>
         /// Id of the object (cn=*).
@@ -39,7 +39,7 @@ namespace sh.vcp.ldap
         /// <param name="entry">Entry to convert.</param>
         public virtual void ProvideEntry(LdapEntry entry)
         {
-            this._objectClass = entry.GetAttribute(LdapProperties.ObjectClass);
+            this.ObjectClass = entry.GetAttribute(LdapProperties.ObjectClass);
             this.Id = entry.GetAttribute(LdapProperties.CommonName);
             this.Dn = entry.DN;
             this._entry = entry;
@@ -53,7 +53,7 @@ namespace sh.vcp.ldap
         public virtual LdapAttributeSet GetAttributeSet(LdapAttributeSet set = null)
         {
             return new LdapAttributeSet()
-                .Add(LdapProperties.ObjectClass, this._objectClass ?? this.__defaultObjectClass)
+                .Add(LdapProperties.ObjectClass, this.ObjectClass ?? this.__defaultObjectClass)
                 .Add(LdapProperties.CommonName, this.Id);
         }
 

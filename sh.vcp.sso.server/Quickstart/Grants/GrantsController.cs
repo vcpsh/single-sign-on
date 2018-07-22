@@ -17,6 +17,7 @@ namespace IdentityServer4.Quickstart.UI
     /// </summary>
     [SecurityHeaders]
     [Authorize]
+    [Route("grants")]
     public class GrantsController : Controller
     {
         private readonly IIdentityServerInteractionService _interaction;

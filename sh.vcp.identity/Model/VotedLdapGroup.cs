@@ -48,5 +48,10 @@ namespace sh.vcp.identity.Models
         {
             return (ICollection<LdapModel>)this.ActiveVoteEntries.Concat(this.InactiveVoteEntries);
         }
+
+        public override void ProvideEntry(LdapEntry entry)
+        {
+            base.ProvideEntry(entry);
+        }
     }
 }

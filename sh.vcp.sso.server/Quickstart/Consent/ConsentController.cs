@@ -18,6 +18,7 @@ namespace IdentityServer4.Quickstart.UI
     /// </summary>
     [SecurityHeaders]
     [Authorize]
+    [Route("consent")]
     public class ConsentController : Controller
     {
         private readonly IIdentityServerInteractionService _interaction;

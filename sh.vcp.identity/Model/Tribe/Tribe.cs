@@ -29,7 +29,7 @@ namespace sh.vcp.identity.Model.Tribe
         [JsonProperty("Lv")]
         public TribeLv Lv { get; set; }
         
-        [JsonProperty("DepartmentId")]
+        [JsonProperty("TribeId")]
         public int DepartmentId { get; set; }
         
         public async Task LoadChildren(ILdapConnection connection, CancellationToken cancellationToken = default)

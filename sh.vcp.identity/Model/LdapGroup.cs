@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Newtonsoft.Json;
 using Novell.Directory.Ldap;
 using sh.vcp.identity.Utils;
@@ -37,6 +36,9 @@ namespace sh.vcp.identity.Models
         [Required]
         [DivisionIdValidation]
         public string DivisionId { get; set; }
+        
+        [JsonProperty("Type")]
+        public GroupType Type { get; set; }
 
         /// <summary>
         /// Returns the division this group is in.
@@ -54,6 +56,33 @@ namespace sh.vcp.identity.Models
             this.DisplayName = entry.GetOptionalAttribute(LdapProperties.DisplayName) ?? this.Id;
             this.MemberIds = entry.GetOptionalListAttribute(LdapProperties.Member);
             this.DivisionId = this.GetDivisionName();
+            switch (this.ObjectClass)
+            {
+                case LdapObjectTypes.Division:
+                    this.Type = GroupType.Division;
+                    break;
+                case LdapObjectTypes.Tribe:
+                    this.Type = GroupType.Tribe;
+                    break;
+                case LdapObjectTypes.TribeGs:
+                    this.Type = GroupType.TribeGs;
+                    break;
+                case LdapObjectTypes.TribeSl:
+                    this.Type = GroupType.TribeSl;
+                    break;
+                case LdapObjectTypes.TribeLr:
+                    this.Type = GroupType.TribeLr;
+                    break;
+                case LdapObjectTypes.TribeLv:
+                    this.Type = GroupType.TribeLv;
+                    break;
+                case LdapObjectTypes.VotedGroup:
+                    this.Type = GroupType.VotedGroup;
+                    break;
+                default:
+                    this.Type = GroupType.Group;
+                    break;
+            }
         }
 
         public override LdapAttributeSet GetAttributeSet(LdapAttributeSet set = null)
@@ -88,6 +117,21 @@ namespace sh.vcp.identity.Models
             }
 
             return mods;
+        }
+        
+        /// <summary>
+        /// Workaround group type, to keep the group type on transfer.
+        /// </summary>
+        public enum GroupType
+        {
+            Group,
+            Division,
+            VotedGroup,
+            Tribe,
+            TribeGs,
+            TribeSl,
+            TribeLr,
+            TribeLv,
         }
     }
 }

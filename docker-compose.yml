@@ -6,11 +6,3 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    networks:
-      - dotnet
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-networks:
-  dotnet:
-   external:
-      name: dotnet

@@ -1,4 +1,5 @@
-﻿using sh.vcp.identity.Models;
+﻿using Novell.Directory.Ldap;
+using sh.vcp.identity.Models;
 using sh.vcp.ldap;
 
 namespace sh.vcp.identity.Model.Tribe
@@ -7,5 +8,9 @@ namespace sh.vcp.identity.Model.Tribe
     {
         protected override string __defaultObjectClass => LdapObjectTypes.TribeSl;
         
+        public override void ProvideEntry(LdapEntry entry)
+        {
+            base.ProvideEntry(entry);
+        }
     }
 }

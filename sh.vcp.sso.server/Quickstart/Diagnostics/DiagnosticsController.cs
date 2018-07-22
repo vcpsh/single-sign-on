@@ -12,6 +12,7 @@ namespace IdentityServer4.Quickstart.UI
 {
     [SecurityHeaders]
     [Authorize]
+    [Route("diagnostics")]
     public class DiagnosticsController : Controller
     {
         public async Task<IActionResult> Index()

@@ -32,6 +32,7 @@ namespace IdentityServer4.Quickstart.UI
     /// The interaction service provides a way for the UI to communicate with identityserver for validation and context retrieval
     /// </summary>
     [SecurityHeaders]
+    [Route("account")]
     public class AccountController : Controller
     {
         private readonly IUserStore<LdapUser> _users;
