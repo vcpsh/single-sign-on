@@ -44,5 +44,5 @@ RUN dotnet publish sh.vcp.sso.server.csproj -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-COPY --from=ngbuild /src/dist/client/* wwwroot
+COPY --from=ngbuild /src/dist/client/* ./wwwroot/
 ENTRYPOINT ["dotnet", "sh.vcp.sso.server.dll"]

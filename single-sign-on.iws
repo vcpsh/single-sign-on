@@ -2,94 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ce18915a-dcdc-4d92-ac37-932190844e33" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/client/client.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/BaseComponent.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/auth-interceptor.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/config.model.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/config.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/oidc.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/signin-callback.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/user.model.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/proxy.conf.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/app/routes.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/app/services/account.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/assets/cookieconsent.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/assets/cookieconsent.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/assets/silent-renew.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/assets/vcp_logo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/assets/vcp_logo_text_blau.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/assets/vcp_sh_wbm_blau.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/silent-renew.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/theme.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sh.vcp.sso.server/Controllers/AccountController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sh.vcp.sso.server/Models/LoginModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.dockerignore" beforeDir="false" afterPath="$PROJECT_DIR$/.dockerignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Account/AccountController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Account/LoggedOutViewModel.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Account/LoginInputModel.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Account/LoginViewModel.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Account/LogoutInputModel.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Account/LogoutViewModel.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Consent/ConsentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Consent/ConsentController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Diagnostics/DiagnosticsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Diagnostics/DiagnosticsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Grants/GrantsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Grants/GrantsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Home/HomeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Home/HomeController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.sso.server/Startup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Views/Account/LoggedOut.cshtml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Views/Account/Login.cshtml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Views/Account/Logout.cshtml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.sso.server/Views/Shared/_Layout.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/sh.vcp.sso.server.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.sso.server/sh.vcp.sso.server.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/css/site.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/css/site.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/css/site.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/favicon.ico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/icon.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/js/signout-redirect.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/lib/bootstrap/css/bootstrap.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/lib/bootstrap/css/bootstrap.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/lib/bootstrap/css/bootstrap.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/lib/bootstrap/fonts/glyphicons-halflings-regular.eot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/lib/bootstrap/fonts/glyphicons-halflings-regular.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/lib/bootstrap/fonts/glyphicons-halflings-regular.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/lib/bootstrap/fonts/glyphicons-halflings-regular.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/lib/bootstrap/fonts/glyphicons-halflings-regular.woff2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/lib/bootstrap/js/bootstrap.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/lib/bootstrap/js/bootstrap.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/lib/jquery/jquery.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/lib/jquery/jquery.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/lib/jquery/jquery.min.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/single-sign-on.ipr" beforeDir="false" afterPath="$PROJECT_DIR$/single-sign-on.ipr" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/angular.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/single-sign-on.iws" beforeDir="false" afterPath="$PROJECT_DIR$/single-sign-on.iws" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/.editorconfig" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/angular.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/e2e/app.e2e-spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/e2e/app.po.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/e2e/tsconfig.e2e.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/karma.conf.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/protractor.conf.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/app/VcpshSsoClientlib.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/app/components/signin-callback.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/app/config.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/app/models/config.model.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/app/models/user.model.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/app/services/auth-interceptor.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/app/services/oidc.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/assets/.gitkeep" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/public-api.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/tsconfig.app.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/tsconfig.spec.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/typings.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/sso.clientlib.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/tsconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/tslint.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/yarn.lock" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -114,14 +29,14 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="Dockerfile" value="5" />
+          <entry key="Dockerfile" value="6" />
           <entry key="css" value="1" />
           <entry key="dockerignore" value="3" />
           <entry key="gitkeep" value="1" />
           <entry key="html" value="19" />
           <entry key="iml" value="2" />
           <entry key="js" value="8" />
-          <entry key="json" value="73" />
+          <entry key="json" value="75" />
           <entry key="lock" value="3" />
           <entry key="log" value="2" />
           <entry key="md" value="1" />
@@ -129,24 +44,24 @@
           <entry key="rnc" value="1" />
           <entry key="scss" value="17" />
           <entry key="ts" value="99" />
-          <entry key="yml" value="2" />
+          <entry key="yml" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="CSS" value="1" />
-          <entry key="Dockerfile" value="4" />
+          <entry key="Dockerfile" value="5" />
           <entry key="HTML" value="19" />
           <entry key="IDEA_MODULE" value="2" />
           <entry key="Image" value="1" />
-          <entry key="JSON" value="57" />
+          <entry key="JSON" value="59" />
           <entry key="JavaScript" value="8" />
           <entry key="Markdown" value="1" />
           <entry key="PLAIN_TEXT" value="7" />
           <entry key="RNG Compact" value="1" />
           <entry key="SCSS" value="17" />
           <entry key="TypeScript" value="99" />
-          <entry key="YAML" value="2" />
+          <entry key="YAML" value="4" />
           <entry key="tsconfig" value="16" />
           <entry key="yarn.lock" value="3" />
         </counts>
@@ -160,19 +75,19 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="Dockerfile" value="584" />
+          <entry key="Dockerfile" value="589" />
           <entry key="dockerignore" value="31" />
           <entry key="html" value="1385" />
-          <entry key="json" value="484" />
+          <entry key="json" value="496" />
           <entry key="scss" value="1180" />
           <entry key="ts" value="5504" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Dockerfile" value="584" />
+          <entry key="Dockerfile" value="589" />
           <entry key="HTML" value="1384" />
-          <entry key="JSON" value="451" />
+          <entry key="JSON" value="463" />
           <entry key="JavaScript" value="1" />
           <entry key="PLAIN_TEXT" value="31" />
           <entry key="SCSS" value="1180" />
@@ -187,8 +102,17 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Dockerfile">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" column="24" selection-start-line="12" selection-start-column="24" selection-end-line="12" selection-end-column="24" />
+            <state relative-caret-position="690">
+              <caret line="46" column="38" selection-start-line="46" selection-start-column="38" selection-end-line="46" selection-end-column="38" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/angular.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="435">
+              <caret line="29" column="37" selection-start-line="29" selection-start-column="37" selection-end-line="29" selection-end-column="37" />
             </state>
           </provider>
         </entry>
@@ -278,7 +202,6 @@
         <option value="$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/public_api.ts" />
         <option value="$PROJECT_DIR$/angular/projects/vcpsh/sso-client-lib/src/public_api.ts" />
         <option value="$PROJECT_DIR$/client/src/silent-renew.html" />
-        <option value="$PROJECT_DIR$/client/angular.json" />
         <option value="$PROJECT_DIR$/client/src/app/components/login/login.component.ts" />
         <option value="$PROJECT_DIR$/client/src/app/components/logout/logout.component.ts" />
         <option value="$PROJECT_DIR$/client/src/app/components/overview/overview.component.ts" />
@@ -296,6 +219,7 @@
         <option value="$PROJECT_DIR$/.dockerignore" />
         <option value="$PROJECT_DIR$/client/package.json" />
         <option value="$PROJECT_DIR$/client/src/app/components/login/login.component.html" />
+        <option value="$PROJECT_DIR$/client/angular.json" />
         <option value="$PROJECT_DIR$/Dockerfile" />
       </list>
     </option>
@@ -516,18 +440,18 @@
       <workItem from="1533200063535" duration="11023000" />
       <workItem from="1533229113078" duration="3915000" />
       <workItem from="1533289009366" duration="1205000" />
-      <workItem from="1533369195549" duration="49000" />
+      <workItem from="1533369195549" duration="1160000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54647000" />
+    <option name="totallyTimeSpent" value="55758000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1680" y="-180" width="1920" height="1080" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20607029" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20607029" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Image Layers" order="3" />
@@ -597,7 +521,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/sso-client-lib.component.ts" />
     <entry file="file://$PROJECT_DIR$/client/node_modules/@angular/router/src/config.d.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
@@ -614,13 +537,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/angular/projects/vcpsh/sso-client-lib/src/public_api.ts" />
-    <entry file="file://$PROJECT_DIR$/client/angular.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="101">
-          <caret line="22" column="20" selection-start-line="22" selection-start-column="20" selection-end-line="22" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/src/assets/silent-renew.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -812,24 +728,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/docker-compose.override.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="18" lean-forward="true" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/docker-compose.override.template.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
           <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="24" lean-forward="true" selection-start-line="5" selection-start-column="24" selection-end-line="5" selection-end-column="24" />
         </state>
       </provider>
     </entry>
@@ -858,10 +760,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/client/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="24" column="22" lean-forward="true" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docker-compose.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docker-compose.override.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="18" lean-forward="true" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/angular.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="29" column="37" selection-start-line="29" selection-start-column="37" selection-end-line="29" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Dockerfile">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="24" selection-start-line="12" selection-start-column="24" selection-end-line="12" selection-end-column="24" />
+        <state relative-caret-position="690">
+          <caret line="46" column="38" selection-start-line="46" selection-start-column="38" selection-end-line="46" selection-end-column="38" />
         </state>
       </provider>
     </entry>
