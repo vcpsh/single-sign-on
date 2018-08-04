@@ -1,0 +1,27 @@
+<div></div>
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar class="login-header-image"></div>
+  </mat-card-header>
+      <form [formGroup]="Form">
+    <mat-card-content>
+      <span class="mat-dialog-title">Anmelden</span>
+      <mat-error *ngIf="Form.hasError('error')">{{ Form.getError('error')}}</mat-error>
+        <mat-form-field>
+          <input matInput placeholder="Benutzername" name="username" formControlName="username" tabindex="1">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput type="password" placeholder="Passwort" name="password" formControlName="password" tabindex="2" >
+        </mat-form-field>
+        <mat-checkbox name="remember" formControlName="remember">Angemeldet bleiben</mat-checkbox>
+      <div class="actions">
+        <div class="spacer"></div>
+        <button mat-button color="primary" type="button"  routerLink="forgot" tabindex="6">Passwort vergessen?</button>
+        <button mat-button color="primary"  type="button" routerLink="register" tabindex="5">Registrieren</button>
+        <button *ngIf="ReturnUrl" mat-button color="primary"  type="button" (click)="onCancelClick()" tabindex="4">Abbrechen</button>
+        <button mat-raised-button color="primary" (click)="onLoginClick()" tabindex="3">Anmelden</button>
+      </div>
+    </mat-card-content>
+      </form>
+  </mat-card>
+<div></div>

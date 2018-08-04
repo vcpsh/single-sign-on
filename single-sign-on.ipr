@@ -3,12 +3,22 @@
   <component name="InspectionProjectProfileManager">
     <profile version="1.0">
       <option name="myName" value="Project Default" />
+      <inspection_tool class="TsLint" enabled="true" level="ERROR" enabled_by_default="true" />
     </profile>
     <version value="1.0" />
   </component>
+  <component name="ProjectDictionaryState">
+    <dictionary name="jan-hendrik">
+      <words>
+        <w>datenschutzerklärung</w>
+        <w>schleswig</w>
+      </words>
+    </dictionary>
+  </component>
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/sso.clientlib/sso.clientlib.iml" filepath="$PROJECT_DIR$/sso.clientlib/sso.clientlib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/angular/angular.iml" filepath="$PROJECT_DIR$/angular/angular.iml" />
+      <module fileurl="file://$PROJECT_DIR$/client/client.iml" filepath="$PROJECT_DIR$/client/client.iml" />
     </modules>
   </component>
   <component name="ProjectRootManager">
@@ -16,6 +26,10 @@
   </component>
   <component name="PropertiesComponent">
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="/usr/local/bin/node" />
+  </component>
+  <component name="TypeScriptCompiler">
+    <option name="recompileOnChanges" value="true" />
+    <option name="showAllErrors" value="true" />
   </component>
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />

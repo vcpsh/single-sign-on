@@ -8,9 +8,6 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'sh.vcp.sso.server|AnyCPU'" />
   <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="IdentityServer4" Version="2.2.0" />
     <PackageReference Include="IdentityServer4.AspNetIdentity" Version="2.1.0" />
     <PackageReference Include="IdentityServer4.EntityFramework" Version="2.1.1" />
@@ -21,5 +18,41 @@
     <ProjectReference Include="../sh.vcp.identity/sh.vcp.identity.csproj" />
     <ProjectReference Include="../sh.vcp.ldap/sh.vcp.ldap.csproj">
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="wwwroot\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="wwwroot\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="wwwroot\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\3rdpartylicenses.txt" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\cookieconsent.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\cookieconsent.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\login_background.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\vcp_logo.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\vcp_logo_text_blau.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\vcp_sh_wbm_blau.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\favicon.ico" />
+    <_ContentIncludedByDefault Remove="wwwroot\index.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\main.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\main.js.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\polyfills.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\polyfills.js.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\runtime.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\runtime.js.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\styles.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\styles.js.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\vendor.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\vendor.js.map" />
+    <_ContentIncludedByDefault Remove="Views\Account\LoggedOut.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Account\Login.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Account\Logout.cshtml" />
   </ItemGroup>
 </Project>

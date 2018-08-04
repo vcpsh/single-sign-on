@@ -18,7 +18,6 @@ namespace IdentityServer4.Quickstart.UI
     /// </summary>
     [SecurityHeaders]
     [Authorize]
-    [Route("consent")]
     public class ConsentController : Controller
     {
         private readonly IIdentityServerInteractionService _interaction;
@@ -94,7 +93,7 @@ namespace IdentityServer4.Quickstart.UI
             // user clicked 'no' - send back the standard 'access_denied' response
             if (model.Button == "no")
             {
-                grantedConsent = ConsentResponse.Denied;;
+                grantedConsent = ConsentResponse.Denied; ;
             }
             // user clicked 'yes' - validate the data
             else if (model.Button == "yes" && model != null)

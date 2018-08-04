@@ -18,10 +18,10 @@ namespace IdentityServer4.Quickstart.UI
             this._interaction = interaction;
         }
 
-        public IActionResult Index()
-        {
-            return this.View();
-        }
+//        public IActionResult Index()
+//        {
+//            return this.View();
+//        }
 
         /// <summary>
         /// Shows the error page

@@ -8,6 +8,7 @@ using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Entities;
 using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.Models;
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -48,21 +49,29 @@ namespace sh.vcp.sso.server
                     options.Filters.Add(new RequireHttpsAttribute());
                 });
             }
-
+            
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddAntiforgery(options =>
+            {
+                options.HeaderName = "X-XSRF-TOKEN";
+            });
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddVcpShLdap(this._configuration);
             services.AddVcpShIdentity();
 
-            // TODO: don't use the devloper signing credential and move resources and clients to database
+            // TODO: don't use the devloper signing credential
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-            services.AddIdentityServer()
+            services.AddIdentityServer(o =>
+                {
+                    o.UserInteraction.LoginUrl = "/login";
+                    o.UserInteraction.LogoutUrl = "/logout";
+                })
                 .AddDeveloperSigningCredential()
                 .AddAspNetIdentity<LdapUser>()
                 .AddConfigurationStore(options =>
@@ -99,12 +108,29 @@ namespace sh.vcp.sso.server
             }
 
             app.UseIdentityServer();
-            app.UseStaticFiles();
-            app.Run( async (context) =>
-            {
-                context.Response.ContentType = "text/html";
-                await context.Response.SendFileAsync(Path.Combine(this._env.WebRootPath,"index.html"));
+            app.Use(async(ctx, next) => {
+                await next();
+                if (ctx.Response.StatusCode == 404 || ctx.Request.Path == "/")
+                {
+                    var antiforgery = app.ApplicationServices.GetService<IAntiforgery>();
+                    var tokens = antiforgery.GetAndStoreTokens(ctx);
+                    ctx.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken, new CookieOptions() { HttpOnly = false, Path = "/"});
+                }
+                if (ctx.Response.StatusCode == 404)
+                {
+                    ctx.Response.StatusCode = 200;
+                    ctx.Response.ContentType = "text/html";
+                    await ctx.Response.SendFileAsync(Path.Combine(this._env.WebRootPath, "index.html"));
+                }
             });
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+            
+                ;            // app.Run( async (context) =>
+            // {
+            //     context.Response.ContentType = "text/html";
+            //     await context.Response.SendFileAsync(Path.Combine(this._env.WebRootPath,"index.html"));
+            // });
             app.UseMvcWithDefaultRoute();
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
@@ -114,13 +140,13 @@ namespace sh.vcp.sso.server
             }
 
             // Disabled because of an issue
-//            if (env.IsProduction())
-//            {
-//                var options = new RewriteOptions()
-//                .AddRedirectToHttps();
-//
-//                app.UseRewriter(options);
-//            }
+            //            if (env.IsProduction())
+            //            {
+            //                var options = new RewriteOptions()
+            //                .AddRedirectToHttps();
+            //
+            //                app.UseRewriter(options);
+            //            }
         }
     }
 }

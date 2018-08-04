@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/assets/cookieconsent.css" />
+  <meta charset="utf-8">
+  <title>account.vcp.sh</title>
+  <base href="/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+  <app-root></app-root>
+  <script src="/assets/cookieconsent.js"></script>
+  <script>
+    window.addEventListener("load", function(){
+      window.cookieconsent.initialise({
+        'palette': {
+          'popup': {
+            'background': '#004287',
+            'text': '#ffffff'
+          },
+          'button': {
+            'background': '#e94653',
+            "text": "#ffffff"
+          }
+        },
+        'position': 'top',
+        'content': {
+          'message': 'Diese Webseite verwendet Cookies um zu funktionieren.',
+          'dismiss': 'Ok!',
+          'link': 'Datenschutzerklärung',
+          'href': 'account.vcp.sh/privacy'
+        }
+      })});
+  </script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+@import '~@angular/material/theming';
+@import 'theme.scss';
+
+@include mat-core();
+@include angular-material-theme($app-theme);
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+body { margin: 0; font-family: 'Roboto', sans-serif; }
+
+.spacer {
+  flex: 1 0 auto;
+}

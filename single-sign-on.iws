@@ -2,58 +2,193 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ce18915a-dcdc-4d92-ac37-932190844e33" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/sh.vcp.identity/Utils/DivisionIdValidation.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sso.clientlib/src/app/models/config.model.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.identity/Claims/IsDivisionLgsClaim.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.identity/Claims/IsDivisionLgsClaim.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.identity/Model/Division.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.identity/Model/Division.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.identity/Model/LdapGroup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.identity/Model/LdapGroup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.identity/Model/LdapMember.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.identity/Model/LdapMember.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.identity/Model/LdapUser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.identity/Model/LdapUser.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.identity/Model/Tribe/Tribe.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.identity/Model/Tribe/Tribe.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.identity/Model/Tribe/TribeGs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.identity/Model/Tribe/TribeGs.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.identity/Model/Tribe/TribeLr.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.identity/Model/Tribe/TribeLr.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.identity/Model/Tribe/TribeLv.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.identity/Model/Tribe/TribeLv.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.identity/Model/Tribe/TribeSl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.identity/Model/Tribe/TribeSl.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.identity/Model/VoteEntry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.identity/Model/VoteEntry.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.identity/Model/VotedLdapGroup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.identity/Model/VotedLdapGroup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.identity/Stores/LdapUserStore.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.identity/Stores/LdapUserStore.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.identity/sh.vcp.identity.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.identity/sh.vcp.identity.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.ldap/Constants.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.ldap/Constants.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.ldap/Extensions/LdapAttributeSetExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.ldap/Extensions/LdapAttributeSetExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.ldap/Extensions/LdapEntryExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.ldap/Extensions/LdapEntryExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.ldap/ILdapConnection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.ldap/ILdapConnection.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.ldap/ILdapModelWithChildren.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.ldap/ILdapModelWithChildren.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.ldap/LdapConnection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.ldap/LdapConnection.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.ldap/LdapLogCodes.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.ldap/LdapLogCodes.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.ldap/LdapModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.ldap/LdapModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sh.vcp.ldap/sh.vcp.ldap.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.ldap/sh.vcp.ldap.csproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/client.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/BaseComponent.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/auth-interceptor.service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/config.model.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/config.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/oidc.service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/signin-callback.component.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/user.model.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/proxy.conf.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/routes.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/services/account.service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/assets/cookieconsent.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/assets/cookieconsent.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/assets/silent-renew.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/assets/vcp_logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/assets/vcp_logo_text_blau.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/assets/vcp_sh_wbm_blau.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/silent-renew.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/theme.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sh.vcp.sso.server/Controllers/AccountController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sh.vcp.sso.server/Models/LoginModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dockerignore" beforeDir="false" afterPath="$PROJECT_DIR$/.dockerignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Account/AccountController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Account/LoggedOutViewModel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Account/LoginInputModel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Account/LoginViewModel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Account/LogoutInputModel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Account/LogoutViewModel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Consent/ConsentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Consent/ConsentController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Diagnostics/DiagnosticsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Diagnostics/DiagnosticsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Grants/GrantsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Grants/GrantsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Home/HomeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.sso.server/Quickstart/Home/HomeController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.sso.server/Startup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Views/Account/LoggedOut.cshtml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Views/Account/Login.cshtml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Views/Account/Logout.cshtml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.sso.server/Views/Shared/_Layout.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/sh.vcp.sso.server.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.sso.server/sh.vcp.sso.server.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/css/site.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/css/site.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/css/site.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/favicon.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/icon.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/js/signout-redirect.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/lib/bootstrap/css/bootstrap.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/lib/bootstrap/css/bootstrap.css.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/lib/bootstrap/css/bootstrap.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/lib/bootstrap/fonts/glyphicons-halflings-regular.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/lib/bootstrap/fonts/glyphicons-halflings-regular.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/lib/bootstrap/fonts/glyphicons-halflings-regular.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/lib/bootstrap/fonts/glyphicons-halflings-regular.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/lib/bootstrap/fonts/glyphicons-halflings-regular.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/lib/bootstrap/js/bootstrap.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/lib/bootstrap/js/bootstrap.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/lib/jquery/jquery.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/lib/jquery/jquery.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sh.vcp.sso.server/wwwroot/lib/jquery/jquery.min.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/single-sign-on.ipr" beforeDir="false" afterPath="$PROJECT_DIR$/single-sign-on.ipr" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/single-sign-on.iws" beforeDir="false" afterPath="$PROJECT_DIR$/single-sign-on.iws" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/.angular-cli.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/karma.conf.js" beforeDir="false" afterPath="$PROJECT_DIR$/sso.clientlib/karma.conf.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/sso.clientlib/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/app/VcpshSsoClientlib.ts" beforeDir="false" afterPath="$PROJECT_DIR$/sso.clientlib/src/app/VcpshSsoClientlib.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/app/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/sso.clientlib/src/app/config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/app/services/auth-interceptor.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/sso.clientlib/src/app/services/auth-interceptor.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/app/services/oidc.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/sso.clientlib/src/app/services/oidc.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/tsconfig.spec.json" beforeDir="false" afterPath="$PROJECT_DIR$/sso.clientlib/src/tsconfig.spec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/tslint.json" beforeDir="false" afterPath="$PROJECT_DIR$/sso.clientlib/tslint.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sso.clientlib/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/sso.clientlib/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sso.clientlib/.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sso.clientlib/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sso.clientlib/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sso.clientlib/angular.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sso.clientlib/e2e/app.e2e-spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sso.clientlib/e2e/app.po.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sso.clientlib/e2e/tsconfig.e2e.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sso.clientlib/karma.conf.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sso.clientlib/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sso.clientlib/protractor.conf.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/app/VcpshSsoClientlib.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/app/components/signin-callback.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/app/config.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/app/models/config.model.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/app/models/user.model.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/app/services/auth-interceptor.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/app/services/oidc.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/assets/.gitkeep" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/public-api.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/tsconfig.app.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/tsconfig.spec.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sso.clientlib/src/typings.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sso.clientlib/sso.clientlib.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sso.clientlib/tsconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sso.clientlib/tslint.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sso.clientlib/yarn.lock" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
-    <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="-432875578">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="5" />
+          <entry key="project.open.time.19" value="1" />
+          <entry key="project.open.time.23" value="1" />
+          <entry key="project.open.time.29" value="1" />
+          <entry key="project.open.time.35" value="1" />
+          <entry key="project.open.time.39" value="1" />
+          <entry key="project.open.time.4" value="1" />
+          <entry key="project.open.time.54" value="1" />
+          <entry key="project.opened" value="7" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="Dockerfile" value="5" />
+          <entry key="css" value="1" />
+          <entry key="dockerignore" value="3" />
+          <entry key="gitkeep" value="1" />
+          <entry key="html" value="19" />
+          <entry key="iml" value="2" />
+          <entry key="js" value="8" />
+          <entry key="json" value="73" />
+          <entry key="lock" value="3" />
+          <entry key="log" value="2" />
+          <entry key="md" value="1" />
+          <entry key="png" value="1" />
+          <entry key="rnc" value="1" />
+          <entry key="scss" value="17" />
+          <entry key="ts" value="99" />
+          <entry key="yml" value="2" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="CSS" value="1" />
+          <entry key="Dockerfile" value="4" />
+          <entry key="HTML" value="19" />
+          <entry key="IDEA_MODULE" value="2" />
+          <entry key="Image" value="1" />
+          <entry key="JSON" value="57" />
+          <entry key="JavaScript" value="8" />
+          <entry key="Markdown" value="1" />
+          <entry key="PLAIN_TEXT" value="7" />
+          <entry key="RNG Compact" value="1" />
+          <entry key="SCSS" value="17" />
+          <entry key="TypeScript" value="99" />
+          <entry key="YAML" value="2" />
+          <entry key="tsconfig" value="16" />
+          <entry key="yarn.lock" value="3" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.js.language.service.starts">
+        <counts>
+          <entry key="Angular2LanguageService" value="4" />
+          <entry key="TsLintLanguageService" value="4" />
+          <entry key="TypeScriptServerServiceImpl" value="3" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="Dockerfile" value="584" />
+          <entry key="dockerignore" value="31" />
+          <entry key="html" value="1385" />
+          <entry key="json" value="484" />
+          <entry key="scss" value="1180" />
+          <entry key="ts" value="5504" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="Dockerfile" value="584" />
+          <entry key="HTML" value="1384" />
+          <entry key="JSON" value="451" />
+          <entry key="JavaScript" value="1" />
+          <entry key="PLAIN_TEXT" value="31" />
+          <entry key="SCSS" value="1180" />
+          <entry key="TypeScript" value="5504" />
+          <entry key="tsconfig" value="33" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="package.json" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/sso.clientlib/package.json">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Dockerfile">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
+            <state relative-caret-position="180">
+              <caret line="12" column="24" selection-start-line="12" selection-start-column="24" selection-end-line="12" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -63,6 +198,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="tsconfig.json" />
+        <option value="HTML File" />
+        <option value="JavaScript File" />
+        <option value="CSS File" />
         <option value="TypeScript File" />
       </list>
     </option>
@@ -74,7 +213,32 @@
       <find>start</find>
       <find>dashboard</find>
       <find>http</find>
+      <find>navigateByUrl</find>
+      <find>brows</find>
+      <find>getHeadTag</find>
+      <find>@angular/</find>
+      <find>$mat-light-theme-background</find>
+      <find>serve</find>
+      <find>style</find>
+      <find>ext</find>
+      <find>skip</find>
+      <find>rene</find>
+      <find>UserManager.get</find>
+      <find>session</find>
+      <find>Oidcs</find>
+      <find>oidcS</find>
+      <find>dist/vcpsh</find>
+      <find>@vcpsh/</find>
+      <find>vcpsh/</find>
+      <find>sso-client-lib</find>
+      <find>vcpsh/sso-client-lib</find>
+      <find>oidc-service</find>
+      <find>firgot</find>
     </findStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$/angular/projects</dir>
+      <dir>$PROJECT_DIR$</dir>
+    </dirStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -82,32 +246,80 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/sso.clientlib/src/app/models/user.model.ts" />
-        <option value="$PROJECT_DIR$/sso.clientlib/tsconfig.json" />
-        <option value="$PROJECT_DIR$/sso.clientlib/src/app/services/auth-interceptor.service.ts" />
-        <option value="$PROJECT_DIR$/sso.clientlib/src/app/VcpshSsoClientlib.ts" />
-        <option value="$PROJECT_DIR$/sso.clientlib/src/app/config.ts" />
-        <option value="$PROJECT_DIR$/sso.clientlib/src/app/services/oidc.service.ts" />
-        <option value="$PROJECT_DIR$/sso.clientlib/src/app/models/config.model.ts" />
-        <option value="$PROJECT_DIR$/sso.clientlib/package.json" />
+        <option value="$PROJECT_DIR$/angular/projects/vcpsh/commonui/package.json" />
+        <option value="$PROJECT_DIR$/sso-ui/src/app/app.component.html" />
+        <option value="$PROJECT_DIR$/angular/tsconfig.json" />
+        <option value="$PROJECT_DIR$/angular/angular.json" />
+        <option value="$PROJECT_DIR$/angular/projects/vcpsh/sso-client-lib/src/lib/sso-client-lib.module.ts" />
+        <option value="$PROJECT_DIR$/sso-ui/tsconfig.json" />
+        <option value="$PROJECT_DIR$/angular/projects/vcpsh/sso-client-lib/ng-package.json" />
+        <option value="$PROJECT_DIR$/angular/projects/vcpsh/sso-client-lib/src/lib/vcpsh-sso-client-lib.module.ts" />
+        <option value="$PROJECT_DIR$/angular/projects/vcpsh/sso-client-lib/package.json" />
+        <option value="$PROJECT_DIR$/sso-ui/src/app/app.module.ts" />
+        <option value="$PROJECT_DIR$/angular/projects/vcpsh/sso-client-lib/ng-package.prod.json" />
+        <option value="$PROJECT_DIR$/angular/package.json" />
+        <option value="$PROJECT_DIR$/sso-ui/package.json" />
+        <option value="$PROJECT_DIR$/sso-ui/angular.json" />
+        <option value="$PROJECT_DIR$/client/src/environments/environment.ts" />
+        <option value="$PROJECT_DIR$/client/src/assets/cookieconsent.min.js" />
+        <option value="$PROJECT_DIR$/client/src/assets/cookieconsent.css" />
+        <option value="$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/BaseComponent.ts" />
+        <option value="$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/config.model.ts" />
+        <option value="$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/config.ts" />
+        <option value="$PROJECT_DIR$/client/src/theme.scss" />
+        <option value="$PROJECT_DIR$/client/src/styles.scss" />
+        <option value="$PROJECT_DIR$/client/proxy.conf.json" />
+        <option value="$PROJECT_DIR$/client/src/app/services/login.service.ts" />
+        <option value="$PROJECT_DIR$/client/src/app/components/page-not-found-component/page-not-found.component.scss" />
+        <option value="$PROJECT_DIR$/client/src/app/components/page-not-found-component/page-not-found.component.html" />
+        <option value="$PROJECT_DIR$/client/src/app/app.component.html" />
+        <option value="$PROJECT_DIR$/client/src/index.html" />
+        <option value="$PROJECT_DIR$/client/src/app/components/login/login.component.scss" />
+        <option value="$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/public_api.ts" />
+        <option value="$PROJECT_DIR$/angular/projects/vcpsh/sso-client-lib/src/public_api.ts" />
+        <option value="$PROJECT_DIR$/client/src/silent-renew.html" />
+        <option value="$PROJECT_DIR$/client/angular.json" />
+        <option value="$PROJECT_DIR$/client/src/app/components/login/login.component.ts" />
+        <option value="$PROJECT_DIR$/client/src/app/components/logout/logout.component.ts" />
+        <option value="$PROJECT_DIR$/client/src/app/components/overview/overview.component.ts" />
+        <option value="$PROJECT_DIR$/client/src/app/services/session-checker.service.ts" />
+        <option value="$PROJECT_DIR$/client/src/app/app.component.ts" />
+        <option value="$PROJECT_DIR$/client/src/app/routes.ts" />
+        <option value="$PROJECT_DIR$/client/src/app/app.module.ts" />
+        <option value="$PROJECT_DIR$/client/src/app/guards/auth-guard.ts" />
+        <option value="$PROJECT_DIR$/client/src/app/services/account.service.ts" />
+        <option value="$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/oidc.service.ts" />
+        <option value="$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/sso-client-lib.module.ts" />
+        <option value="$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/package.json" />
+        <option value="$PROJECT_DIR$/client/tslint.json" />
+        <option value="$PROJECT_DIR$/client/tsconfig.json" />
+        <option value="$PROJECT_DIR$/.dockerignore" />
+        <option value="$PROJECT_DIR$/client/package.json" />
+        <option value="$PROJECT_DIR$/client/src/app/components/login/login.component.html" />
+        <option value="$PROJECT_DIR$/Dockerfile" />
       </list>
     </option>
   </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER">
-    <package-json value="$PROJECT_DIR$/sso.clientlib/package.json" />
+    <package-json value="$PROJECT_DIR$/client/package.json" />
   </component>
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="NodeModulesDirectoryManager">
-    <handled-path value="$PROJECT_DIR$/sso.clientlib/node_modules" />
+    <handled-path value="$PROJECT_DIR$/client/node_modules" />
+    <handled-path value="$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/node_modules" />
   </component>
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths>
-      <path value="$PROJECT_DIR$/sso.clientlib/package.json" />
+      <path value="$PROJECT_DIR$/client/package.json" />
+      <path value="$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/package.json" />
     </packageJsonPaths>
+  </component>
+  <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/client/package.json" />
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
     <option name="x" value="1680" />
@@ -122,56 +334,100 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
-      <pane id="AndroidView" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="single-sign-on" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sso.clientlib" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="single-sign-on" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sso.clientlib" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
+              <item name="dist" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="single-sign-on" type="b2602c69:ProjectViewProjectNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
+              <item name="dist" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="single-sign-on" type="b2602c69:ProjectViewProjectNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
+              <item name="dist" type="462c0819:PsiDirectoryNode" />
+              <item name="vcpsh" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="single-sign-on" type="b2602c69:ProjectViewProjectNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="single-sign-on" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sso.clientlib" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="app" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="single-sign-on" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sso.clientlib" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="models" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="single-sign-on" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sso.clientlib" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="services" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="login" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1533288927823" />
     <property name="jdk.selected.JAVA_MODULE" value="1.8" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/angular/projects" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.tslint" value="$PROJECT_DIR$/client/node_modules/tslint" />
+    <property name="nodejs.protractor.protractor_package" value="$PROJECT_DIR$/client/node_modules/protractor" />
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
-    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/client/node_modules/typescript/lib" />
+    <property name="typescript-compiler-editor-notification" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib" />
+      <recent name="$PROJECT_DIR$/client/src/assets" />
+      <recent name="$PROJECT_DIR$/client/src" />
+      <recent name="$PROJECT_DIR$/client" />
+      <recent name="$PROJECT_DIR$/sso-ui/src/assets" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/client/src/app/guards" />
+      <recent name="$PROJECT_DIR$/client/src/app/services" />
+      <recent name="$PROJECT_DIR$/client/src/app/components" />
+      <recent name="$PROJECT_DIR$/sso-ui/src" />
+      <recent name="$PROJECT_DIR$/angular/projects/vcpsh" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -185,51 +441,57 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="npm.Angular CLI Server (client)">
     <configuration default="true" type="Applet" factoryName="Applet">
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <patterns />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="E2E Tests (client)" type="JavaScriptTestRunnerProtractor" factoryName="Protractor">
+      <config-file value="$PROJECT_DIR$/client/e2e/protractor.conf.js" />
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="Angular Application (client)" type="JavascriptDebugType" factoryName="JavaScript Debug" uri="http://localhost:4200">
+      <method v="2" />
     </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="SUITE_NAME" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="GROUP_NAME" />
-      <option name="TEST_OBJECT" value="CLASS" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
-      <option name="OUTPUT_DIRECTORY" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <option name="USE_DEFAULT_REPORTERS" value="false" />
-      <option name="PROPERTIES_FILE" />
       <properties />
       <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
+    <configuration name="Angular CLI Server (client)" type="js.build_tools.npm" factoryName="npm">
+      <package-json value="$PROJECT_DIR$/client/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="JavaScript Debug.Angular Application (client)" />
+      <item itemvalue="Protractor.E2E Tests (client)" />
+      <item itemvalue="npm.Angular CLI Server (client)" />
+    </list>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -244,46 +506,89 @@
       <workItem from="1528962611502" duration="2183000" />
       <workItem from="1529316202333" duration="2543000" />
       <workItem from="1530780884157" duration="1270000" />
+      <workItem from="1530797467997" duration="108000" />
+      <workItem from="1530803028424" duration="41000" />
+      <workItem from="1531734023090" duration="10439000" />
+      <workItem from="1531757132555" duration="7058000" />
+      <workItem from="1533115842887" duration="1487000" />
+      <workItem from="1533130449460" duration="4526000" />
+      <workItem from="1533142062804" duration="5077000" />
+      <workItem from="1533200063535" duration="11023000" />
+      <workItem from="1533229113078" duration="3915000" />
+      <workItem from="1533289009366" duration="1205000" />
+      <workItem from="1533369195549" duration="49000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9719000" />
+    <option name="totallyTimeSpent" value="54647000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1680" y="-180" width="1920" height="1080" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="Palette&#9;" order="3" />
-      <window_info id="Image Layers" order="2" />
-      <window_info anchor="right" id="Capture Analysis" order="3" />
-      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
-      <window_info anchor="right" id="Maven Projects" order="3" />
-      <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3292683" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info id="npm" order="2" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.28309572" />
-      <window_info id="Capture Tool" order="2" />
-      <window_info anchor="bottom" id="TypeScript" order="8" />
-      <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2630458" />
-      <window_info anchor="right" id="Database" order="3" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20607029" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info id="UI Designer" order="2" />
-      <window_info anchor="right" id="Theme Preview" order="3" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info id="npm" order="2" side_tool="true" />
+      <window_info id="Image Layers" order="3" />
+      <window_info id="Designer" order="4" />
+      <window_info id="UI Designer" order="5" />
+      <window_info id="Capture Tool" order="6" />
+      <window_info id="Favorites" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32928064" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32826748" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.27254307" />
+      <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="9" weight="0.32928064" />
+      <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
+      <window_info anchor="bottom" id="TypeScript" order="11" weight="0.32928064" />
+      <window_info anchor="bottom" id="Docker" order="12" show_stripe_button="false" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info anchor="right" id="Theme Preview" order="5" />
+      <window_info anchor="right" id="Database" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="Maven Projects" order="8" />
     </layout>
+    <layout-to-restore>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.27635783" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="npm" order="2" side_tool="true" />
+      <window_info id="Image Layers" order="3" />
+      <window_info id="Designer" order="4" />
+      <window_info id="UI Designer" order="5" />
+      <window_info id="Capture Tool" order="6" />
+      <window_info id="Favorites" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3299389" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3292683" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.28267476" />
+      <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="9" />
+      <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
+      <window_info anchor="bottom" id="TypeScript" order="11" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info anchor="right" id="Theme Preview" order="5" />
+      <window_info anchor="right" id="Database" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="Maven Projects" order="8" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -292,331 +597,271 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/src/app/VcpshSsoClientlib.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="27" column="33" lean-forward="true" selection-start-line="27" selection-start-column="33" selection-end-line="27" selection-end-column="33" />
-          <folding>
-            <element signature="e#0#47#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/src/app/services/auth-interceptor.service.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
-          <folding>
-            <element signature="e#0#90#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/src/app/config.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#47#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/src/app/services/oidc.service.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="16" column="66" lean-forward="true" selection-start-line="16" selection-start-column="66" selection-end-line="16" selection-end-column="66" />
-          <folding>
-            <element signature="e#0#51#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/src/app/models/user.model.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="21" selection-start-line="16" selection-start-column="21" selection-end-line="16" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/src/app/services/auth-interceptor.service.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
-          <folding>
-            <element signature="e#0#90#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/src/app/services/oidc.service.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#51#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/src/app/config.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#47#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/src/app/VcpshSsoClientlib.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="35" column="34" selection-start-line="35" selection-start-column="34" selection-end-line="35" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#47#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/node_modules/oidc-client/index.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3060">
-          <caret line="204" column="35" selection-start-line="204" selection-start-column="35" selection-end-line="204" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/angular.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="22" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="31" column="23" selection-start-line="31" selection-start-column="23" selection-end-line="31" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/src/app/models/user.model.ts">
+    <entry file="file://$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/sso-client-lib.component.ts" />
+    <entry file="file://$PROJECT_DIR$/client/node_modules/@angular/router/src/config.d.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
-          <caret line="14" column="38" selection-start-line="14" selection-start-column="38" selection-end-line="14" selection-end-column="38" />
+          <caret line="350" column="22" selection-start-line="350" selection-start-column="22" selection-end-line="350" selection-end-column="22" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/package.json">
+    <entry file="file://$PROJECT_DIR$/angular/projects/vcpsh/sso-client-lib/src/lib/oidc.service.ts" />
+    <entry file="file://$PROJECT_DIR$/client/src/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" column="28" lean-forward="true" selection-start-line="27" selection-start-column="28" selection-end-line="27" selection-end-column="28" />
+        <state relative-caret-position="75">
+          <caret line="5" selection-start-line="5" selection-end-line="6" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/protractor.conf.js">
+    <entry file="file://$PROJECT_DIR$/angular/projects/vcpsh/sso-client-lib/src/public_api.ts" />
+    <entry file="file://$PROJECT_DIR$/client/angular.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="101">
+          <caret line="22" column="20" selection-start-line="22" selection-start-column="20" selection-end-line="22" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/assets/silent-renew.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/src/app/VcpshSsoClientlib.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="21" column="17" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#47#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/angular.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="22" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/src/app/services/auth-interceptor.service.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" column="23" selection-start-line="13" selection-start-column="23" selection-end-line="13" selection-end-column="23" />
-          <folding>
-            <element signature="e#0#90#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/src/app/models/user.model.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="26" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/src/app/VcpshSsoClientlib.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="21" column="17" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#47#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/angular.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="22" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="675">
-          <caret line="45" column="36" selection-start-line="45" selection-start-column="36" selection-end-line="45" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/src/app/models/user.model.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="26" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="750">
-          <caret line="50" column="22" lean-forward="true" selection-start-line="50" selection-start-column="22" selection-end-line="50" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/.editorconfig">
+    <entry file="file://$PROJECT_DIR$/client/src/silent-renew.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
           <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/karma.conf.js">
+    <entry file="file://$PROJECT_DIR$/client/src/app/components/logout/logout.component.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="33" lean-forward="true" selection-start-line="19" selection-start-column="33" selection-end-line="19" selection-end-column="33" />
+        <state relative-caret-position="375">
+          <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/tsconfig.json">
+    <entry file="file://$PROJECT_DIR$/client/src/app/app.component.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+        <state relative-caret-position="15">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/protractor.conf.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/node_modules/rxjs/internal/observable/fromPromise.d.ts">
+    <entry file="file://$PROJECT_DIR$/client/src/app/components/login/login.component.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
+        <state relative-caret-position="2">
+          <caret line="10" column="2" lean-forward="true" selection-start-line="10" selection-start-column="2" selection-end-line="10" selection-end-column="2" />
+          <folding>
+            <element signature="e#0#42#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/node_modules/@angular/common/http/src/interceptor.d.ts">
+    <entry file="file://$PROJECT_DIR$/client/src/app/services/session-checker.service.ts" />
+    <entry file="file://$PROJECT_DIR$/client/node_modules/@angular/router/src/router_state.d.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="292">
-          <caret line="32" column="6" lean-forward="true" selection-start-line="32" selection-start-column="6" selection-end-line="32" selection-end-column="6" />
+        <state relative-caret-position="277">
+          <caret line="71" column="29" lean-forward="true" selection-start-line="71" selection-start-column="29" selection-end-line="71" selection-end-column="29" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/node_modules/rxjs/src/internal/Subscriber.ts">
+    <entry file="file://$PROJECT_DIR$/angular/projects/vcpsh/sso-client-lib/src/lib/auth-interceptor.service.ts" />
+    <entry file="file://$PROJECT_DIR$/angular/projects/vcpsh/sso-client-lib/karma.conf.js" />
+    <entry file="file://$PROJECT_DIR$/angular/projects/vcpsh/sso-client-lib/src/lib/vcpsh-sso-client-lib.module.ts" />
+    <entry file="file://$PROJECT_DIR$/client/src/app/routes.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-29">
-          <caret line="24" column="20" lean-forward="true" selection-start-line="24" selection-start-column="20" selection-end-line="24" selection-end-column="20" />
+        <state>
+          <caret column="38" selection-start-column="38" selection-end-column="38" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/node_modules/rxjs/src/internal/Observable.ts">
+    <entry file="file://$PROJECT_DIR$/client/src/app/services/account.service.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="52" column="60" selection-start-line="52" selection-start-column="60" selection-end-line="52" selection-end-column="60" />
+        <state relative-caret-position="435">
+          <caret line="32" column="8" selection-start-line="32" selection-start-column="8" selection-end-line="32" selection-end-column="8" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/node_modules/rxjs/src/internal/observable/from.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="17" column="19" lean-forward="true" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/angular.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="22" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/src/app/services/auth-interceptor.service.ts">
+    <entry file="file://$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/package.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="11" selection-start-line="11" selection-end-line="11" />
-          <folding>
-            <element signature="e#0#90#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/src/app/config.ts">
+    <entry file="file://$PROJECT_DIR$/client/src/app/app.component.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
-          <folding>
-            <element signature="e#0#47#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="120">
+          <caret line="8" column="45" lean-forward="true" selection-start-line="8" selection-start-column="45" selection-end-line="8" selection-end-column="45" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/src/app/VcpshSsoClientlib.ts">
+    <entry file="file://$PROJECT_DIR$/client/src/app/app.module.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="481">
-          <caret line="41" column="26" selection-start-line="41" selection-start-column="26" selection-end-line="41" selection-end-column="26" />
-          <folding>
-            <element signature="e#0#47#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="316">
+          <caret line="32" column="23" lean-forward="true" selection-start-line="32" selection-start-column="23" selection-end-line="32" selection-end-column="23" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/node_modules/oidc-client/index.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="98">
-          <caret line="14" column="17" lean-forward="true" selection-start-line="14" selection-start-column="17" selection-end-line="14" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/src/app/services/oidc.service.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="19" lean-forward="true" selection-start-line="19" selection-start-column="19" selection-end-line="19" selection-end-column="19" />
-          <folding>
-            <element signature="e#0#51#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/src/app/models/user.model.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="21" selection-start-line="16" selection-start-column="21" selection-end-line="16" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/src/app/models/config.model.ts">
+    <entry file="file://$PROJECT_DIR$/client/src/app/guards/auth-guard.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sso.clientlib/package.json">
+    <entry file="file://$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/auth-interceptor.service.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
+        <state>
+          <caret column="7" lean-forward="true" selection-start-column="7" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yarn.lock" />
+    <entry file="file://$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/oidc.service.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="13" lean-forward="true" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/public_api.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/user.model.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/sso-client-lib.module.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" column="14" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/config.model.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/BaseComponent.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/config.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/projects/vcpsh/sso-client-lib/src/lib/signin-callback.component.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="16" lean-forward="true" selection-start-line="9" selection-start-column="16" selection-end-line="9" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/yarn.lock">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="111">
+          <caret line="259" lean-forward="true" selection-start-line="259" selection-end-line="259" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/proxy.conf.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/mmmomoudles/@vcpsh/sso-client-lib/vcpsh-sso-client-lib.d.ts" />
+    <entry file="file://$PROJECT_DIR$/client/mmmomoudles/@vcpsh/sso-client-lib/public_api.d.ts" />
+    <entry file="file://$PROJECT_DIR$/client/mmmomoudles/@vcpsh/sso-client-lib/package.json" />
+    <entry file="file://$PROJECT_DIR$/client/tslint.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="23" column="15" lean-forward="true" selection-start-line="23" selection-start-column="15" selection-end-line="23" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.dockerignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="5" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/tsconfig.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="23" lean-forward="true" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/yarn-error.log">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="12" selection-start-line="13" selection-start-column="12" selection-end-line="13" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/app/components/overview/overview.component.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docker-compose.override.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="18" lean-forward="true" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docker-compose.override.template.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="24" lean-forward="true" selection-start-line="5" selection-start-column="24" selection-end-line="5" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/dist/client/polyfills.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/dist/client/main.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/dist/client/vendor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1073314">
+          <caret line="34" column="3" lean-forward="true" selection-start-line="34" selection-start-column="3" selection-end-line="34" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/dist/client/styles.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-8254" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/app/components/login/login.component.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="19" column="41" lean-forward="true" selection-start-line="19" selection-start-column="41" selection-end-line="19" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Dockerfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="24" selection-start-line="12" selection-start-column="24" selection-end-line="12" selection-end-column="24" />
         </state>
       </provider>
     </entry>
@@ -672,7 +917,7 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>clientlib</last-edited>
+          <last-edited>client</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

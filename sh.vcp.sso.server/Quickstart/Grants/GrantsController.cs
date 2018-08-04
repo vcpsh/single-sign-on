@@ -17,7 +17,6 @@ namespace IdentityServer4.Quickstart.UI
     /// </summary>
     [SecurityHeaders]
     [Authorize]
-    [Route("grants")]
     public class GrantsController : Controller
     {
         private readonly IIdentityServerInteractionService _interaction;
@@ -58,7 +57,7 @@ namespace IdentityServer4.Quickstart.UI
             var grants = await this._interaction.GetAllUserConsentsAsync();
 
             var list = new List<GrantViewModel>();
-            foreach(var grant in grants)
+            foreach (var grant in grants)
             {
                 var client = await this._clients.FindClientByIdAsync(grant.ClientId);
                 if (client != null)

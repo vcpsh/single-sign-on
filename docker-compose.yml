@@ -3,6 +3,7 @@ version: '3.4'
 services:
   sh.vcp.sso.server:
     image: vcpsh/ssoserver
+    container_name: account.vcp.sh
     build:
       context: .
       dockerfile: Dockerfile

@@ -9,5 +9,7 @@ docker-compose.yml
 docker-compose.*.yml
 */bin
 */obj
-angular
-sso-ui
+*/node_modules
+*/angular_material_schematics-*
+*/dist
+*/e2e
