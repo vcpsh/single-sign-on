@@ -5,6 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {SsoClientLibModule} from '@vcpsh/sso-client-lib';
+import {environment} from '../environments/environment';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -36,14 +37,14 @@ import {AccountService} from './services/account.service';
       {
     }),
     SsoClientLibModule.forRoot({
-      authority: 'http://localhost:5000',
+      authority: environment.authority,
       client_id: 'sh.vcp.sso-client@1.0.0',
-      redirect_uri: 'http://localhost:5000/signin',
+      redirect_uri: environment.redirect_uri,
       response_type: 'id_token token',
       scope: 'openid profile sh.vcp.sso@1.0.0',
       automaticSilentRenew: true,
-      post_logout_redirect_uri: 'http://localhost:5000',
-      silent_redirect_uri: 'http://localhost:5000/silent-renew.html',
+      post_logout_redirect_uri: environment.post_logout_redirect_uri,
+      silent_redirect_uri: environment.silent_redirect_uri,
       loadUserInfo: true,
       debug: true,
     }),
