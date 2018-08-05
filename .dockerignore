@@ -13,3 +13,4 @@ docker-compose.*.yml
 */angular_material_schematics-*
 */dist
 */e2e
+appsettings.template.json
