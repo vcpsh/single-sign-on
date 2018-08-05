@@ -21,17 +21,57 @@ namespace sh.vcp.identity.Stores
     /// <summary>
     /// A user store using the vcpsh ldap backend.
     /// </summary>
-    internal class LdapUserStore : IUserClaimStore<LdapUser>
+    internal class LdapUserStore : ILdapUserStore<LdapUser>
     {
-        protected readonly ILdapConnection Connection;
-        protected readonly LdapConfig Config;
+        private readonly ILdapConnection _connection;
+        private readonly LdapConfig _config;
         private readonly ILogger<LdapUserStore> _logger;
 
         public LdapUserStore(ILdapConnection connection, LdapConfig config, ILogger<LdapUserStore> logger)
         {
-            this.Connection = connection;
-            this.Config = config;
+            this._connection = connection;
+            this._config = config;
             this._logger = logger;
+        }
+
+        public async Task<LdapUser> FindByEmailAsync(string email, CancellationToken cancellationToken)
+        {
+            try
+            {
+                return await this._connection.SearchFirst<LdapUser>(this._config.MemberDn,
+                    $"{LdapProperties.Email}={email}",
+                    LdapProperties.Member,
+                    LdapConnection.SCOPE_SUB,
+                    LdapUser.LoadProperties,
+                    true,
+                    cancellationToken);
+            }
+            catch (LdapSearchNotUniqueException)
+            {
+                // If we found multiple users matching the filter we return null for safety
+                return null;
+            }
+            catch (Exception ex)
+            {
+                this._logger.LogError(ex, IdentityErrorCodes.UserStoreFindByEmail);
+            }
+
+            return null;
+        }
+
+        public async Task<bool> SetUserPasswordAsync(LdapUser user, string password, CancellationToken cancellationToken)
+        {
+            try
+            {
+                List<LdapModification> mods = user.GetModifications().ToList();
+                mods.Add(new LdapModification(LdapModification.REPLACE, new LdapAttribute(LdapProperties.UserPassword, password)));
+                return await this._connection.Mod(user.Dn, mods.ToArray(), cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                this._logger.LogError(ex, IdentityErrorCodes.SetUserPasswordAsync);
+                return false;
+            }
         }
 
         /// <inheritdoc />
@@ -85,7 +125,7 @@ namespace sh.vcp.identity.Stores
         {
             try
             {
-                return await this.Connection.SearchFirst<LdapUser>(this.Config.MemberDn,
+                return await this._connection.SearchFirst<LdapUser>(this._config.MemberDn,
                     $"{LdapProperties.CommonName}={userId}",
                     LdapProperties.Member,
                     LdapConnection.SCOPE_SUB,
@@ -110,7 +150,7 @@ namespace sh.vcp.identity.Stores
         {
             try
             {
-                return await this.Connection.SearchFirst<LdapUser>(this.Config.MemberDn,
+                return await this._connection.SearchFirst<LdapUser>(this._config.MemberDn,
                     $"{LdapProperties.Uid}={normalizedUserName}",
                     LdapProperties.Member,
                     LdapConnection.SCOPE_SUB,
@@ -139,32 +179,32 @@ namespace sh.vcp.identity.Stores
                 List<Claim> additionalClaims = new List<Claim>();
 
                 // load divisions
-                claims.AddRange((await this.Connection.Search<Division>(this.Config.GroupDn,
+                claims.AddRange((await this._connection.Search<Division>(this._config.GroupDn,
                         $"{LdapProperties.Member}={user.Id}",
                         LdapObjectTypes.Division, LdapConnection.SCOPE_SUB, Division.LoadProperties, cancellationToken))
                     .Select(div => new DivisionClaim(div)));
 
                 // load division lgs
-                List<string> divisionLgsGroups = this.Config.AuthorizationConfigurationSection.GetChildren().Select(
+                List<string> divisionLgsGroups = this._config.AuthorizationConfigurationSection.GetChildren().Select(
                     child =>
                     {
                         var subDn = child.GetSection("lgs").GetChildren().Select(section => section.Value).First();
                         
-                        return $"{subDn},{this.Config.GroupDn}";
+                        return $"{subDn},{this._config.GroupDn}";
                     }).ToList();
                 await divisionLgsGroups.ForEachAsync(async dn =>
                 {
-                    var group = await this.Connection.Read<VotedLdapGroup>(dn, cancellationToken);
+                    var group = await this._connection.Read<VotedLdapGroup>(dn, cancellationToken);
                     if (group.MemberIds.Contains(user.Id))
                     {
-                        var divisionId = dn.Replace($",{this.Config.GroupDn}", "");
+                        var divisionId = dn.Replace($",{this._config.GroupDn}", "");
                         divisionId = divisionId.Substring(divisionId.LastIndexOf(",")).Replace(",cn=", "");
                         claims.Add(new IsDivisionLgsClaim(divisionId));
                     }
                 });
 
                 // load tribes
-                claims.AddRange((await this.Connection.Search<Tribe>(this.Config.GroupDn,
+                claims.AddRange((await this._connection.Search<Tribe>(this._config.GroupDn,
                         $"{LdapProperties.Member}={user.Id}",
                         LdapObjectTypes.Tribe, LdapConnection.SCOPE_SUB, Tribe.LoadProperties, cancellationToken))
                     .Select(div => new TribeClaim(div)));

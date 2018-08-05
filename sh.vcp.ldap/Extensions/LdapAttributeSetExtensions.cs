@@ -42,6 +42,11 @@ namespace sh.vcp.ldap.Extensions
             return set;
         }
 
+        public static LdapAttributeSet AddOptional(this LdapAttributeSet set, string attributeName, bool attributeValue)
+        {
+            return set.AddOptional(attributeName, attributeValue.ToString());
+        }
+
         public static LdapAttributeSet AddOptional<TList>(this LdapAttributeSet set, string attributeName,
             TList attributeList) where TList : IEnumerable<string>, ICollection<string>
         {

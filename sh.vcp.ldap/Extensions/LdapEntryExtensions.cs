@@ -19,6 +19,11 @@ namespace sh.vcp.ldap.Extensions
             return int.Parse(entry.GetAttribute(attributeName));
         }
 
+        public static bool GetOptionalBoolAttribute(this LdapEntry entry, string attributeName)
+        {
+            return entry.GetOptionalAttribute(attributeName) == "TRUE";
+        }
+
         public static string GetOptionalAttribute(this LdapEntry entry, string attributeName)
         {
             return entry.getAttribute(attributeName)?.StringValue;

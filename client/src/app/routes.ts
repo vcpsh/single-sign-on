@@ -6,6 +6,7 @@ import {PageNotFoundComponent} from './components/page-not-found-component/page-
 import {ForgotComponent} from './components/forgot/forgot.component';
 import {RegisterComponent} from './components/register/register.component';
 import {AuthGuard} from './guards/auth-guard';
+import {ResetComponent} from './components/reset/reset.component';
 
 export const routes: Route[] = [
   { path: 'start', pathMatch: 'full', redirectTo: '/' },
@@ -13,6 +14,7 @@ export const routes: Route[] = [
   { path: 'logout', component: LogoutComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'forgot', component: ForgotComponent },
+  { path: 'reset', component: ResetComponent},
   { path: '', pathMatch: 'full', component: OverviewComponent, canActivate: [AuthGuard]},
-  { path: '**', component: PageNotFoundComponent }
+  { path: '**', component: PageNotFoundComponent },
 ];

@@ -19,7 +19,7 @@ namespace sh.vcp.identity.Extensions
             // identity services
             services.AddTransient<IUserStore<LdapUser>, LdapUserStore>();
             services.AddTransient<IRoleStore<LdapRole>, LdapRoleStore>();
-            services.AddTransient<IUserClaimStore<LdapUser>, LdapUserStore>();
+            services.AddTransient<ILdapUserStore<LdapUser>, LdapUserStore>();
             services.AddTransient<ILoginManager<LdapUser>, LdapLoginManager>();
             services.AddTransient<IProfileService, ProfileManager>();
         }

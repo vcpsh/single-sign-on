@@ -11,6 +11,7 @@
     <PackageReference Include="IdentityServer4" Version="2.2.0" />
     <PackageReference Include="IdentityServer4.AspNetIdentity" Version="2.1.0" />
     <PackageReference Include="IdentityServer4.EntityFramework" Version="2.1.1" />
+    <PackageReference Include="NETCore.MailKit" Version="2.0.2" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.2" />
   </ItemGroup>
@@ -54,5 +55,6 @@
     <_ContentIncludedByDefault Remove="Views\Account\LoggedOut.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Account\Login.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Account\Logout.cshtml" />
+    <_ContentIncludedByDefault Remove="Mails\Forgot.cshtml" />
   </ItemGroup>
 </Project>

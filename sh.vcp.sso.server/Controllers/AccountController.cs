@@ -1,5 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using IdentityModel;
@@ -8,13 +11,21 @@ using IdentityServer4.Extensions;
 using IdentityServer4.Models;
 using IdentityServer4.Quickstart.UI;
 using IdentityServer4.Services;
+using MailKit;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using sh.vcp.identity.Managers;
 using sh.vcp.identity.Model;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using NETCore.MailKit;
+using NETCore.MailKit.Core;
+using sh.vcp.identity.Stores;
 using sh.vcp.sso.server.Models;
+using sh.vcp.sso.server.Utilities;
 
 namespace sh.vcp.sso.server.Controllers
 {
@@ -22,16 +33,22 @@ namespace sh.vcp.sso.server.Controllers
     public class LoginController : Controller
     {
         private readonly IIdentityServerInteractionService _interaction;
-        private readonly IUserStore<LdapUser> _users;
+        private readonly ILdapUserStore<LdapUser> _users;
         private readonly IEventService _events;
         private readonly ILoginManager<LdapUser> _login;
+        private readonly IEmailService _mail;
+        private readonly IViewRenderService _viewRenderService;
+        private readonly SigningCredentials _signingCredentials;
 
-        public LoginController(IIdentityServerInteractionService interaction, IUserStore<LdapUser> users, IEventService events, ILoginManager<LdapUser> login)
+        public LoginController(IIdentityServerInteractionService interaction, ILdapUserStore<LdapUser> users, IEventService events, ILoginManager<LdapUser> login, IEmailService mail, IViewRenderService viewRenderService, SigningCredentials signingCredentials)
         {
             this._interaction = interaction;
             this._users = users;
             this._events = events;
             this._login = login;
+            this._mail = mail;
+            this._viewRenderService = viewRenderService;
+            this._signingCredentials = signingCredentials;
         }
 
         /// <summary>
@@ -69,7 +86,7 @@ namespace sh.vcp.sso.server.Controllers
             
             // validate username/password against in-memory store
             var user = await this._users.FindByNameAsync(model.Username, cancellationToken);
-            if (user != null)
+            if (user != null && user.EmailVerified)
             {
                     var validation = await this._login.Login(user, model.Password, cancellationToken);
                     if (validation)
@@ -139,10 +156,115 @@ namespace sh.vcp.sso.server.Controllers
             return this.Ok(new { ReturnUrl = "/"});
         }
 
+        /// <summary>
+        ///  Handle forgot page postback
+        /// </summary>
+        [HttpPost("forgot")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Forgot([FromBody] ForgotViewModel vm, CancellationToken cancellationToken)
+        {
+            var user = await this._users.FindByEmailAsync(vm.Email, cancellationToken);
+            if (user == null)
+            {
+                return this.BadRequest();
+            }
+
+            Claim[] claims = {
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
+                new Claim("reset_password", "yes"),
+                new Claim(JwtClaimTypes.Subject, user.Id),
+            };
+
+            var token = new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(
+                issuer: "https://account.vcp.sh",
+                claims: claims,
+                expires: DateTime.UtcNow.AddHours(1),
+                notBefore: DateTime.UtcNow,
+                signingCredentials: this._signingCredentials
+            ));
+            
+            var content = $@"
+<h3>Account zurücksetzen</h3>
+<p>Mit diesem <a href='https://account.vcp.sh/reset?token={token}'>Link</a> kannst du das Passwort für deinen VCP-SH-Account zurücksetzen.</p>
+<p>Aus Sicherheitsgründen ist der Link nur eine Stunde gültig.
+<br>
+<p>Falls du keinen Reset angefordert hast kannst du diese Email ignorieren.</p>
+<br>
+<p>Bei weiteren Fragen kannst du dich an die <a href='mailto:lgs@vcp.sh'>Landesgeschäftsstelle</a> wenden.</p>
+";
+            await this._mail.SendAsync(user.Email, "Passwort vergessen", content, true);
+            return this.Ok();
+        }
+
+        /// <summary>
+        /// Handle reset page postback
+        /// </summary>
+        [HttpPost("reset")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Reset([FromBody] ResetViewModel vm, CancellationToken cancellationToken)
+        {
+            try
+            {
+
+                var validationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = "https://account.vcp.sh",
+                    ValidateAudience = false,
+                    IssuerSigningKey = this._signingCredentials.Key,
+                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = true,
+                    ValidateLifetime = true,
+                    ValidateTokenReplay = true,
+                };
+                SecurityToken token;
+                JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+                var claims =
+                    new JwtSecurityTokenHandler().ValidateToken(vm.JwtTokenString, validationParameters, out token);
+
+                if (!claims.HasClaim("reset_password", "yes") || vm.Password != vm.ConfirmPassword)
+                {
+                    return this.BadRequest();
+                }
+                var user = await this._users.FindByIdAsync(claims.GetSubjectId(), cancellationToken);
+
+                if (await this._users.SetUserPasswordAsync(user, vm.Password, cancellationToken))
+                {
+                    return this.Ok();
+                }
+
+                return this.BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest();
+            }
+            return this.Ok();
+        }
+
         public class CancelViewModel
         {
             [Required]
             public string ReturnUrl { get; set; }
+        }
+        
+        public class ForgotViewModel
+        {
+            [Required]
+            public string Email { get; set; }
+        }
+
+        public class ResetViewModel
+        {
+            [Required]
+            [JsonProperty("token")]
+            public string JwtTokenString { get; set; }
+            
+            [Required]
+            public string Password { get; set; }
+            
+            [Required]
+            public string ConfirmPassword { get; set; }
         }
     }
 }

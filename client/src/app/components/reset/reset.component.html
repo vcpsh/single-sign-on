@@ -1,0 +1,35 @@
+<form [formGroup]="Form" *ngIf="TokenValid && !Success">
+  <mat-card-content>
+    <span class="mat-dialog-title">Passwort zurücksetzen</span>
+    <p>Gib nun ein neues Passwort an. Es muss mindestens 8 Zeichen lang sein, einen großen und einen kleinen Buchstaben sowie eine Zahl enthalten.</p>
+    <mat-form-field>
+      <input matInput placeholder="Passwort" name="password" type="password" formControlName="password" tabindex="1">
+      <mat-error *ngIf="Form.controls['password'].hasError('pattern')">Passwort zu schwach</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Passwort wiederholen" name="confirm password" type="password" formControlName="confirmPassword" tabindex="2">
+      <mat-error *ngIf="Form.controls['confirmPassword'].hasError('matchPassword')">Passwörter stimmen nicht überein</mat-error>
+    </mat-form-field>
+    <div class="actions">
+      <div class="spacer"></div>
+      <button mat-button color="primary" type="button" routerLink="/login" tabindex="4">Abbrechen</button>
+      <button mat-raised-button color="primary" (click)="onResetClick()" tabindex="3">Passwort zurücksetzen</button>
+    </div>
+  </mat-card-content>
+</form>
+<mat-card-content *ngIf="!TokenValid && !Success">
+  <span class="mat-dialog-title">Passwort zurücksetzen</span>
+  <p>Entweder ist der Link ungültig oder der Token abgelaufen. Du kannst <a class="mat-link" routerLink="/forgot">hier</a> einen neuen anfordern.</p>
+  <div class="actions">
+    <div class="spacer"></div>
+    <button mat-raised-button color="primary" routerLink="/forgot">Neuen Link anfordern</button>
+  </div>
+</mat-card-content>
+<mat-card-content *ngIf="Success">
+  <span class="mat-dialog-title">Passwort zurücksetzen</span>
+  <p>Dein Passwort wurde erfolgreich zurückgesetzt. Du kannst dich nun mit dem neuen Passwort <a routerLink="/login" class="mat-link">einloggen</a>.</p>
+  <div class="actions">
+    <div class="spacer"></div>
+    <button mat-raised-button color="primary" routerLink="/login">Zum Login</button>
+  </div>
+</mat-card-content>

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Threading.Tasks;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Entities;
@@ -19,10 +21,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using NETCore.MailKit.Extensions;
+using NETCore.MailKit.Infrastructure.Internal;
+using Org.BouncyCastle.Crypto.Macs;
 using sh.vcp.identity.Extensions;
 using sh.vcp.identity.Managers;
 using sh.vcp.identity.Model;
 using sh.vcp.ldap.Extensions;
+using sh.vcp.sso.server.Utilities;
 using ApiResource = IdentityServer4.EntityFramework.Entities.ApiResource;
 
 namespace sh.vcp.sso.server
@@ -45,35 +52,47 @@ namespace sh.vcp.sso.server
         {
             if (this._env.IsProduction())
             {
-                services.Configure<MvcOptions>(options =>
-                {
-                    options.Filters.Add(new RequireHttpsAttribute());
-                });
+                services.Configure<MvcOptions>(options => { options.Filters.Add(new RequireHttpsAttribute()); });
             }
-            
+
+            // configure jwt secret
+            services.AddSingleton(
+                new SigningCredentials(
+                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this._configuration.GetValue<string>("JwtSecret"))),
+                    SecurityAlgorithms.HmacSha256));
+
+            // configure smtp
+            services.AddMailKit(optionsBuilder =>
+            {
+                var options = new MailKitOptions();
+                this._configuration.GetSection("Mail").Bind(options);
+                optionsBuilder.UseMailKit(options);
+            });
+
+            // configure render service for html mails
+            services.AddScoped<IViewRenderService, ViewRenderService>();
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddAntiforgery(options =>
-            {
-                options.HeaderName = "X-XSRF-TOKEN";
-            });
+            services.AddAntiforgery(options => { options.HeaderName = "X-XSRF-TOKEN"; });
+
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
             services.AddVcpShLdap(this._configuration);
             services.AddVcpShIdentity();
 
             // TODO: don't use the devloper signing credential
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-            services.AddIdentityServer(o =>
+            var identityServerBuilder = services.AddIdentityServer(o =>
                 {
                     o.UserInteraction.LoginUrl = "/login";
                     o.UserInteraction.LogoutUrl = "/logout";
                 })
-                .AddDeveloperSigningCredential()
                 .AddAspNetIdentity<LdapUser>()
                 .AddConfigurationStore(options =>
                 {
@@ -94,6 +113,17 @@ namespace sh.vcp.sso.server
                     };
                 })
                 .AddProfileService<ProfileManager>();
+
+            if (this._env.IsDevelopment())
+            {
+                identityServerBuilder.AddDeveloperSigningCredential();
+            }
+            else
+            {
+                identityServerBuilder.AddSigningCredential(new X509Certificate2(
+                    Path.Combine(Directory.GetCurrentDirectory(),
+                        this._configuration.GetValue<string>("SigningCredential"))));
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -109,14 +139,17 @@ namespace sh.vcp.sso.server
             }
 
             app.UseIdentityServer();
-            app.Use(async(ctx, next) => {
+            app.Use(async (ctx, next) =>
+            {
                 await next();
                 if (ctx.Response.StatusCode == 404 || ctx.Request.Path == "/")
                 {
                     var antiforgery = app.ApplicationServices.GetService<IAntiforgery>();
                     var tokens = antiforgery.GetAndStoreTokens(ctx);
-                    ctx.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken, new CookieOptions() { HttpOnly = false, Path = "/"});
+                    ctx.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken,
+                        new CookieOptions() {HttpOnly = false, Path = "/"});
                 }
+
                 if (ctx.Response.StatusCode == 404)
                 {
                     ctx.Response.StatusCode = 200;

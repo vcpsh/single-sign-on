@@ -1,3 +1,20 @@
-<p>
-  forgot works!
-</p>
+<form [formGroup]="Form" *ngIf="!Success">
+  <mat-card-content>
+    <span class="mat-dialog-title">Passwort vergessen</span>
+    <p>Wenn du dein Passwort vergessen hast, kannst du hier einen Link zum zurücksetzen deines Passworts anfordern.</p>
+    <mat-form-field>
+      <input matInput placeholder="Email" name="email" type="email" formControlName="email" tabindex="1">
+      <mat-error *ngIf="Form.controls['email'].hasError('email')">Ungültige Email-Adresse</mat-error>
+      <mat-error *ngIf="Form.controls['email'].hasError('error')">{{ Form.controls['email'].getError('error')}}</mat-error>
+    </mat-form-field>
+    <div class="actions">
+      <div class="spacer"></div>
+      <button mat-button color="primary" type="button" routerLink="/login" tabindex="4">Abbrechen</button>
+      <button mat-raised-button color="primary" (click)="onResetClick()" tabindex="3">Link anfordern</button>
+    </div>
+  </mat-card-content>
+</form>
+<mat-card-content *ngIf="Success">
+  <span class="mat-dialog-title">Passwort vergessen</span>
+  <p>Ein Link zum zurücksetzen des Passworts wurde an deine Email verschickt.</p>
+</mat-card-content>

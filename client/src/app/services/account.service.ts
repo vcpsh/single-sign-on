@@ -45,4 +45,20 @@ export class AccountService {
         console.log(err);
       });
   }
+
+  public forgot(value: { email: string}): Promise<boolean> {
+    return this._http.post('api/account/forgot', value).toPromise()
+      .then(() => {
+        return true;
+      })
+      .catch(() => {
+        return false;
+      });
+  }
+
+  public reset(value: { token: string, password: string, confirmPassword: string}): Promise<boolean> {
+    return this._http.post('api/account/reset', value).toPromise()
+      .then(() => true)
+      .catch(() => false);
+  }
 }

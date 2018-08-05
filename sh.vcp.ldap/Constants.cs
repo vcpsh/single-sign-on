@@ -7,7 +7,8 @@
         public const string AccessionDate = "x-sh-vcp-accession-date";
         public const string AdminVerified = "x-sh-vcp-admin-verified";
         public const string DateOfBirth = "x-sh-vcp-date-of-birth";
-        public const string Email = "x-sh-vcp-email";
+        public const string Email = "email";
+        public const string OfficialMail = "x-sh-vcp-email";
         public const string EmailVerified = "x-sh-vcp-email-verified";
         public const string Gender = "x-sh-vcp-gender";
         public const string VcpId = "x-sh-vcp-id";
@@ -22,6 +23,7 @@
         public const string VoteStartEvent = "x-sh-vcp-vote-start-event";
         public const string VoteEndDate = "x-sh-vcp-vote-end-date";
         public const string VoteEndEvent = "x-sh-vcp-vote-end-event";
+        public const string UserPassword = "userPassword";
     }
     
     public static class LdapObjectTypes
