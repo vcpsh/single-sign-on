@@ -9,3 +9,4 @@ angular/dist
 node_modules
 obj
 sh.vcp.sso.server/wwwroot
+*.iws
