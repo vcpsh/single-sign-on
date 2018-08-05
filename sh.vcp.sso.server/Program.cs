@@ -17,16 +17,19 @@ namespace sh.vcp.sso.server
             Program.CreateWebHostBuilder(args).Build().Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        private static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();
 
+            var webRoot = Path.Combine(Directory.GetCurrentDirectory(), config.GetValue<string>("WebRootFolder"));
+
             return WebHost.CreateDefaultBuilder(args)
                 .UseConfiguration(config)
                 .UseKestrel()
+                .UseWebRoot(webRoot)
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>();
         }

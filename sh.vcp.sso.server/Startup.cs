@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using sh.vcp.identity.Extensions;
 using sh.vcp.identity.Managers;
@@ -125,12 +126,6 @@ namespace sh.vcp.sso.server
             });
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            
-                ;            // app.Run( async (context) =>
-            // {
-            //     context.Response.ContentType = "text/html";
-            //     await context.Response.SendFileAsync(Path.Combine(this._env.WebRootPath,"index.html"));
-            // });
             app.UseMvcWithDefaultRoute();
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
