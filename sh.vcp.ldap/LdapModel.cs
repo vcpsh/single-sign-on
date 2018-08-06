@@ -90,8 +90,8 @@ namespace sh.vcp.ldap
         /// <returns></returns>
         public virtual LdapAttributeSet GetAttributeSet(LdapAttributeSet set = null)
         {
-            set = new LdapAttributeSet()
-                .Add(LdapProperties.ObjectClass, this.ObjectClass ?? this.DefaultObjectClass)
+            set = set ?? new LdapAttributeSet();
+            set.Add(LdapProperties.ObjectClass, this.ObjectClass ?? this.DefaultObjectClass)
                 .Add(LdapProperties.CommonName, this.Id);
 
             foreach (KeyValuePair<PropertyInfo, LdapAttr> kvp in this.Properties)

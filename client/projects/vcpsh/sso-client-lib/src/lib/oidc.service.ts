@@ -66,8 +66,8 @@ export class OidcService implements CanActivate {
     });
   }
 
-  public login(): void {
-    this._manager.signinRedirect();
+  public login(): Promise<any> {
+    return this._manager.signinRedirect();
   }
 
   public logout(): void {
