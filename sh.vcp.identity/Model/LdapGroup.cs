@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection;
 using Newtonsoft.Json;
 using Novell.Directory.Ldap;
+using sh.vcp.identity.Model;
 using sh.vcp.identity.Utils;
 using sh.vcp.ldap;
 using sh.vcp.ldap.Extensions;
@@ -11,7 +13,9 @@ namespace sh.vcp.identity.Models
 {
     public class LdapGroup : LdapModel
     {
-        protected override string __defaultObjectClass => LdapObjectTypes.Group;
+        private static readonly Dictionary<PropertyInfo, LdapAttr> Props = LdapAttrHelper.GetLdapAttrs(typeof(LdapGroup));
+        protected override Dictionary<PropertyInfo, LdapAttr> Properties => LdapGroup.Props;
+        protected override string DefaultObjectClass => LdapObjectTypes.Group;
 
         public new static readonly string[] LoadProperties = new[]
         {
@@ -24,12 +28,14 @@ namespace sh.vcp.identity.Models
         /// </summary>
         [JsonProperty("DisplayName")]
         [Required]
+        [LdapAttr(LdapProperties.DisplayName, true)]
         public string DisplayName { get; set; }
 
         /// <summary>
         /// Ids of the members in the group.
         /// </summary>
         [JsonProperty("MemberIds")]
+        [LdapAttr(LdapProperties.Member, typeof(List<string>), true)]
         public List<string> MemberIds { get; set; }
 
         [JsonProperty("DivisionId")]
@@ -53,8 +59,10 @@ namespace sh.vcp.identity.Models
         public override void ProvideEntry(LdapEntry entry)
         {
             base.ProvideEntry(entry);
-            this.DisplayName = entry.GetOptionalAttribute(LdapProperties.DisplayName) ?? this.Id;
-            this.MemberIds = entry.GetOptionalListAttribute(LdapProperties.Member);
+            if (this.DisplayName == null)
+            {
+                this.DisplayName = this.Id;
+            }
             this.DivisionId = this.GetDivisionName();
             switch (this.ObjectClass)
             {
@@ -85,17 +93,10 @@ namespace sh.vcp.identity.Models
             }
         }
 
-        public override LdapAttributeSet GetAttributeSet(LdapAttributeSet set = null)
-        {
-            return base.GetAttributeSet(set)
-                .AddOptional(LdapProperties.DisplayName, this.DisplayName)
-                .AddOptional(LdapProperties.Member, this.MemberIds);
-        }
-
         protected override List<LdapModification> GetModifcationsList(List<LdapModification> list = null)
         {
             List<LdapModification> mods = base.GetModifcationsList(list);
-            List<string> oldMemberIds = this._entry.GetOptionalListAttribute(LdapProperties.Member);
+            List<string> oldMemberIds = this.Entry.GetOptionalListAttribute(LdapProperties.Member);
             var intersectCount = oldMemberIds.Intersect(this.MemberIds).Count();
             if (intersectCount != oldMemberIds.Count || intersectCount != this.MemberIds.Count)
             {

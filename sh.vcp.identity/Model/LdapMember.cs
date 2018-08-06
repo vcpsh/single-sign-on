@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using Newtonsoft.Json;
 using Novell.Directory.Ldap;
 using sh.vcp.ldap;
@@ -10,7 +12,9 @@ namespace sh.vcp.identity.Model
 {
     public class LdapMember : LdapUser
     {
-        protected override string __defaultObjectClass => LdapObjectTypes.Member;
+        private static readonly Dictionary<PropertyInfo, LdapAttr> Props = LdapAttrHelper.GetLdapAttrs(typeof(LdapMember));
+        protected override Dictionary<PropertyInfo, LdapAttr> Properties => LdapMember.Props;
+        protected override string DefaultObjectClass => LdapObjectTypes.Member;
 
         public new static readonly string[] LoadProperties = new string[]
         {
@@ -21,34 +25,24 @@ namespace sh.vcp.identity.Model
             LdapProperties.Gender,
         }.Concat(LdapModel.LoadProperties).ToArray();
 
-        [JsonProperty("FirstName")] public string FirstName { get; set; }
+        [JsonProperty("FirstName")]
+        [LdapAttr(LdapProperties.FirstName)]
+        public string FirstName { get; set; }
 
-        [JsonProperty("LastName")] public string LastName { get; set; }
+        [JsonProperty("LastName")]
+        [LdapAttr(LdapProperties.LastName)]
+        public string LastName { get; set; }
 
-        [JsonProperty("DateOfBirth")] public DateTime DateOfBirth { get; set; }
-        
-        [JsonProperty("AccessionDate")] public DateTime AccessionDate { get; set; }
-        
-        [JsonProperty("Gender")] public string Gender { get; set; }
+        [JsonProperty("DateOfBirth")]
+        [LdapAttr(LdapProperties.DateOfBirth, typeof(DateTime))]
+        public DateTime DateOfBirth { get; set; }
 
-        public override void ProvideEntry(LdapEntry entry)
-        {
-            base.ProvideEntry(entry);
-            this.FirstName = entry.GetAttribute(LdapProperties.FirstName);
-            this.LastName = entry.GetAttribute(LdapProperties.LastName);
-            this.DateOfBirth = DateTime.ParseExact(entry.GetAttribute(LdapProperties.DateOfBirth), LdapConstants.DateFormat, CultureInfo.InvariantCulture);
-            this.AccessionDate = DateTime.ParseExact(entry.GetAttribute(LdapProperties.AccessionDate), LdapConstants.DateFormat, CultureInfo.InvariantCulture);
-            this.Gender = entry.GetAttribute(LdapProperties.Gender);
-        }
+        [JsonProperty("AccessionDate")]
+        [LdapAttr(LdapProperties.AccessionDate, typeof(DateTime))]
+        public DateTime AccessionDate { get; set; }
 
-        public override LdapAttributeSet GetAttributeSet(LdapAttributeSet set = null)
-        {
-            return base.GetAttributeSet(set)
-                .Add(LdapProperties.FirstName, this.FirstName)
-                .Add(LdapProperties.LastName, this.LastName)
-                .Add(LdapProperties.DateOfBirth, this.DateOfBirth.ToString(LdapConstants.DateFormat))
-                .Add(LdapProperties.AccessionDate, this.AccessionDate.ToString(LdapConstants.DateFormat))
-                .Add(LdapProperties.Gender, this.Gender);
-        }
+        [JsonProperty("Gender")]
+        [LdapAttr(LdapProperties.Gender)]
+        public string Gender { get; set; }
     }
 }

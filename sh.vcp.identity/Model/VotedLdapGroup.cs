@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -14,7 +15,9 @@ namespace sh.vcp.identity.Models
 {
     public class VotedLdapGroup : LdapGroup, ILdapModelWithChildren
     {
-        protected override string __defaultObjectClass => LdapObjectTypes.VotedGroup;
+        private static readonly Dictionary<PropertyInfo, LdapAttr> Props = LdapAttrHelper.GetLdapAttrs(typeof(VotedLdapGroup));
+        protected override Dictionary<PropertyInfo, LdapAttr> Properties => VotedLdapGroup.Props;
+        protected override string DefaultObjectClass => LdapObjectTypes.VotedGroup;
         [JsonProperty("ActiveVoteEntries")]
         public ICollection<VoteEntry> ActiveVoteEntries { get; set; } = new List<VoteEntry>();
         
@@ -47,11 +50,6 @@ namespace sh.vcp.identity.Models
         public ICollection<LdapModel> GetChildren()
         {
             return (ICollection<LdapModel>)this.ActiveVoteEntries.Concat(this.InactiveVoteEntries);
-        }
-
-        public override void ProvideEntry(LdapEntry entry)
-        {
-            base.ProvideEntry(entry);
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Reflection;
 using Newtonsoft.Json;
 using Novell.Directory.Ldap;
 using sh.vcp.ldap;
@@ -9,7 +11,9 @@ namespace sh.vcp.identity.Model
 {
     public class VoteEntry: LdapModel
     {
-        protected override string __defaultObjectClass => LdapObjectTypes.VotedEntry;
+        private static readonly Dictionary<PropertyInfo, LdapAttr> Props = LdapAttrHelper.GetLdapAttrs(typeof(VoteEntry));
+        protected override Dictionary<PropertyInfo, LdapAttr> Properties => VoteEntry.Props;
+        protected override string DefaultObjectClass => LdapObjectTypes.VotedEntry;
         public new static readonly string[] LoadProperties = new[]
         {
             LdapProperties.Active,
@@ -20,33 +24,23 @@ namespace sh.vcp.identity.Model
         };
 
         [JsonProperty("Active")]
+        [LdapAttr(LdapProperties.Active, typeof(bool))]
         public bool Active { get; set; }
         
         [JsonProperty("VoteStartDate")]
+        [LdapAttr(LdapProperties.VoteStartDate, typeof(DateTime))]
         public DateTime VoteStartDate { get; set; }
         
         [JsonProperty("VoteEndDate")]
-        public DateTime VoteEndDate { get; set; }
+        [LdapAttr(LdapProperties.VoteEndDate, typeof(DateTime), true)]
+        public DateTime? VoteEndDate { get; set; }
         
         [JsonProperty("VoteStartEvent")]
+        [LdapAttr(LdapProperties.VoteStartEvent)]
         public string VoteStartEvent { get; set; }
         
         [JsonProperty("VoteEndEvent")]
+        [LdapAttr(LdapProperties.VoteEndEvent, true)]
         public string VoteEndEvent { get; set; }
-
-        public override void ProvideEntry(LdapEntry entry)
-        {
-            base.ProvideEntry(entry);
-            this.Active = entry.GetAttribute(LdapProperties.Active) == "1";
-            this.VoteStartDate = DateTime.ParseExact(entry.GetAttribute(LdapProperties.VoteStartDate), LdapConstants.DateFormat, CultureInfo.InvariantCulture);
-            var voteEndDate = entry.GetOptionalAttribute(LdapProperties.VoteEndDate);
-            if (voteEndDate != null)
-            {
-                this.VoteEndDate = DateTime.ParseExact(voteEndDate, LdapConstants.DateFormat, CultureInfo.InvariantCulture);
-            }
-            this.VoteStartEvent = entry.GetAttribute(LdapProperties.VoteStartEvent);
-            this.VoteEndEvent = entry.GetOptionalAttribute(LdapProperties.VoteEndEvent);
-
-        }
     }
 }

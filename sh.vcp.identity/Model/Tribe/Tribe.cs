@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -13,7 +14,9 @@ namespace sh.vcp.identity.Model.Tribe
 {
     public class Tribe: LdapGroup, ILdapModelWithChildren
     {
-        protected override string __defaultObjectClass => LdapObjectTypes.Tribe;
+        private static readonly Dictionary<PropertyInfo, LdapAttr> Props = LdapAttrHelper.GetLdapAttrs(typeof(Tribe));
+        protected override Dictionary<PropertyInfo, LdapAttr> Properties => Tribe.Props;
+        protected override string DefaultObjectClass => LdapObjectTypes.Tribe;
         
         public new static readonly string[] LoadProperties = new string[]
         {
@@ -30,6 +33,7 @@ namespace sh.vcp.identity.Model.Tribe
         public TribeLv Lv { get; set; }
         
         [JsonProperty("TribeId")]
+        [LdapAttr(LdapProperties.DepartmentId, typeof(int))]
         public int DepartmentId { get; set; }
         
         public async Task LoadChildren(ILdapConnection connection, CancellationToken cancellationToken = default)
@@ -46,18 +50,6 @@ namespace sh.vcp.identity.Model.Tribe
             {
                 this.Gs, this.Lr, this.Lv, this.Sl
             };
-        }
-
-        public override void ProvideEntry(LdapEntry entry)
-        {
-            base.ProvideEntry(entry);
-            this.DepartmentId = entry.GetAttributeInt(LdapProperties.DepartmentId);
-        }
-
-        public override LdapAttributeSet GetAttributeSet(LdapAttributeSet set = null)
-        {
-            return base.GetAttributeSet(set)
-                .Add(LdapProperties.DepartmentId, this.DepartmentId);
         }
     }
 }
