@@ -1,4 +1,4 @@
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {OidcService} from '@vcpsh/sso-client-lib';
@@ -58,6 +58,20 @@ export class AccountService {
 
   public reset(value: { token: string, password: string, confirmPassword: string}): Promise<boolean> {
     return this._http.post('api/account/reset', value).toPromise()
+      .then(() => true)
+      .catch(() => false);
+  }
+
+  public register(value: { id: number, username: string, password: string, confirmPassword: string, email: string}): Promise<boolean | string> {
+    return this._http.post('api/account/register', value).toPromise()
+      .then(() => true)
+      .catch((err: HttpErrorResponse) => {
+        return err.error;
+      });
+  }
+
+  public confirm(token: string): Promise<boolean> {
+    return this._http.post('api/account/confirm', { token }).toPromise()
       .then(() => true)
       .catch(() => false);
   }

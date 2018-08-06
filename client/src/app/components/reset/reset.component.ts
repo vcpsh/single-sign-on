@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 import {BaseComponent} from '@vcpsh/sso-client-lib';
 import {AccountService} from '../../services/account.service';
+import {Jwt} from '../../util/jwt';
 import {PasswordValidator} from '../../util/password-validator';
 
 @Component({
@@ -31,11 +32,8 @@ export class ResetComponent extends BaseComponent {
 
     this.addSub(route.queryParams.subscribe(params => {
       if (params.token) {
-        const base64Url = params.token.split('.')[1];
-        const base64 = base64Url.replace('-', '+').replace('_', '/');
-        const token = JSON.parse(window.atob(base64));
-        const utcNow = new Date().getTime();
-        if (utcNow > token.exp) {
+        const token = Jwt.parse(params.token);
+        if (token === 'expired') {
           this.Form.controls['token'].setValue(params.token);
           this.TokenValid = true;
         }

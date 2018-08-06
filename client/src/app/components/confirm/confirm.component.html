@@ -1,0 +1,20 @@
+<mat-card-content *ngIf="!Success && !Error">
+  <span class="mat-dialog-title">Accountaktivierung</span>
+  <mat-spinner class="spinner"></mat-spinner>
+</mat-card-content>
+<mat-card-content *ngIf="Success">
+  <span class="mat-dialog-title">Accountaktivierung</span>
+  <p>Dein Account wurde erfolgreich aktiviert. Du kannst dich nun <a routerLink="/login" class="mat-link">einloggen</a>.</p>
+  <div class="actions">
+    <div class="spacer"></div>
+    <button mat-raised-button color="primary" routerLink="/login">Zum Login</button>
+  </div>
+</mat-card-content>
+<mat-card-content *ngIf="Error">
+  <span class="mat-dialog-title">Accountaktivierung</span>
+  <p>Entweder ist der Link ungültig oder der Token abgelaufen. Du kannst <a class="mat-link" routerLink="/register">hier</a> eine erneute Registrierung durchführen.</p>
+  <div class="actions">
+    <div class="spacer"></div>
+    <button mat-raised-button color="primary" routerLink="/register">Neue Registrierung</button>
+  </div>
+</mat-card-content>

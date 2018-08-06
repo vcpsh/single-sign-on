@@ -1,6 +1,13 @@
 import {HttpClientModule, HttpClientXsrfModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatButtonModule, MatCardModule, MatCheckboxModule, MatFormFieldModule, MatInputModule} from '@angular/material';
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatCheckboxModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatProgressSpinnerModule,
+} from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {RouterModule} from '@angular/router';
@@ -19,6 +26,7 @@ import { OverviewComponent } from './components/overview/overview.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import {AccountService} from './services/account.service';
 import { ResetComponent } from './components/reset/reset.component';
+import { ConfirmComponent } from './components/confirm/confirm.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +37,8 @@ import { ResetComponent } from './components/reset/reset.component';
     ForgotComponent,
     OverviewComponent,
     LogoutComponent,
-    ResetComponent
+    ResetComponent,
+    ConfirmComponent
   ],
   imports: [
     BrowserModule,
@@ -62,6 +71,7 @@ import { ResetComponent } from './components/reset/reset.component';
     MatCheckboxModule,
     MatFormFieldModule,
     MatInputModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
     AccountService,

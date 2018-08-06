@@ -59,13 +59,17 @@ namespace sh.vcp.identity.Stores
             return null;
         }
 
-        public async Task<bool> SetUserPasswordAsync(LdapUser user, string password, CancellationToken cancellationToken)
+        public async Task<bool> SetUserPasswordAsync(LdapUser user, string password,
+            CancellationToken cancellationToken)
         {
             try
             {
-                List<LdapModification> mods = user.GetModifications().ToList();
-                mods.Add(new LdapModification(LdapModification.REPLACE, new LdapAttribute(LdapProperties.UserPassword, password)));
-                return await this._connection.Mod(user.Dn, mods.ToArray(), cancellationToken);
+                return await this._connection.Mod(user.Dn,
+                    new[]
+                    {
+                        new LdapModification(LdapModification.REPLACE,
+                            new LdapAttribute(LdapProperties.UserPassword, password))
+                    }, cancellationToken);
             }
             catch (Exception ex)
             {
@@ -106,9 +110,10 @@ namespace sh.vcp.identity.Stores
             throw new NotImplementedException();
         }
 
-        public Task<IdentityResult> CreateAsync(LdapUser user, CancellationToken cancellationToken)
+        public async Task<IdentityResult> CreateAsync(LdapUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var res = await this._connection.Mod(user, cancellationToken);
+            return res ? IdentityResult.Success : IdentityResult.Failed();
         }
 
         public Task<IdentityResult> UpdateAsync(LdapUser user, CancellationToken cancellationToken)
@@ -189,7 +194,7 @@ namespace sh.vcp.identity.Stores
                     child =>
                     {
                         var subDn = child.GetSection("lgs").GetChildren().Select(section => section.Value).First();
-                        
+
                         return $"{subDn},{this._config.GroupDn}";
                     }).ToList();
                 await divisionLgsGroups.ForEachAsync(async dn =>

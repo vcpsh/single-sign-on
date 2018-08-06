@@ -1,4 +1,5 @@
 import {Route} from '@angular/router';
+import {ConfirmComponent} from './components/confirm/confirm.component';
 import {LoginComponent} from './components/login/login.component';
 import {LogoutComponent} from './components/logout/logout.component';
 import {OverviewComponent} from './components/overview/overview.component';
@@ -13,6 +14,7 @@ export const routes: Route[] = [
   { path: 'login', component: LoginComponent },
   { path: 'logout', component: LogoutComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'confirm', component: ConfirmComponent },
   { path: 'forgot', component: ForgotComponent },
   { path: 'reset', component: ResetComponent},
   { path: '', pathMatch: 'full', component: OverviewComponent, canActivate: [AuthGuard]},

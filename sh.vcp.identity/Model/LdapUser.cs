@@ -41,5 +41,35 @@ namespace sh.vcp.identity.Model
                 .AddOptional(LdapProperties.Email, this.Email)
                 .AddOptional(LdapProperties.EmailVerified, this.EmailVerified);
         }
+
+        protected override List<LdapModification> GetModifcationsList(List<LdapModification> list = null)
+        {
+            List<LdapModification> mods = base.GetModifcationsList(list);
+            var previousEmail = this._entry.GetOptionalAttribute(LdapProperties.Email);
+            if (previousEmail == null)
+            {
+                mods.Add(new LdapModification(LdapModification.ADD, new LdapAttribute(LdapProperties.Email, this.Email)));
+            } else if (previousEmail != this.Email)
+            {
+                mods.Add(new LdapModification(LdapModification.REPLACE, new LdapAttribute(LdapProperties.Email, this.Email)));
+            }
+
+            if (this._entry.getAttribute(LdapProperties.EmailVerified) == null)
+            {
+                mods.Add(new LdapModification(LdapModification.ADD, new LdapAttribute(LdapProperties.EmailVerified, this.EmailVerified ? "TRUE" : "FALSE")));
+            } else if (this._entry.GetOptionalBoolAttribute(LdapProperties.EmailVerified) != this.EmailVerified)
+            {
+                mods.Add(new LdapModification(LdapModification.REPLACE, new LdapAttribute(LdapProperties.EmailVerified, this.EmailVerified ? "TRUE" : "FALSE")));
+            }
+
+            if (this._entry.GetOptionalAttribute(LdapProperties.Uid) == null)
+            {
+                mods.Add(new LdapModification(LdapModification.ADD, new LdapAttribute(LdapProperties.Uid, this.UserName)));
+            } else if (this._entry.GetOptionalAttribute(LdapProperties.Uid) != this.UserName)
+            {
+                mods.Add(new LdapModification(LdapModification.REPLACE, new LdapAttribute(LdapProperties.Uid, this.UserName)));
+            }
+            return mods;
+        }
     }
 }

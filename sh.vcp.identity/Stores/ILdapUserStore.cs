@@ -15,11 +15,11 @@ namespace sh.vcp.identity.Stores
         /// <returns>
         /// The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous operation, containing the user matching the specified <paramref name="email" /> if it exists.
         /// </returns>
-        Task<TUser> FindByEmailAsync(string email, CancellationToken cancellationToken);
+        Task<TUser> FindByEmailAsync(string email, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Sets the new userPassword
         /// </summary>
-        Task<bool> SetUserPasswordAsync(TUser user, string password, CancellationToken cancellationToken);
+        Task<bool> SetUserPasswordAsync(TUser user, string password, CancellationToken cancellationToken = default);
     }
 }
