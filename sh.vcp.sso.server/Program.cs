@@ -28,6 +28,7 @@ namespace sh.vcp.sso.server
 
             return WebHost.CreateDefaultBuilder(args)
                 .UseConfiguration(config)
+                
                 .UseKestrel()
                 .UseWebRoot(webRoot)
                 .UseContentRoot(Directory.GetCurrentDirectory())
