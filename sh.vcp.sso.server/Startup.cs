@@ -96,6 +96,7 @@ namespace sh.vcp.sso.server
 
                     var publicOrigin = this._configuration.GetValue<string>("PublicOrigin", null);
                     o.PublicOrigin = publicOrigin ?? "https://account.vcp.sh";
+                    o.IssuerUri = publicOrigin ?? "https://account.vcp.sh";
                 })
                 .AddAspNetIdentity<LdapUser>()
                 .AddConfigurationStore(options =>
