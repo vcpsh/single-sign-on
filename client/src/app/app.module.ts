@@ -48,14 +48,14 @@ import { ConfirmComponent } from './components/confirm/confirm.component';
       {
     }),
     SsoClientLibModule.forRoot({
-      authority: environment.authority,
+      authority: 'https://account.vcp.sh',
       client_id: 'sh.vcp.sso-client@1.0.0',
-      redirect_uri: environment.redirect_uri,
+      redirect_uri: `${document.location.origin}/signin`,
       response_type: 'id_token token',
       scope: 'openid profile sh.vcp.sso@1.0.0',
       automaticSilentRenew: true,
-      post_logout_redirect_uri: environment.post_logout_redirect_uri,
-      silent_redirect_uri: environment.silent_redirect_uri,
+      post_logout_redirect_uri: document.location.origin,
+      silent_redirect_uri: `${document.location.origin}/silent-renew.html`,
       loadUserInfo: true,
       debug: true,
     }),
