@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using IdentityServer4.Configuration;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Entities;
 using IdentityServer4.EntityFramework.Mappers;
@@ -92,6 +93,9 @@ namespace sh.vcp.sso.server
                 {
                     o.UserInteraction.LoginUrl = "/login";
                     o.UserInteraction.LogoutUrl = "/logout";
+
+                    var publicOrigin = this._configuration.GetValue<string>("PublicOrigin", null);
+                    o.PublicOrigin = publicOrigin ?? "https://account.vcp.sh";
                 })
                 .AddAspNetIdentity<LdapUser>()
                 .AddConfigurationStore(options =>
