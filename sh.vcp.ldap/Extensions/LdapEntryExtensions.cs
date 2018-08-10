@@ -56,7 +56,7 @@ namespace sh.vcp.ldap.Extensions
                 throw new LdapMandatoryAttributeMissingException(attr.LdapName, entry.DN);
             }
 
-            return list;
+            return list ?? new List<string>();
         }
 
         [Obsolete]
