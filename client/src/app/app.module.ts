@@ -48,7 +48,7 @@ import { ConfirmComponent } from './components/confirm/confirm.component';
       {
     }),
     SsoClientLibModule.forRoot({
-      authority: 'https://account.vcp.sh',
+      authority: environment.authority,
       client_id: 'sh.vcp.sso-client@1.0.0',
       redirect_uri: document.location.origin + '/signin',
       response_type: 'id_token token',
