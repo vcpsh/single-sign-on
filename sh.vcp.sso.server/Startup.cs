@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
@@ -54,6 +55,11 @@ namespace sh.vcp.sso.server
             if (this._env.IsProduction())
             {
                 services.Configure<MvcOptions>(options => { options.Filters.Add(new RequireHttpsAttribute()); });
+                services.Configure<ForwardedHeadersOptions>(options =>
+                    {
+                        options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                        options.RequireHeaderSymmetry = false;
+                    });
             }
 
             // configure jwt secret
@@ -93,10 +99,6 @@ namespace sh.vcp.sso.server
                 {
                     o.UserInteraction.LoginUrl = "/login";
                     o.UserInteraction.LogoutUrl = "/logout";
-
-                    var publicOrigin = this._configuration.GetValue<string>("PublicOrigin", null);
-                    o.PublicOrigin = publicOrigin ?? "https://account.vcp.sh";
-                    o.IssuerUri = publicOrigin ?? "https://account.vcp.sh";
                 })
                 .AddAspNetIdentity<LdapUser>()
                 .AddConfigurationStore(options =>
@@ -140,6 +142,7 @@ namespace sh.vcp.sso.server
             }
             else
             {
+                app.UseForwardedHeaders();
                 app.UseHsts();
             }
 
