@@ -55,11 +55,16 @@ namespace sh.vcp.sso.server
             if (this._env.IsProduction())
             {
                 services.Configure<MvcOptions>(options => { options.Filters.Add(new RequireHttpsAttribute()); });
+            }
+            
+            // configure proxy stuff
+            if (this._configuration.GetValue("Proxy", false))
+            {
                 services.Configure<ForwardedHeadersOptions>(options =>
-                    {
-                        options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-                        options.RequireHeaderSymmetry = false;
-                    });
+                {
+                    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                    options.RequireHeaderSymmetry = false;
+                });
             }
 
             // configure jwt secret
@@ -142,10 +147,14 @@ namespace sh.vcp.sso.server
             }
             else
             {
-                app.UseForwardedHeaders();
                 app.UseHsts();
             }
 
+            if (this._configuration.GetValue("Proxy", false))
+            {
+                app.UseForwardedHeaders();
+            }
+            
             app.UseIdentityServer();
             app.Use(async (ctx, next) =>
             {
