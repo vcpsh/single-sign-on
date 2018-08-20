@@ -7,7 +7,7 @@ import {
 } from '@angular/router';
 import { UserManager } from 'oidc-client';
 import { Observable } from 'rxjs';
-import {SsoConfig} from './config.model';
+import {InternalSsoConfig, SsoConfig} from './config.model';
 import { UserModel } from './user.model';
 import { SsoConfigToken } from './config';
 import * as Oidc from 'oidc-client';
@@ -16,6 +16,7 @@ import * as Oidc from 'oidc-client';
     providedIn: 'root'
 })
 export class OidcService implements CanActivate {
+  private _settings: InternalSsoConfig;
   private _manager: UserManager;
   private _userChanged: ((user: UserModel | null) => void)[] = [];
   private _lastUserJson = '';
@@ -31,12 +32,23 @@ export class OidcService implements CanActivate {
 
   constructor(
     private _router: Router,
-    @Inject(SsoConfigToken) private _settings: SsoConfig,
+    @Inject(SsoConfigToken) settings: SsoConfig,
   ) {
     if (this._settings.debug === true) {
       Oidc.Log.logger = console;
     }
-    this._manager = new UserManager(_settings);
+    // convert config factory functions to strings
+    if (typeof settings.redirect_uri !== 'string') {
+      settings.redirect_uri = settings.redirect_uri();
+    }
+    if (typeof settings.post_logout_redirect_uri !== 'string') {
+      settings.post_logout_redirect_uri = settings.post_logout_redirect_uri();
+    }
+    if (settings.silent_redirect_uri && typeof settings.silent_redirect_uri !== 'string') {
+      settings.silent_redirect_uri = settings.silent_redirect_uri();
+    }
+    this._settings = settings as InternalSsoConfig; // TODO: This cast is very dangerous build a better workaround.
+    this._manager = new UserManager(this._settings);
     this._manager.events.addSilentRenewError(ev => this.silentRenewError(ev));
     this._manager.events.addUserLoaded(ev => this.userLoaded(ev));
     this._manager.events.addUserUnloaded(ev => this.userUnloaded(ev));
