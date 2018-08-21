@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
@@ -11,16 +10,17 @@ namespace sh.vcp.identity.Model
 {
     public class LdapUser : LdapModel
     {
-        private static readonly Dictionary<PropertyInfo, LdapAttr> Props = LdapAttrHelper.GetLdapAttrs(typeof(LdapUser));
-        protected override Dictionary<PropertyInfo, LdapAttr> Properties => LdapUser.Props;
-        protected override string DefaultObjectClass => LdapObjectTypes.User;
+        private static readonly Dictionary<PropertyInfo, LdapAttr>
+            Props = LdapAttrHelper.GetLdapAttrs(typeof(LdapUser));
 
-        public new static readonly string[] LoadProperties = new string[]
-        {
+        public new static readonly string[] LoadProperties = new[] {
             LdapProperties.Uid,
             LdapProperties.Email,
-            LdapProperties.EmailVerified,
+            LdapProperties.EmailVerified
         }.Concat(LdapModel.LoadProperties).ToArray();
+
+        protected override Dictionary<PropertyInfo, LdapAttr> Properties => LdapUser.Props;
+        protected override string DefaultObjectClass => LdapObjectTypes.User;
 
         [JsonProperty("Username")]
         [LdapAttr(LdapProperties.Uid, true)]
@@ -34,42 +34,29 @@ namespace sh.vcp.identity.Model
         [LdapAttr(LdapProperties.EmailVerified, typeof(bool), true)]
         public bool EmailVerified { get; set; }
 
-        protected override List<LdapModification> GetModifcationsList(List<LdapModification> list = null)
-        {
+        protected override List<LdapModification> GetModifcationsList(List<LdapModification> list = null) {
             List<LdapModification> mods = base.GetModifcationsList(list);
             var previousEmail = this.Entry.GetOptionalAttribute(LdapProperties.Email);
             if (previousEmail == null)
-            {
                 mods.Add(
                     new LdapModification(LdapModification.ADD, new LdapAttribute(LdapProperties.Email, this.Email)));
-            }
             else if (previousEmail != this.Email)
-            {
                 mods.Add(new LdapModification(LdapModification.REPLACE,
                     new LdapAttribute(LdapProperties.Email, this.Email)));
-            }
 
             if (this.Entry.getAttribute(LdapProperties.EmailVerified) == null)
-            {
                 mods.Add(new LdapModification(LdapModification.ADD,
                     new LdapAttribute(LdapProperties.EmailVerified, this.EmailVerified ? "TRUE" : "FALSE")));
-            }
             else if (this.Entry.GetOptionalBoolAttribute(LdapProperties.EmailVerified) != this.EmailVerified)
-            {
                 mods.Add(new LdapModification(LdapModification.REPLACE,
                     new LdapAttribute(LdapProperties.EmailVerified, this.EmailVerified ? "TRUE" : "FALSE")));
-            }
 
             if (this.Entry.GetOptionalAttribute(LdapProperties.Uid) == null)
-            {
                 mods.Add(new LdapModification(LdapModification.ADD,
                     new LdapAttribute(LdapProperties.Uid, this.UserName)));
-            }
             else if (this.Entry.GetOptionalAttribute(LdapProperties.Uid) != this.UserName)
-            {
                 mods.Add(new LdapModification(LdapModification.REPLACE,
                     new LdapAttribute(LdapProperties.Uid, this.UserName)));
-            }
 
             return mods;
         }

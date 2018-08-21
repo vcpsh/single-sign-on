@@ -25,7 +25,7 @@
         public const string VoteEndEvent = "x-sh-vcp-vote-end-event";
         public const string UserPassword = "userPassword";
     }
-    
+
     public static class LdapObjectTypes
     {
         public const string User = "x-sh-vcp-user";
@@ -35,7 +35,7 @@
         public const string TribeSl = "x-sh-vcp-tribe-sl";
         public const string TribeLr = "x-sh-vcp-tribe-lr";
         public const string TribeLv = "x-sh-vcp-tribe-lv";
-        public const string WaitingUser = "x-sh-vcp-waiting-user";        
+        public const string WaitingUser = "x-sh-vcp-waiting-user";
         public const string Group = "x-sh-vcp-group";
         public const string Division = "x-sh-vcp-division";
         public const string VotedGroup = "x-sh-vcp-voted-group";

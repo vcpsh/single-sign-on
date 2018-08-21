@@ -2,10 +2,9 @@
 
 namespace sh.vcp.ldap.Exceptions
 {
-    public class LdapDnInvalidException: Exception
+    public class LdapDnInvalidException : Exception
     {
-        public LdapDnInvalidException(string dn): base($"Got an invalid dn \"{dn}\".")
-        {
+        public LdapDnInvalidException(string dn) : base($"Got an invalid dn \"{dn}\".") {
         }
     }
 }

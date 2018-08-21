@@ -1,29 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
-using Novell.Directory.Ldap;
 using sh.vcp.ldap;
-using sh.vcp.ldap.Extensions;
 
 namespace sh.vcp.identity.Model
 {
     public class LdapMember : LdapUser
     {
-        private static readonly Dictionary<PropertyInfo, LdapAttr> Props = LdapAttrHelper.GetLdapAttrs(typeof(LdapMember));
-        protected override Dictionary<PropertyInfo, LdapAttr> Properties => LdapMember.Props;
-        protected override string DefaultObjectClass => LdapObjectTypes.Member;
+        private static readonly Dictionary<PropertyInfo, LdapAttr> Props =
+            LdapAttrHelper.GetLdapAttrs(typeof(LdapMember));
 
-        public new static readonly string[] LoadProperties = new string[]
-        {
+        public new static readonly string[] LoadProperties = new[] {
             LdapProperties.FirstName,
             LdapProperties.LastName,
             LdapProperties.DateOfBirth,
             LdapProperties.AccessionDate,
-            LdapProperties.Gender,
+            LdapProperties.Gender
         }.Concat(LdapModel.LoadProperties).ToArray();
+
+        protected override Dictionary<PropertyInfo, LdapAttr> Properties => LdapMember.Props;
+        protected override string DefaultObjectClass => LdapObjectTypes.Member;
 
         [JsonProperty("FirstName")]
         [LdapAttr(LdapProperties.FirstName)]

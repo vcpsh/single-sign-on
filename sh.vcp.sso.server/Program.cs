@@ -1,24 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.IO;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 
 namespace sh.vcp.sso.server
 {
     public class Program
     {
-        public static void Main(string[] args)
-        {
+        public static void Main(string[] args) {
             Program.CreateWebHostBuilder(args).Build().Run();
         }
 
-        private static IWebHostBuilder CreateWebHostBuilder(string[] args)
-        {
+        private static IWebHostBuilder CreateWebHostBuilder(string[] args) {
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
@@ -28,7 +21,6 @@ namespace sh.vcp.sso.server
 
             return WebHost.CreateDefaultBuilder(args)
                 .UseConfiguration(config)
-                
                 .UseKestrel()
                 .UseWebRoot(webRoot)
                 .UseContentRoot(Directory.GetCurrentDirectory())

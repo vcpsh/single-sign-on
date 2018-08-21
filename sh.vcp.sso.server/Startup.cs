@@ -29,8 +29,7 @@ namespace sh.vcp.sso.server
         private readonly IConfiguration _configuration;
         private readonly IHostingEnvironment _env;
 
-        public Startup(IConfiguration configuration, IHostingEnvironment env, ILoggerFactory loggerFactory)
-        {
+        public Startup(IConfiguration configuration, IHostingEnvironment env, ILoggerFactory loggerFactory) {
             this._configuration = configuration;
             this._env = env;
             loggerFactory.AddConsole(this._configuration.GetSection("Logging"));
@@ -38,22 +37,16 @@ namespace sh.vcp.sso.server
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
-        {
+        public void ConfigureServices(IServiceCollection services) {
             if (this._env.IsProduction())
-            {
                 services.Configure<MvcOptions>(options => { options.Filters.Add(new RequireHttpsAttribute()); });
-            }
-            
+
             // configure proxy stuff
             if (this._configuration.GetValue("Proxy", false))
-            {
-                services.Configure<ForwardedHeadersOptions>(options =>
-                {
+                services.Configure<ForwardedHeadersOptions>(options => {
                     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
                     options.RequireHeaderSymmetry = false;
                 });
-            }
 
             // configure jwt secret
             services.AddSingleton(
@@ -62,8 +55,7 @@ namespace sh.vcp.sso.server
                     SecurityAlgorithms.HmacSha256));
 
             // configure smtp
-            services.AddMailKit(optionsBuilder =>
-            {
+            services.AddMailKit(optionsBuilder => {
                 var options = new MailKitOptions();
                 this._configuration.GetSection("Mail").Bind(options);
                 optionsBuilder.UseMailKit(options);
@@ -72,8 +64,7 @@ namespace sh.vcp.sso.server
             // configure render service for html mails
             services.AddScoped<IViewRenderService, ViewRenderService>();
 
-            services.Configure<CookiePolicyOptions>(options =>
-            {
+            services.Configure<CookiePolicyOptions>(options => {
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
@@ -88,26 +79,21 @@ namespace sh.vcp.sso.server
 
             // TODO: don't use the devloper signing credential
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-            var identityServerBuilder = services.AddIdentityServer(o =>
-                {
+            var identityServerBuilder = services.AddIdentityServer(o => {
                     o.UserInteraction.LoginUrl = "/login";
                     o.UserInteraction.LogoutUrl = "/logout";
                 })
                 .AddAspNetIdentity<LdapUser>()
-                .AddConfigurationStore(options =>
-                {
-                    options.ConfigureDbContext = builder =>
-                    {
+                .AddConfigurationStore(options => {
+                    options.ConfigureDbContext = builder => {
                         builder.UseMySql(this._configuration.GetConnectionString("IdentityConfig"),
                             sql => sql.MigrationsAssembly(migrationsAssembly));
                     };
                 })
-                .AddOperationalStore(options =>
-                {
+                .AddOperationalStore(options => {
                     options.EnableTokenCleanup = true;
                     options.TokenCleanupInterval = 30;
-                    options.ConfigureDbContext = builder =>
-                    {
+                    options.ConfigureDbContext = builder => {
                         builder.UseMySql(this._configuration.GetConnectionString("IdentityOperational"),
                             sql => sql.MigrationsAssembly(migrationsAssembly));
                     };
@@ -115,48 +101,33 @@ namespace sh.vcp.sso.server
                 .AddProfileService<ProfileManager>();
 
             if (this._env.IsDevelopment())
-            {
                 identityServerBuilder.AddDeveloperSigningCredential();
-            }
             else
-            {
                 identityServerBuilder.AddSigningCredential(new X509Certificate2(
                     Path.Combine(Directory.GetCurrentDirectory(),
                         this._configuration.GetValue<string>("SigningCredential"))));
-            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
             if (env.IsDevelopment())
-            {
                 app.UseDeveloperExceptionPage();
-            }
             else
-            {
                 app.UseHsts();
-            }
 
-            if (this._configuration.GetValue("Proxy", false))
-            {
-                app.UseForwardedHeaders();
-            }
-            
+            if (this._configuration.GetValue("Proxy", false)) app.UseForwardedHeaders();
+
             app.UseIdentityServer();
-            app.Use(async (ctx, next) =>
-            {
+            app.Use(async (ctx, next) => {
                 await next();
-                if (ctx.Response.StatusCode == 404 || ctx.Request.Path == "/")
-                {
+                if (ctx.Response.StatusCode == 404 || ctx.Request.Path == "/") {
                     var antiforgery = app.ApplicationServices.GetService<IAntiforgery>();
                     var tokens = antiforgery.GetAndStoreTokens(ctx);
                     ctx.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken,
-                        new CookieOptions() {HttpOnly = false, Path = "/"});
+                        new CookieOptions {HttpOnly = false, Path = "/"});
                 }
 
-                if (ctx.Response.StatusCode == 404)
-                {
+                if (ctx.Response.StatusCode == 404) {
                     ctx.Response.StatusCode = 200;
                     ctx.Response.ContentType = "text/html";
                     await ctx.Response.SendFileAsync(Path.Combine(this._env.WebRootPath, "index.html"));
@@ -165,8 +136,7 @@ namespace sh.vcp.sso.server
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
-            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
-            {
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope()) {
                 var configCtx = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
                 configCtx.Database.Migrate();
                 serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
