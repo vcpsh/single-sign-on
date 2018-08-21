@@ -7,26 +7,15 @@ export interface DefaultConfig {
   debug?: boolean;
 }
 
-export interface NonFactoryConfig {
+export interface InternalConfig {
   redirect_uri: string;
   post_logout_redirect_uri: string;
-}
-
-export interface FactoryConfig {
-  post_logout_redirect_uri: string | (() => string);
-  redirect_uri: string | (() => string);
+  silent_redirect_uri: string;
 }
 
 export interface AutomaticRenew {
   automaticSilentRenew: true;
-  silent_redirect_uri?: string;
 }
 
-export interface AutomaticRenewFactory {
-  silent_redirect_uri?: string | (() => string);
-  automaticSilentRenew: true;
-}
-
-
-export type SsoConfig = DefaultConfig & FactoryConfig & AutomaticRenewFactory;
-export type InternalSsoConfig = DefaultConfig & NonFactoryConfig | DefaultConfig & NonFactoryConfig & AutomaticRenew;
+export type SsoConfig = DefaultConfig | DefaultConfig & AutomaticRenew;
+export type InternalSsoConfig = DefaultConfig & InternalConfig | DefaultConfig & InternalConfig & AutomaticRenew;

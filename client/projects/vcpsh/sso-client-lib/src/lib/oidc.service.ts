@@ -1,19 +1,14 @@
-import { Inject, Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  Router,
-  RouterStateSnapshot,
-} from '@angular/router';
-import { UserManager } from 'oidc-client';
-import { Observable } from 'rxjs';
-import {InternalSsoConfig, SsoConfig} from './config.model';
-import { UserModel } from './user.model';
-import { SsoConfigToken } from './config';
+import {Inject, Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
 import * as Oidc from 'oidc-client';
+import {UserManager} from 'oidc-client';
+import {Observable} from 'rxjs';
+import {SsoConfigToken} from './config';
+import {InternalSsoConfig, SsoConfig} from './config.model';
+import {UserModel} from './user.model';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class OidcService implements CanActivate {
   private _settings: InternalSsoConfig;
@@ -37,17 +32,13 @@ export class OidcService implements CanActivate {
     if (this._settings.debug === true) {
       Oidc.Log.logger = console;
     }
-    // convert config factory functions to strings
-    if (typeof settings.redirect_uri !== 'string') {
-      settings.redirect_uri = settings.redirect_uri();
-    }
-    if (typeof settings.post_logout_redirect_uri !== 'string') {
-      settings.post_logout_redirect_uri = settings.post_logout_redirect_uri();
-    }
-    if (settings.silent_redirect_uri && typeof settings.silent_redirect_uri !== 'string') {
-      settings.silent_redirect_uri = settings.silent_redirect_uri();
-    }
-    this._settings = settings as InternalSsoConfig; // TODO: This cast is very dangerous build a better workaround.
+
+    this._settings = {
+      ...settings,
+      redirect_uri: `${document.location.origin}/signin`,
+      post_logout_redirect_uri: document.location.origin,
+      silent_redirect_uri: `${document.location.origin}/silent-renew.html`,
+    };
     this._manager = new UserManager(this._settings);
     this._manager.events.addSilentRenewError(ev => this.silentRenewError(ev));
     this._manager.events.addUserLoaded(ev => this.userLoaded(ev));

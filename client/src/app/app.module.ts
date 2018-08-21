@@ -28,17 +28,6 @@ import {AccountService} from './services/account.service';
 import { ResetComponent } from './components/reset/reset.component';
 import { ConfirmComponent } from './components/confirm/confirm.component';
 
-export function redirectUriFactory() {
-  return `${document.location.origin}/signin`;
-}
-
-export function postLogoutUriFactory() {
-  return `${document.location.origin}`;
-}
-
-export function silentRenewUriFactory() {
-  return `${document.location.origin}/silent-renew.html`;
-}
 @NgModule({
   declarations: [
     AppComponent,
@@ -61,12 +50,9 @@ export function silentRenewUriFactory() {
     SsoClientLibModule.forRoot({
       authority: environment.authority,
       client_id: 'sh.vcp.sso-client@1.0.0',
-      redirect_uri: redirectUriFactory,
       response_type: 'id_token token',
       scope: 'openid profile sh.vcp.sso@1.0.0',
       automaticSilentRenew: true,
-      post_logout_redirect_uri: postLogoutUriFactory,
-      silent_redirect_uri: silentRenewUriFactory,
       loadUserInfo: true,
       debug: true,
     }),
