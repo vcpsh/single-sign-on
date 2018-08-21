@@ -29,16 +29,15 @@ export class OidcService implements CanActivate {
     private _router: Router,
     @Inject(SsoConfigToken) settings: SsoConfig,
   ) {
-    if (this._settings.debug === true) {
-      Oidc.Log.logger = console;
-    }
-
     this._settings = {
       ...settings,
       redirect_uri: `${document.location.origin}/signin`,
       post_logout_redirect_uri: document.location.origin,
       silent_redirect_uri: `${document.location.origin}/silent-renew.html`,
     };
+    if (this._settings.debug === true) {
+      Oidc.Log.logger = console;
+    }
     this._manager = new UserManager(this._settings);
     this._manager.events.addSilentRenewError(ev => this.silentRenewError(ev));
     this._manager.events.addUserLoaded(ev => this.userLoaded(ev));
