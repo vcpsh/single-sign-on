@@ -82,6 +82,8 @@ namespace sh.vcp.sso.server
             var identityServerBuilder = services.AddIdentityServer(o => {
                     o.UserInteraction.LoginUrl = "/login";
                     o.UserInteraction.LogoutUrl = "/logout";
+                    o.IssuerUri = this._configuration.GetValue<string>("IssuerUrl");
+                    o.PublicOrigin = o.IssuerUri;
                 })
                 .AddAspNetIdentity<LdapUser>()
                 .AddConfigurationStore(options => {
