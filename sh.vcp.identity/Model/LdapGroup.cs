@@ -13,7 +13,7 @@ namespace sh.vcp.identity.Models
     public class LdapGroup : LdapModel
     {
         /// <summary>
-        ///     Workaround group type, to keep the group type on transfer.
+        /// Workaround group type, to keep the group type on transfer.
         /// </summary>
         public enum GroupType
         {

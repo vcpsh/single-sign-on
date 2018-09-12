@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
 using sh.vcp.ldap;
@@ -11,17 +12,22 @@ namespace sh.vcp.identity.Model
         private static readonly Dictionary<PropertyInfo, LdapAttr> Props =
             LdapAttrHelper.GetLdapAttrs(typeof(VoteEntry));
 
-        public new static readonly string[] LoadProperties = {
+        public new static readonly string[] LoadProperties = new[] {
             LdapProperties.Active,
             LdapProperties.VoteStartDate,
             LdapProperties.VoteStartEvent,
             LdapProperties.VoteEndDate,
-            LdapProperties.VoteEndEvent
-        };
+            LdapProperties.VoteEndEvent,
+            LdapProperties.Member,
+        }.Concat(LdapModel.LoadProperties).ToArray();
 
         protected override Dictionary<PropertyInfo, LdapAttr> Properties => VoteEntry.Props;
         protected override string DefaultObjectClass => LdapObjectTypes.VotedEntry;
 
+        [JsonProperty("MemberId")]
+        [LdapAttr(LdapProperties.Member)]
+        public string MemberUid { get; set; }
+        
         [JsonProperty("Active")]
         [LdapAttr(LdapProperties.Active, typeof(bool))]
         public bool Active { get; set; }

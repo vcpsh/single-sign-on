@@ -39,7 +39,7 @@
         public const string Group = "x-sh-vcp-group";
         public const string Division = "x-sh-vcp-division";
         public const string VotedGroup = "x-sh-vcp-voted-group";
-        public const string VotedEntry = "x-sh-vcp-voted-entry";
+        public const string VotedEntry = "x-sh-vcp-vote-entry";
     }
 
     public static class LdapConstants
