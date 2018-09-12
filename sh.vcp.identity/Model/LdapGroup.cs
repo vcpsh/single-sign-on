@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using Novell.Directory.Ldap;
 using sh.vcp.identity.Utils;
 using sh.vcp.ldap;
-using sh.vcp.ldap.Extensions;
+using sh.vcp.ldap.Util;
 
 namespace sh.vcp.identity.Models
 {
@@ -100,29 +100,6 @@ namespace sh.vcp.identity.Models
                     this.Type = GroupType.Group;
                     break;
             }
-        }
-
-        protected override List<LdapModification> GetModifcationsList(List<LdapModification> list = null) {
-            List<LdapModification> mods = base.GetModifcationsList(list);
-            List<string> oldMemberIds = this.Entry.GetOptionalListAttribute(LdapProperties.Member);
-            var intersectCount = oldMemberIds.Intersect(this.MemberIds).Count();
-            if (intersectCount != oldMemberIds.Count || intersectCount != this.MemberIds.Count) {
-                // find added member ids
-                this.MemberIds.ForEach(m => {
-                    if (oldMemberIds.Contains(m)) return;
-                    var mod = new LdapModification(LdapModification.ADD, new LdapAttribute(LdapProperties.Member, m));
-                    mods.Add(mod);
-                });
-                // find removed member ids
-                oldMemberIds.ForEach(m => {
-                    if (this.MemberIds.Contains(m)) return;
-                    var mod = new LdapModification(LdapModification.DELETE,
-                        new LdapAttribute(LdapProperties.Member, m));
-                    mods.Add(mod);
-                });
-            }
-
-            return mods;
         }
     }
 }

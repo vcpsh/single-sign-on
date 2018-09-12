@@ -3,46 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using Novell.Directory.Ldap;
 
-namespace sh.vcp.ldap.Extensions
+namespace sh.vcp.ldap.Util
 {
     public static class LdapAttributeSetExtensions
     {
-        public static LdapAttributeSet Add(this LdapAttributeSet set, LdapAttr attr, object value) {
-            if (value == null && !attr.Optional)
-                throw new ArgumentNullException(nameof(value), $"Attribute \"{attr.LdapName}\"");
-
+        public static LdapAttributeSet Add(this LdapAttributeSet set, LdapAttr attr, object value)
+        {
+            var ldapAttribute = attr.CreateLdapAttribute(value);
+            
             if (value == null) {
                 return set;
             }
-
-            LdapAttribute ldapAttr = null;
-            switch (Type.GetTypeCode(attr.Type)) {
-                case TypeCode.Boolean:
-                    ldapAttr = new LdapAttribute(attr.LdapName, (bool) value ? "TRUE" : "FALSE");
-                    break;
-                case TypeCode.DateTime:
-                    ldapAttr = new LdapAttribute(attr.LdapName,
-                        ((DateTime) value).ToString(LdapConstants.DateFormat));
-                    break;
-                case TypeCode.Int16:
-                case TypeCode.Int32:
-                case TypeCode.Int64:
-                    ldapAttr = new LdapAttribute(attr.LdapName, ((int) value).ToString());
-                    break;
-                case TypeCode.Object:
-                    if (attr.Type == typeof(List<string>) && value is List<string> list)
-                        if (list.Count > 0)
-                            ldapAttr = new LdapAttribute(attr.LdapName, list.ToArray());
-
-                    break;
-                case TypeCode.String:
-                default:
-                    ldapAttr = new LdapAttribute(attr.LdapName, (string) value);
-                    break;
-            }
-
-            if (ldapAttr != null) set.Add(ldapAttr);
-
+            if (ldapAttribute != null) set.Add(ldapAttribute);
             return set;
         }
 

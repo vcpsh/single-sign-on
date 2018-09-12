@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace sh.vcp.ldap.Extensions
+namespace sh.vcp.ldap.Util
 {
     public static class ServiceCollectionExtensions
     {

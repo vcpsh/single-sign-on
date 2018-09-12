@@ -5,7 +5,7 @@ using System.Linq;
 using Novell.Directory.Ldap;
 using sh.vcp.ldap.Exceptions;
 
-namespace sh.vcp.ldap.Extensions
+namespace sh.vcp.ldap.Util
 {
     public static class LdapEntryExtensions
     {
@@ -20,12 +20,16 @@ namespace sh.vcp.ldap.Extensions
             return entry.GetAttribute(attr.LdapName, attr.Optional);
         }
 
-        public static bool GetBoolAttribute(this LdapEntry entry, LdapAttr attr) {
-            return entry.GetAttribute(attr) == "TRUE";
+        public static bool? GetBoolAttribute(this LdapEntry entry, LdapAttr attr)
+        {
+            var strVal = entry.GetAttribute(attr);
+            return strVal == null ? null : (bool?)(strVal == "TRUE");
         }
 
-        public static int GetIntAttribute(this LdapEntry entry, LdapAttr attr) {
-            return int.Parse(entry.GetAttribute(attr));
+        public static int? GetIntAttribute(this LdapEntry entry, LdapAttr attr)
+        {
+            var strVal = entry.GetAttribute(attr);
+            return strVal == null ? null : (int?)int.Parse(strVal);
         }
 
         public static DateTime? GetDateTimeAttribute(this LdapEntry entry, LdapAttr attr) {
