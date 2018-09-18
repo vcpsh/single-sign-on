@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 using Novell.Directory.Ldap;
 using sh.vcp.identity.Utils;
 using sh.vcp.ldap;
-using sh.vcp.ldap.Util;
 
 namespace sh.vcp.identity.Models
 {
@@ -32,7 +31,8 @@ namespace sh.vcp.identity.Models
 
         public new static readonly string[] LoadProperties = new[] {
             LdapProperties.Member,
-            LdapProperties.DisplayName
+            LdapProperties.DisplayName,
+            LdapProperties.OfficialMail,
         }.Concat(LdapModel.LoadProperties).ToArray();
 
         protected override Dictionary<PropertyInfo, LdapAttr> Properties => LdapGroup.Props;
@@ -57,6 +57,11 @@ namespace sh.vcp.identity.Models
         [Required]
         [DivisionIdValidation]
         public string DivisionId { get; set; }
+        
+        [JsonProperty("OfficialMail")]
+        [LdapAttr(LdapProperties.OfficialMail, true)]
+        [EmailAddress]
+        public string OfficialMail { get; set; }
 
         [JsonProperty("Type")]
         public GroupType Type { get; set; }

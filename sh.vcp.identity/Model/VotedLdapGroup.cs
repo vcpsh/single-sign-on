@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -26,23 +25,19 @@ namespace sh.vcp.identity.Models
         [JsonProperty("InactiveVoteEntries")]
         public ICollection<VoteEntry> InactiveVoteEntries { get; set; } = new List<VoteEntry>();
 
-        public async Task LoadChildren(ILdapConnection connection, CancellationToken cancellationToken = default) {
-            try {
-                ICollection<VoteEntry> entries = await connection.Search<VoteEntry>(this.Dn, null,
-                    LdapObjectTypes.VotedEntry, LdapConnection.SCOPE_ONE, VoteEntry.LoadProperties, cancellationToken);
-                foreach (var voteEntry in entries)
-                    if (voteEntry.Active)
-                        this.ActiveVoteEntries.Add(voteEntry);
-                    else
-                        this.InactiveVoteEntries.Add(voteEntry);
-            }
-            catch (Exception ex) {
-                // TODO: Logging
-                throw ex;
-            }
+        public async Task LoadChildren(ILdapConnection connection, CancellationToken cancellationToken = default)
+        {
+            ICollection<VoteEntry> entries = await connection.Search<VoteEntry>(this.Dn, null,
+                LdapObjectTypes.VotedEntry, LdapConnection.SCOPE_ONE, VoteEntry.LoadProperties, cancellationToken);
+            foreach (var voteEntry in entries)
+                if (voteEntry.Active)
+                    this.ActiveVoteEntries.Add(voteEntry);
+                else
+                    this.InactiveVoteEntries.Add(voteEntry);
         }
 
-        public ICollection<LdapModel> GetChildren() {
+        public ICollection<LdapModel> GetChildren()
+        {
             return (ICollection<LdapModel>) this.ActiveVoteEntries.Concat(this.InactiveVoteEntries);
         }
     }

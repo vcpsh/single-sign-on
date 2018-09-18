@@ -88,11 +88,11 @@ namespace sh.vcp.ldap
         /// </summary>
         /// <param name="set"></param>
         /// <returns></returns>
-        public virtual LdapAttributeSet GetAttributeSet(LdapAttributeSet set = null)
+        protected virtual LdapAttributeSet GetAttributeSet(LdapAttributeSet set = null)
         {
             set = set ?? new LdapAttributeSet();
-            set.Add(LdapProperties.ObjectClass, this.ObjectClass ?? this.DefaultObjectClass)
-                .Add(LdapProperties.CommonName, this.Id);
+            set.Add(new LdapAttribute(LdapProperties.ObjectClass, this.ObjectClass ?? this.DefaultObjectClass));
+            set.Add(new LdapAttribute(LdapProperties.CommonName, this.Id));
 
             foreach (KeyValuePair<PropertyInfo, LdapAttr> kvp in this.Properties)
                 set.Add(kvp.Value, kvp.Key.GetValue(this));
@@ -100,12 +100,10 @@ namespace sh.vcp.ldap
             return set;
         }
 
-        protected virtual List<LdapModification> BLABLAB(List<LdapModification> list = null)
-        {
-            List<LdapModification> modifications = new List<LdapModification>();
-            return modifications;
-        }
-
+        /// <summary>
+        /// Creates a modifications list for the ldap model.
+        /// </summary>
+        /// <returns></returns>
         public LdapModification[] GetModifications()
         {
             List<LdapModification> modifications = new List<LdapModification>();
@@ -209,7 +207,7 @@ namespace sh.vcp.ldap
                         {
                             mod = new LdapModification(LdapModification.ADD, kv.Value.CreateLdapAttribute(newValue));
                         }
-                        else if (oldValue != newValue)
+                        else if (oldValue != (string) newValue)
                         {
                             mod = new LdapModification(LdapModification.REPLACE,
                                 kv.Value.CreateLdapAttribute(newValue));

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
@@ -17,8 +18,9 @@ namespace sh.vcp.identity.Model
             LdapProperties.LastName,
             LdapProperties.DateOfBirth,
             LdapProperties.AccessionDate,
-            LdapProperties.Gender
-        }.Concat(LdapModel.LoadProperties).ToArray();
+            LdapProperties.Gender,
+            LdapProperties.OfficialMail,
+        }.Concat(LdapUser.LoadProperties).ToArray();
 
         protected override Dictionary<PropertyInfo, LdapAttr> Properties => LdapMember.Props;
         protected override string DefaultObjectClass => LdapObjectTypes.Member;
@@ -42,5 +44,10 @@ namespace sh.vcp.identity.Model
         [JsonProperty("Gender")]
         [LdapAttr(LdapProperties.Gender)]
         public string Gender { get; set; }
+        
+        [JsonProperty("OfficialMail")]
+        [LdapAttr(LdapProperties.OfficialMail, true)]
+        [EmailAddress]
+        public string OfficialMail { get; set; }
     }
 }

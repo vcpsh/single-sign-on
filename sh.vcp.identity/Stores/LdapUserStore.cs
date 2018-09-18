@@ -57,7 +57,7 @@ namespace sh.vcp.identity.Stores
         public async Task<bool> SetUserPasswordAsync(LdapUser user, string password,
             CancellationToken cancellationToken) {
             try {
-                return await this._connection.Mod(user.Dn,
+                return await this._connection.Update(user.Dn,
                     new[] {
                         new LdapModification(LdapModification.REPLACE,
                             new LdapAttribute(LdapProperties.UserPassword, password))
@@ -96,7 +96,7 @@ namespace sh.vcp.identity.Stores
         }
 
         public async Task<IdentityResult> CreateAsync(LdapUser user, CancellationToken cancellationToken) {
-            var res = await this._connection.Mod(user, cancellationToken);
+            var res = await this._connection.Update(user, cancellationToken);
             return res ? IdentityResult.Success : IdentityResult.Failed();
         }
 
@@ -172,7 +172,7 @@ namespace sh.vcp.identity.Stores
                     var group = await this._connection.Read<VotedLdapGroup>(dn, cancellationToken);
                     if (group.MemberIds.Contains(user.Id)) {
                         var divisionId = dn.Replace($",{this._config.GroupDn}", "");
-                        divisionId = divisionId.Substring(divisionId.LastIndexOf(",")).Replace(",cn=", "");
+                        divisionId = divisionId.Substring(divisionId.LastIndexOf(",", StringComparison.Ordinal)).Replace(",cn=", "");
                         claims.Add(new IsDivisionLgsClaim(divisionId));
                     }
                 });

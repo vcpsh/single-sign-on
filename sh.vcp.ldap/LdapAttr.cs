@@ -11,15 +11,17 @@ namespace sh.vcp.ldap
     /// Currently supported are: int(?), bool, DateTime(?), string, List(string)
     /// </remarks>
     [AttributeUsage(AttributeTargets.Property)]
-    public class LdapAttr : Attribute 
+    public class LdapAttr : Attribute
     {
-        public LdapAttr(string ldapName, bool optional = false) {
+        public LdapAttr(string ldapName, bool optional = false)
+        {
             this.Optional = optional;
             this.LdapName = ldapName;
             this.Type = typeof(string);
         }
 
-        public LdapAttr(string ldapName, Type type, bool optional = false) {
+        public LdapAttr(string ldapName, Type type, bool optional = false)
+        {
             this.Optional = optional;
             this.LdapName = ldapName;
             this.Type = type;
@@ -31,11 +33,19 @@ namespace sh.vcp.ldap
 
         public LdapAttribute CreateLdapAttribute(object value)
         {
-            if (value == null && !this.Optional)
+            if (value == null)
+            {
+                if (this.Optional)
+                {
+                    return null;
+                }
+
                 throw new ArgumentNullException(nameof(value), $"Attribute \"{this.LdapName}\"");
+            }
 
             LdapAttribute ldapAttr = null;
-            switch (Type.GetTypeCode(this.Type)) {
+            switch (Type.GetTypeCode(this.Type))
+            {
                 case TypeCode.Boolean:
                     ldapAttr = new LdapAttribute(this.LdapName, (bool) value ? "TRUE" : "FALSE");
                     break;

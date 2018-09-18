@@ -2,9 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
-using Novell.Directory.Ldap;
 using sh.vcp.ldap;
-using sh.vcp.ldap.Util;
 
 namespace sh.vcp.identity.Model
 {
