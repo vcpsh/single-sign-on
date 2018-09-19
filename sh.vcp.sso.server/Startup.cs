@@ -41,6 +41,8 @@ namespace sh.vcp.sso.server
             if (this._env.IsProduction())
                 services.Configure<MvcOptions>(options => { options.Filters.Add(new RequireHttpsAttribute()); });
 
+            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+            
             // configure proxy stuff
             if (this._configuration.GetValue("Proxy", false))
                 services.Configure<ForwardedHeadersOptions>(options => {
@@ -74,11 +76,11 @@ namespace sh.vcp.sso.server
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddVcpShLdap(this._configuration);
+            services.AddVcpShLdap(this._configuration,
+                builder => builder.UseMySql(this._configuration.GetConnectionString("ChangeTracking"),
+                    sql => sql.MigrationsAssembly(migrationsAssembly)));
             services.AddVcpShIdentity();
 
-            // TODO: don't use the devloper signing credential
-            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
             var identityServerBuilder = services.AddIdentityServer(o => {
                     o.UserInteraction.LoginUrl = "/login";
                     o.UserInteraction.LogoutUrl = "/logout";
@@ -94,7 +96,7 @@ namespace sh.vcp.sso.server
                 })
                 .AddOperationalStore(options => {
                     options.EnableTokenCleanup = true;
-                    options.TokenCleanupInterval = 30;
+                    options.TokenCleanupInterval = 3600;
                     options.ConfigureDbContext = builder => {
                         builder.UseMySql(this._configuration.GetConnectionString("IdentityOperational"),
                             sql => sql.MigrationsAssembly(migrationsAssembly));
@@ -102,6 +104,7 @@ namespace sh.vcp.sso.server
                 })
                 .AddProfileService<ProfileManager>();
 
+            // TODO: don't use the developer signing credential and add cert generation to the docker container
             if (this._env.IsDevelopment())
                 identityServerBuilder.AddDeveloperSigningCredential();
             else

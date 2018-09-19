@@ -2,64 +2,67 @@
 using System.Collections.Generic;
 using System.Linq;
 using Novell.Directory.Ldap;
+using sh.vcp.ldap.ChangeTracking;
 
 namespace sh.vcp.ldap.Util
 {
     public static class LdapAttributeSetExtensions
     {
-        public static LdapAttributeSet Add(this LdapAttributeSet set, LdapAttr attr, object value)
-        {
+        public static LdapAttributeSet Add(this LdapAttributeSet set, LdapAttr attr, object value) {
             var ldapAttribute = attr.CreateLdapAttribute(value);
-            
+
             if (value == null) {
                 return set;
             }
+
             if (ldapAttribute != null) set.Add(ldapAttribute);
             return set;
         }
 
-        [Obsolete]
-        public static LdapAttributeSet Add(this LdapAttributeSet set, string attributeName, string attributeValue) {
-            if (attributeValue == null)
-                throw new ArgumentNullException(nameof(attributeValue), $"Attribute \"{attributeName}\"");
+        public static IEnumerable<Change> ToChangesAdd(this LdapAttributeSet set, string dn) {
+            List<Change> changes = new List<Change>();
+            string objectClass = set.getAttribute(LdapProperties.ObjectClass).StringValue;
+            foreach (LdapAttribute attr in set) {
+                changes.Add(new Change {
+                    Dn = dn,
+                    Type = attr.Name == LdapProperties.CommonName ? Change.TypeEnum.Created : Change.TypeEnum.CreatedAttribute,
+                    ObjectClass = objectClass,
+                    Property = attr.Name,
+                    NewValue = attr.StringValue,
+                });
+            }
 
-            set.Add(new LdapAttribute(attributeName, attributeValue));
-            return set;
+            return changes;
         }
 
-        [Obsolete]
-        public static LdapAttributeSet Add(this LdapAttributeSet set, string attributeName, int attributeValue) {
-            set.Add(attributeName, attributeValue.ToString());
-            return set;
-        }
+        public static IEnumerable<Change> ToChangesModify(this LdapModification[] modifications, string dn,
+            string objectClass) {
+            List<Change> changes = new List<Change>();
+            foreach (var modification in modifications) {
+                Change.TypeEnum change;
+                switch (modification.Op) {
+                    case LdapModification.ADD:
+                        change = Change.TypeEnum.CreatedAttribute;
+                        break;
+                    case LdapModification.DELETE:
+                        change = Change.TypeEnum.RemovedAttribute;
+                        break;
+                    case LdapModification.REPLACE:
+                        change = Change.TypeEnum.Modified;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
 
-        [Obsolete]
-        public static LdapAttributeSet Add(this LdapAttributeSet set, string attributeName,
-            IEnumerable<string> attributeList) {
-            set.Add(new LdapAttribute(attributeName, attributeList.ToArray()));
-            return set;
-        }
-
-        [Obsolete]
-        public static LdapAttributeSet AddOptional(this LdapAttributeSet set, string attributeName,
-            string attributeValue) {
-            if (!string.IsNullOrEmpty(attributeValue)) set.Add(attributeName, attributeValue);
-
-            return set;
-        }
-
-        [Obsolete]
-        public static LdapAttributeSet
-            AddOptional(this LdapAttributeSet set, string attributeName, bool attributeValue) {
-            return set.AddOptional(attributeName, attributeValue.ToString());
-        }
-
-        [Obsolete]
-        public static LdapAttributeSet AddOptional<TList>(this LdapAttributeSet set, string attributeName,
-            TList attributeList) where TList : IEnumerable<string>, ICollection<string> {
-            if (attributeList != null && attributeList.Count > 0) set.Add(attributeName, attributeList);
-
-            return set;
+                changes.Add(new Change {
+                    Dn = dn,
+                    Type = change,
+                    ObjectClass = objectClass,
+                    Property = modification.Attribute.Name,
+                    NewValue = modification.Attribute.StringValue
+                });
+            }
+            return changes;
         }
     }
 }

@@ -48,11 +48,16 @@ namespace sh.vcp.ldap
         ///     Relative to the BaseDn
         /// </summary>
         public string RelativeGroupDn { get; set; }
-
+        
         /// <summary>
         ///     Dn of all apis
         /// </summary>
         public string GroupDn => $"{this.RelativeGroupDn},{this.BaseDn}";
+        
+        /// <summary>
+        /// Log the changes to a change database
+        /// </summary>
+        public bool LogChanges { get; set; }
 
         public IConfigurationSection AuthorizationConfigurationSection { get; set; }
     }

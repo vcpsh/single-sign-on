@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "sh.vcp.identity", "sh.vcp.i
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "sh.vcp.ldap", "sh.vcp.ldap\sh.vcp.ldap.csproj", "{45A0518C-7C60-4CD5-B9CD-9A709E7ABBB6}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{C701EB54-AF95-41FA-85A7-7D7EA5EFC2BF}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{45A0518C-7C60-4CD5-B9CD-9A709E7ABBB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45A0518C-7C60-4CD5-B9CD-9A709E7ABBB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45A0518C-7C60-4CD5-B9CD-9A709E7ABBB6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C701EB54-AF95-41FA-85A7-7D7EA5EFC2BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C701EB54-AF95-41FA-85A7-7D7EA5EFC2BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C701EB54-AF95-41FA-85A7-7D7EA5EFC2BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C701EB54-AF95-41FA-85A7-7D7EA5EFC2BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

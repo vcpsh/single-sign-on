@@ -5,7 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Novell.Directory.Ldap;
+using sh.vcp.ldap.ChangeTracking;
 using sh.vcp.ldap.Exceptions;
+using sh.vcp.ldap.Util;
 
 namespace sh.vcp.ldap
 {
@@ -15,16 +17,17 @@ namespace sh.vcp.ldap
         private readonly string _bindPassword;
         private readonly LdapConfig _config;
         private readonly ILogger<LdapConnection> _logger;
+        private readonly ChangeTrackingDbContext _trackingDbContext;
         private bool _connected;
 
-        public LdapConnection(LdapConfig config, ILogger<LdapConnection> logger)
-        {
+        public LdapConnection(LdapConfig config, ILogger<LdapConnection> logger,
+            ChangeTrackingDbContext trackingDbContext) {
             this._config = config ?? throw new ArgumentNullException(nameof(config));
             this._logger = logger;
+            this._trackingDbContext = trackingDbContext;
         }
 
-        private LdapConnection(LdapConfig config, ILogger<LdapConnection> logger, string dn, string password)
-        {
+        private LdapConnection(LdapConfig config, ILogger<LdapConnection> logger, string dn, string password) {
             this._logger = logger;
             this._config = config ?? throw new ArgumentNullException(nameof(config));
             this._bindDn = dn ?? throw new ArgumentNullException(nameof(dn));
@@ -33,19 +36,16 @@ namespace sh.vcp.ldap
 
         public async Task<TModel> SearchFirst<TModel>(string baseDn, string filter, string objectClass, int scope,
             string[] attributes,
-            bool expectUnique, CancellationToken cancellationToken) where TModel : LdapModel, new()
-        {
+            bool expectUnique, CancellationToken cancellationToken) where TModel : LdapModel, new() {
             if (objectClass == null) throw new ArgumentNullException(nameof(objectClass));
-            return await Task.Run(async () =>
-            {
+            return await Task.Run(async () => {
                 if (!this._connected) this.Connect();
 
                 var queue = this.Search(baseDn, scope, filter ?? $"{LdapProperties.ObjectClass}={objectClass}",
                     attributes,
                     false);
                 List<TModel> entries = new List<TModel>();
-                while (queue.HasMore())
-                {
+                while (queue.HasMore()) {
                     var m = new TModel();
                     m.ProvideEntry(queue.Next());
                     if (typeof(ILdapModelWithChildren).IsAssignableFrom(typeof(TModel)))
@@ -61,11 +61,9 @@ namespace sh.vcp.ldap
 
         public async Task<ICollection<TModel>> Search<TModel>(string baseDn, string filter, string objectClass,
             int scope, string[] attributes,
-            CancellationToken cancellationToken = default) where TModel : LdapModel, new()
-        {
+            CancellationToken cancellationToken = default) where TModel : LdapModel, new() {
             if (objectClass == null) throw new ArgumentNullException(nameof(objectClass));
-            return await Task.Run(async () =>
-            {
+            return await Task.Run(async () => {
                 if (!this._connected) this.Connect();
 
                 filter = string.IsNullOrEmpty(filter)
@@ -74,8 +72,7 @@ namespace sh.vcp.ldap
                 var queue = this.Search(baseDn, scope, filter, attributes,
                     false);
                 ICollection<TModel> entries = new List<TModel>();
-                while (queue.HasMore())
-                {
+                while (queue.HasMore()) {
                     var m = new TModel();
                     m.ProvideEntry(queue.Next());
                     if (typeof(ILdapModelWithChildren).IsAssignableFrom(typeof(TModel)))
@@ -88,12 +85,9 @@ namespace sh.vcp.ldap
         }
 
         public Task<TModel> Read<TModel>(string dn, CancellationToken cancellationToken = default)
-            where TModel : LdapModel, new()
-        {
-            return Task.Run(async () =>
-            {
-                try
-                {
+            where TModel : LdapModel, new() {
+            return Task.Run(async () => {
+                try {
                     if (!this._connected) this.Connect();
 
                     var entry = this.Read(dn);
@@ -103,10 +97,8 @@ namespace sh.vcp.ldap
                         await ((ILdapModelWithChildren) m).LoadChildren(this, cancellationToken);
                     return m;
                 }
-                catch (LdapException ex)
-                {
-                    if (ex.ResultCode == 34)
-                    {
+                catch (LdapException ex) {
+                    if (ex.ResultCode == 34) {
                         var ldapEx = new LdapDnInvalidException(dn);
                         this._logger.LogError(ldapEx, LdapLogCodes.LdapReadError);
                         throw ldapEx;
@@ -118,20 +110,15 @@ namespace sh.vcp.ldap
             }, cancellationToken);
         }
 
-        public Task<bool> Bind(string dn, string password, CancellationToken cancellationToken)
-        {
-            return Task.Run(() =>
-            {
-                try
-                {
-                    using (var con = new LdapConnection(this._config, this._logger, dn, password))
-                    {
+        public Task<bool> Bind(string dn, string password, CancellationToken cancellationToken) {
+            return Task.Run(() => {
+                try {
+                    using (var con = new LdapConnection(this._config, this._logger, dn, password)) {
                         con.Connect();
                         return con.Bound;
                     }
                 }
-                catch (LdapException ex)
-                {
+                catch (LdapException ex) {
                     this._logger.LogError(ex, LdapLogCodes.LdapBindError);
                     this._connected = false;
                 }
@@ -140,87 +127,78 @@ namespace sh.vcp.ldap
             }, cancellationToken);
         }
 
-        public Task<TModel> Add<TModel>(TModel model, CancellationToken cancellationToken) where TModel : LdapModel
-        {
-            return Task.Run(() =>
-            {
-                try
-                {
-                    if (!this._connected) this.Connect();
-
-                    this.Add(model.ToEntry());
-                    return model;
+        public async Task<TModel> Add<TModel>(TModel model, CancellationToken cancellationToken) where TModel : LdapModel {
+            try {
+                if (!this._connected) this.Connect();
+                var entry = model.ToEntry();
+                this.Add(entry);
+                if (this._config.LogChanges) {
+                    IEnumerable<Change> changes = entry.getAttributeSet().ToChangesAdd(model.Dn);
+                    await this._trackingDbContext.AddRangeAsync(changes, cancellationToken);
+                    await this._trackingDbContext.SaveChangesAsync(cancellationToken);
                 }
-                catch (LdapException ex)
-                {
-                    switch (ex.ResultCode)
-                    {
-                        case 68:
-                        {
-                            throw new Exception("Entry already exists");
-                        }
-                        default:
-                            this._logger.LogError(ex, LdapLogCodes.LdapAddError);
-                            throw new Exception($"Adding {model.Dn} failed");
+                return model;
+            }
+            catch (LdapException ex) {
+                switch (ex.ResultCode) {
+                    case 68: {
+                        throw new Exception("Entry already exists");
                     }
+                    default:
+                        this._logger.LogError(ex, LdapLogCodes.LdapAddError);
+                        throw new Exception($"Adding {model.Dn} failed");
                 }
-            }, cancellationToken);
+            }
         }
 
         public async Task<TModel> AddChildren<TModel>(TModel model, CancellationToken cancellationToken)
-            where TModel : LdapModel, ILdapModelWithChildren
-        {
-            try
-            {
+            where TModel : LdapModel, ILdapModelWithChildren {
+            try {
                 foreach (var ldapModel in model.GetChildren()) await this.Add(ldapModel, cancellationToken);
-
                 return model;
             }
-            catch (LdapException ex)
-            {
+            catch (LdapException ex) {
                 this._logger.LogError(ex, LdapLogCodes.LdapAddChildrenError);
                 return null;
             }
         }
 
-        public Task<bool> Update<TModel>(TModel model, CancellationToken cancellationToken) where TModel : LdapModel
-        {
-            return Task.Run(() => this.Update(model.Dn, model.GetModifications(), cancellationToken), cancellationToken);
+        public Task<bool> Update<TModel>(TModel model, CancellationToken cancellationToken) where TModel : LdapModel, new() {
+            return Task.Run(() => this.Update<TModel>(model.Dn, model.GetModifications(), cancellationToken),
+                cancellationToken);
         }
 
-        public Task<bool> Update(string dn, LdapModification[] ldapModifications,
-            CancellationToken cancellationToken = default)
-        {
-            return Task.Run(() =>
-            {
-                try
-                {
+        public async Task<bool> Update<TModel>(string dn, LdapModification[] ldapModifications,
+            CancellationToken cancellationToken = default) where TModel: LdapModel, new()  {
+                try {
                     if (ldapModifications.Length <= 0) return true;
                     if (!this._connected) this.Connect();
 
                     this.Modify(dn, ldapModifications);
+                    
+                    if (this._config.LogChanges) {
+                        var oldObject = await this.Read<TModel>(dn, cancellationToken);
+                        IEnumerable<Change> changes = ldapModifications.ToChangesModify(dn, oldObject.ObjectClass);
+                        await this._trackingDbContext.AddRangeAsync(changes, cancellationToken);
+                        await this._trackingDbContext.SaveChangesAsync(cancellationToken);
+                    }
                     return true;
                 }
-                catch (Exception ex)
-                {
+                catch (Exception ex) {
                     this._logger.LogError(ex, LdapLogCodes.LdapModifyError);
                     return false;
                 }
-            }, cancellationToken);
         }
 
-        private void Connect()
-        {
+        private void Connect() {
             if (this._connected) return;
-            try
-            {
+            try {
                 this.Connect(this._config.Hostname, this._config.Port);
                 this.Bind(this._bindDn ?? this._config.AdminUserDn,
                     this._bindPassword ?? this._config.AdminUserPassword);
                 this._connected = true;
             }
-            catch (LdapException ex)
-            {
+            catch (LdapException ex) {
                 this._logger.LogError(ex, LdapLogCodes.LdapConnectError);
                 this._connected = false;
             }

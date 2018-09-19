@@ -43,8 +43,9 @@ namespace sh.vcp.identity.Stores
                     true,
                     cancellationToken);
             }
-            catch (LdapSearchNotUniqueException) {
+            catch (LdapSearchNotUniqueException ex) {
                 // If we found multiple users matching the filter we return null for safety
+                this._logger.LogError(ex, IdentityErrorCodes.UserStoreFindByEmail);
                 return null;
             }
             catch (Exception ex) {
@@ -57,7 +58,7 @@ namespace sh.vcp.identity.Stores
         public async Task<bool> SetUserPasswordAsync(LdapUser user, string password,
             CancellationToken cancellationToken) {
             try {
-                return await this._connection.Update(user.Dn,
+                return await this._connection.Update<LdapUser>(user.Dn,
                     new[] {
                         new LdapModification(LdapModification.REPLACE,
                             new LdapAttribute(LdapProperties.UserPassword, password))

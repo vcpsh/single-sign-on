@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using sh.vcp.identity.Managers;
 using sh.vcp.identity.Model;
 using sh.vcp.identity.Stores;
+using sh.vcp.ldap.ChangeTracking;
 
 namespace sh.vcp.identity.Extensions
 {

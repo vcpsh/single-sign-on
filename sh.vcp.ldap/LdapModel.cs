@@ -17,7 +17,7 @@ namespace sh.vcp.ldap
             LdapProperties.ObjectClass
         };
 
-        protected string ObjectClass;
+        protected internal string ObjectClass;
         protected virtual string DefaultObjectClass => string.Empty;
         protected virtual Dictionary<PropertyInfo, LdapAttr> Properties => new Dictionary<PropertyInfo, LdapAttr>();
 
