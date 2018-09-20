@@ -5,7 +5,7 @@ using System.Linq;
 using Novell.Directory.Ldap;
 using sh.vcp.ldap.Exceptions;
 
-namespace sh.vcp.ldap.Util
+namespace sh.vcp.ldap.Extensions
 {
     public static class LdapEntryExtensions
     {

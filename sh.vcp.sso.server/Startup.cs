@@ -19,7 +19,7 @@ using NETCore.MailKit.Infrastructure.Internal;
 using sh.vcp.identity.Extensions;
 using sh.vcp.identity.Managers;
 using sh.vcp.identity.Model;
-using sh.vcp.ldap.Util;
+using sh.vcp.ldap.Extensions;
 using sh.vcp.sso.server.Utilities;
 
 namespace sh.vcp.sso.server

@@ -14,6 +14,7 @@ using sh.vcp.identity.Model.Tribe;
 using sh.vcp.identity.Models;
 using sh.vcp.ldap;
 using sh.vcp.ldap.Exceptions;
+using sh.vcp.ldap.Extensions;
 using ILdapConnection = sh.vcp.ldap.ILdapConnection;
 
 namespace sh.vcp.identity.Stores

@@ -60,5 +60,10 @@ namespace sh.vcp.ldap
         public bool LogChanges { get; set; }
 
         public IConfigurationSection AuthorizationConfigurationSection { get; set; }
+        
+        /// <summary>
+        /// Use a mem cache for ldap operations
+        /// </summary>
+        public bool UseCache { get; set; }
     }
 }
