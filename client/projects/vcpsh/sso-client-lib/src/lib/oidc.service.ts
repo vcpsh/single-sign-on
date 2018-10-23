@@ -38,6 +38,7 @@ export class OidcService implements CanActivate {
     if (this._settings.debug === true) {
       Oidc.Log.logger = console;
     }
+    this.log('Settings', this._settings);
     this._manager = new UserManager(this._settings);
     this._manager.events.addSilentRenewError(ev => this.silentRenewError(ev));
     this._manager.events.addUserLoaded(ev => this.userLoaded(ev));
@@ -97,8 +98,11 @@ export class OidcService implements CanActivate {
   }
 
   private silentRenewError(...ev: any[]): void {
-    this.log('SilentRenewError', ev);
-    this.getUser();
+    const err = ev[0] as Error;
+    switch (err.name) {
+      default:
+        this.log('SilentRenewError', err.name, ev);
+    }
   }
 
   private userLoaded(...ev: any[]): void {
@@ -107,13 +111,13 @@ export class OidcService implements CanActivate {
   }
 
   private userUnloaded(...ev: any[]): void {
-    this.log('UserUnloaded');
-    this.getUser();
+    this.log('UserUnloaded redirecting to route_after_unloaded', this._settings.route_after_user_unloaded);
+    this._router.navigateByUrl(this._settings.route_after_user_unloaded);
   }
 
   private userSignedOut(...ev: any[]): void {
     this.log('UserSignedOut');
-    this._manager.removeUser().then(() => this.getUser());
+    this._manager.removeUser();
   }
 
   private accessTokenExpired(...ev: any[]): void {
