@@ -13,12 +13,10 @@ namespace IdentityServer4.Quickstart.UI
 {
     public class DiagnosticsViewModel
     {
-        public DiagnosticsViewModel(AuthenticateResult result)
-        {
+        public DiagnosticsViewModel(AuthenticateResult result) {
             this.AuthenticateResult = result;
 
-            if (result.Properties.Items.ContainsKey("client_list"))
-            {
+            if (result.Properties.Items.ContainsKey("client_list")) {
                 var encoded = result.Properties.Items["client_list"];
                 var bytes = Base64Url.Decode(encoded);
                 var value = Encoding.UTF8.GetString(bytes);

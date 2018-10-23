@@ -14,11 +14,10 @@ namespace IdentityServer4.Quickstart.UI
     [Authorize]
     public class DiagnosticsController : Controller
     {
-        public async Task<IActionResult> Index()
-        {
-            var localAddresses = new string[] { "127.0.0.1", "::1", this.HttpContext.Connection.LocalIpAddress.ToString() };
-            if (!localAddresses.Contains(this.HttpContext.Connection.RemoteIpAddress.ToString()))
-            {
+        public async Task<IActionResult> Index() {
+            var localAddresses = new string[]
+                {"127.0.0.1", "::1", this.HttpContext.Connection.LocalIpAddress.ToString()};
+            if (!localAddresses.Contains(this.HttpContext.Connection.RemoteIpAddress.ToString())) {
                 return this.NotFound();
             }
 

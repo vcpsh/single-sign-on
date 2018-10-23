@@ -10,6 +10,10 @@ namespace sh.vcp.identity.Model
 {
     public class LdapMember : LdapUser
     {
+        public LdapMember() : base() {
+            this.DefaultObjectClasses.Add(LdapObjectTypes.Member);
+        }
+
         private static readonly Dictionary<PropertyInfo, LdapAttr> Props =
             LdapAttrHelper.GetLdapAttrs(typeof(LdapMember));
 
@@ -23,7 +27,6 @@ namespace sh.vcp.identity.Model
         }.Concat(LdapUser.LoadProperties).ToArray();
 
         protected override Dictionary<PropertyInfo, LdapAttr> Properties => LdapMember.Props;
-        protected override string DefaultObjectClass => LdapObjectTypes.Member;
 
         [JsonProperty("FirstName")]
         [LdapAttr(LdapProperties.FirstName)]
@@ -44,7 +47,7 @@ namespace sh.vcp.identity.Model
         [JsonProperty("Gender")]
         [LdapAttr(LdapProperties.Gender)]
         public string Gender { get; set; }
-        
+
         [JsonProperty("OfficialMail")]
         [LdapAttr(LdapProperties.OfficialMail, true)]
         [EmailAddress]

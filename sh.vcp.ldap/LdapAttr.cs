@@ -13,15 +13,13 @@ namespace sh.vcp.ldap
     [AttributeUsage(AttributeTargets.Property)]
     public class LdapAttr : Attribute
     {
-        public LdapAttr(string ldapName, bool optional = false)
-        {
+        public LdapAttr(string ldapName, bool optional = false) {
             this.Optional = optional;
             this.LdapName = ldapName;
             this.Type = typeof(string);
         }
 
-        public LdapAttr(string ldapName, Type type, bool optional = false)
-        {
+        public LdapAttr(string ldapName, Type type, bool optional = false) {
             this.Optional = optional;
             this.LdapName = ldapName;
             this.Type = type;
@@ -31,12 +29,9 @@ namespace sh.vcp.ldap
         internal string LdapName { get; }
         internal Type Type { get; }
 
-        public LdapAttribute CreateLdapAttribute(object value)
-        {
-            if (value == null)
-            {
-                if (this.Optional)
-                {
+        public LdapAttribute CreateLdapAttribute(object value) {
+            if (value == null) {
+                if (this.Optional) {
                     return null;
                 }
 
@@ -44,8 +39,7 @@ namespace sh.vcp.ldap
             }
 
             LdapAttribute ldapAttr = null;
-            switch (Type.GetTypeCode(this.Type))
-            {
+            switch (Type.GetTypeCode(this.Type)) {
                 case TypeCode.Boolean:
                     ldapAttr = new LdapAttribute(this.LdapName, (bool) value ? "TRUE" : "FALSE");
                     break;

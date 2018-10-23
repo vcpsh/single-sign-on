@@ -18,7 +18,6 @@ namespace sh.vcp.identity.Managers
             return await this._connection.Bind(user.Dn, password, cancellationToken);
         }
 
-        public void Dispose() {
-        }
+        public void Dispose() { }
     }
 }

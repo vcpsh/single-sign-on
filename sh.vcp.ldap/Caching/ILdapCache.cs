@@ -15,7 +15,7 @@ namespace sh.vcp.ldap.Caching
         /// <typeparam name="T">Type of the entry</typeparam>
         /// <returns>Boolean that indicates success.</returns>
         bool TryGetValue<T>(string key, out T value);
-        
+
         /// <summary>
         /// Save an entry to cache.
         /// </summary>
@@ -23,7 +23,7 @@ namespace sh.vcp.ldap.Caching
         /// <param name="value">Value of the entry</param>
         /// <typeparam name="T">Type of the entry</typeparam>
         void Set<T>(string key, T value);
-        
+
         /// <summary>
         /// Removes an entry from cache.
         /// </summary>
@@ -39,7 +39,8 @@ namespace sh.vcp.ldap.Caching
         /// <param name="attributes"></param>
         /// <param name="search"></param>
         /// <returns></returns>
-        bool TryGetSearch(string baseDn, int scope, string filter, IEnumerable<string> attributes, out SearchCacheEntry search);
+        bool TryGetSearch(string baseDn, int scope, string filter, IEnumerable<string> attributes,
+            out SearchCacheEntry search);
 
         /// <summary>
         /// Save a search to cache.

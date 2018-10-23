@@ -20,16 +20,14 @@ namespace sh.vcp.ldap.Extensions
             return entry.GetAttribute(attr.LdapName, attr.Optional);
         }
 
-        public static bool? GetBoolAttribute(this LdapEntry entry, LdapAttr attr)
-        {
+        public static bool? GetBoolAttribute(this LdapEntry entry, LdapAttr attr) {
             var strVal = entry.GetAttribute(attr);
-            return strVal == null ? null : (bool?)(strVal == "TRUE");
+            return strVal == null ? null : (bool?) (strVal == "TRUE");
         }
 
-        public static int? GetIntAttribute(this LdapEntry entry, LdapAttr attr)
-        {
+        public static int? GetIntAttribute(this LdapEntry entry, LdapAttr attr) {
             var strVal = entry.GetAttribute(attr);
-            return strVal == null ? null : (int?)int.Parse(strVal);
+            return strVal == null ? null : (int?) int.Parse(strVal);
         }
 
         public static DateTime? GetDateTimeAttribute(this LdapEntry entry, LdapAttr attr) {

@@ -25,8 +25,7 @@ namespace IdentityServer4.Quickstart.UI
 
         public GrantsController(IIdentityServerInteractionService interaction,
             IClientStore clients,
-            IResourceStore resources)
-        {
+            IResourceStore resources) {
             this._interaction = interaction;
             this._clients = clients;
             this._resources = resources;
@@ -36,8 +35,7 @@ namespace IdentityServer4.Quickstart.UI
         /// Show list of grants
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> Index()
-        {
+        public async Task<IActionResult> Index() {
             return this.View("Index", await this.BuildViewModelAsync());
         }
 
@@ -46,26 +44,21 @@ namespace IdentityServer4.Quickstart.UI
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Revoke(string clientId)
-        {
+        public async Task<IActionResult> Revoke(string clientId) {
             await this._interaction.RevokeUserConsentAsync(clientId);
             return this.RedirectToAction("Index");
         }
 
-        private async Task<GrantsViewModel> BuildViewModelAsync()
-        {
+        private async Task<GrantsViewModel> BuildViewModelAsync() {
             var grants = await this._interaction.GetAllUserConsentsAsync();
 
             var list = new List<GrantViewModel>();
-            foreach (var grant in grants)
-            {
+            foreach (var grant in grants) {
                 var client = await this._clients.FindClientByIdAsync(grant.ClientId);
-                if (client != null)
-                {
+                if (client != null) {
                     var resources = await this._resources.FindResourcesByScopeAsync(grant.Scopes);
 
-                    var item = new GrantViewModel()
-                    {
+                    var item = new GrantViewModel() {
                         ClientId = client.ClientId,
                         ClientName = client.ClientName ?? client.ClientId,
                         ClientLogoUrl = client.LogoUri,
@@ -80,8 +73,7 @@ namespace IdentityServer4.Quickstart.UI
                 }
             }
 
-            return new GrantsViewModel
-            {
+            return new GrantsViewModel {
                 Grants = list
             };
         }

@@ -25,7 +25,10 @@ namespace sh.vcp.ldap
         Task<TModel> AddChildren<TModel>(TModel model, CancellationToken cancellationToken = default)
             where TModel : LdapModel, ILdapModelWithChildren;
 
-        Task<bool> Update<TModel>(TModel model, CancellationToken cancellationToken = default) where TModel : LdapModel, new();
-        Task<bool> Update<TModel>(string dn, LdapModification[] ldapModifications, CancellationToken cancellationToken = default) where TModel: LdapModel, new();
+        Task<bool> Update<TModel>(TModel model, CancellationToken cancellationToken = default)
+            where TModel : LdapModel, new();
+
+        Task<bool> Update<TModel>(string dn, LdapModification[] ldapModifications,
+            CancellationToken cancellationToken = default) where TModel : LdapModel, new();
     }
 }

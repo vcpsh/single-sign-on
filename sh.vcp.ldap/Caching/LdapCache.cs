@@ -36,7 +36,8 @@ namespace sh.vcp.ldap.Caching
             return this.TryGetValue(key, out search);
         }
 
-        public void SetSearch(string baseDn, int scope, string filter, string[] attributes, IEnumerable<string> entries) {
+        public void SetSearch(string baseDn, int scope, string filter, string[] attributes,
+            IEnumerable<string> entries) {
             var key = LdapCache.GenerateSearchKey(baseDn, scope, filter, attributes);
             this.Set(key, new SearchCacheEntry {Entries = entries});
             this._searchEntries.Add(key, baseDn);
@@ -46,7 +47,8 @@ namespace sh.vcp.ldap.Caching
             this.InvalidateSearchInternal(key);
         }
 
-        private static string GenerateSearchKey(string baseDn, int scope, string filter, IEnumerable<string> attributes) {
+        private static string GenerateSearchKey(string baseDn, int scope, string filter,
+            IEnumerable<string> attributes) {
             return $"{baseDn}_{scope}_{filter}_{attributes.Aggregate("", (s, s1) => $"{s}_{s1}")}";
         }
 
@@ -55,9 +57,9 @@ namespace sh.vcp.ldap.Caching
                 if (!key.Contains(kvp.Value)) {
                     return true;
                 }
+
                 this.Remove(kvp.Value);
                 return false;
-
             }).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
     }

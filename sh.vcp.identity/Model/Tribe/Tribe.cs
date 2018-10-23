@@ -11,6 +11,10 @@ namespace sh.vcp.identity.Model.Tribe
 {
     public class Tribe : LdapGroup, ILdapModelWithChildren
     {
+        public Tribe() : base() {
+            this.DefaultObjectClasses.Add(LdapObjectTypes.Tribe);
+        }
+
         private static readonly Dictionary<PropertyInfo, LdapAttr> Props = LdapAttrHelper.GetLdapAttrs(typeof(Tribe));
 
         public new static readonly string[] LoadProperties = new[] {
@@ -18,7 +22,6 @@ namespace sh.vcp.identity.Model.Tribe
         }.Concat(LdapGroup.LoadProperties).ToArray();
 
         protected override Dictionary<PropertyInfo, LdapAttr> Properties => Tribe.Props;
-        protected override string DefaultObjectClass => LdapObjectTypes.Tribe;
 
         [JsonProperty("Sl")]
         public TribeSl Sl { get; set; }

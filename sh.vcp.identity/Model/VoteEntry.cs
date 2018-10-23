@@ -9,6 +9,10 @@ namespace sh.vcp.identity.Model
 {
     public class VoteEntry : LdapModel
     {
+        public VoteEntry() : base() {
+            this.DefaultObjectClasses.Add(LdapObjectTypes.VotedEntry);
+        }
+
         private static readonly Dictionary<PropertyInfo, LdapAttr> Props =
             LdapAttrHelper.GetLdapAttrs(typeof(VoteEntry));
 
@@ -22,12 +26,11 @@ namespace sh.vcp.identity.Model
         }.Concat(LdapModel.LoadProperties).ToArray();
 
         protected override Dictionary<PropertyInfo, LdapAttr> Properties => VoteEntry.Props;
-        protected override string DefaultObjectClass => LdapObjectTypes.VotedEntry;
 
         [JsonProperty("MemberId")]
         [LdapAttr(LdapProperties.Member)]
         public string MemberUid { get; set; }
-        
+
         [JsonProperty("Active")]
         [LdapAttr(LdapProperties.Active, typeof(bool))]
         public bool Active { get; set; }

@@ -67,6 +67,7 @@ namespace sh.vcp.ldap
                                 await ((ILdapModelWithChildren) m).LoadChildren(this, cancellationToken);
                             entries.Add(m);
                         }
+
                         this._cache.SetSearch(baseDn, scope, filter, attributes, entries.Select(e => e.Dn));
                     }
                     else {
@@ -87,6 +88,7 @@ namespace sh.vcp.ldap
                         entries.Add(m);
                     }
                 }
+
                 if (expectUnique && entries.Count > 1) throw new LdapSearchNotUniqueException(filter, entries.Count);
 
                 return entries.FirstOrDefault();
@@ -252,7 +254,7 @@ namespace sh.vcp.ldap
 
                 if (this._config.LogChanges) {
                     var oldObject = await this.Read<TModel>(dn, cancellationToken);
-                    IEnumerable<Change> changes = ldapModifications.ToChangesModify(dn, oldObject.ObjectClass);
+                    IEnumerable<Change> changes = ldapModifications.ToChangesModify(dn, oldObject.ObjectClasses);
                     await this._trackingDbContext.AddRangeAsync(changes, cancellationToken);
                     await this._trackingDbContext.SaveChangesAsync(cancellationToken);
                 }

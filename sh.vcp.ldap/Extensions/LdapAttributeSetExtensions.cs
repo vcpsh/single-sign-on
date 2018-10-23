@@ -25,7 +25,9 @@ namespace sh.vcp.ldap.Extensions
             foreach (LdapAttribute attr in set) {
                 changes.Add(new Change {
                     Dn = dn,
-                    Type = attr.Name == LdapProperties.CommonName ? Change.TypeEnum.Created : Change.TypeEnum.CreatedAttribute,
+                    Type = attr.Name == LdapProperties.CommonName
+                        ? Change.TypeEnum.Created
+                        : Change.TypeEnum.CreatedAttribute,
                     ObjectClass = objectClass,
                     Property = attr.Name,
                     NewValue = attr.StringValue,
@@ -36,7 +38,7 @@ namespace sh.vcp.ldap.Extensions
         }
 
         public static IEnumerable<Change> ToChangesModify(this LdapModification[] modifications, string dn,
-            string objectClass) {
+            List<string> objectClasses) {
             List<Change> changes = new List<Change>();
             foreach (var modification in modifications) {
                 Change.TypeEnum change;
@@ -57,11 +59,12 @@ namespace sh.vcp.ldap.Extensions
                 changes.Add(new Change {
                     Dn = dn,
                     Type = change,
-                    ObjectClass = objectClass,
+                    ObjectClass = objectClasses.Aggregate("", (str, oc) => str == "" ? oc : $"{str};{oc}"),
                     Property = modification.Attribute.Name,
                     NewValue = modification.Attribute.StringValue
                 });
             }
+
             return changes;
         }
     }

@@ -174,7 +174,8 @@ namespace sh.vcp.identity.Stores
                     var group = await this._connection.Read<VotedLdapGroup>(dn, cancellationToken);
                     if (group.MemberIds.Contains(user.Id)) {
                         var divisionId = dn.Replace($",{this._config.GroupDn}", "");
-                        divisionId = divisionId.Substring(divisionId.LastIndexOf(",", StringComparison.Ordinal)).Replace(",cn=", "");
+                        divisionId = divisionId.Substring(divisionId.LastIndexOf(",", StringComparison.Ordinal))
+                            .Replace(",cn=", "");
                         claims.Add(new IsDivisionLgsClaim(divisionId));
                     }
                 });

@@ -8,6 +8,10 @@ namespace sh.vcp.identity.Models
 {
     public class Division : LdapGroup
     {
+        public Division() : base() {
+            this.DefaultObjectClasses.Add(LdapObjectTypes.Division);
+        }
+
         private static readonly Dictionary<PropertyInfo, LdapAttr>
             Props = LdapAttrHelper.GetLdapAttrs(typeof(Division));
 
@@ -16,7 +20,6 @@ namespace sh.vcp.identity.Models
         }.Concat(LdapGroup.LoadProperties).ToArray();
 
         protected override Dictionary<PropertyInfo, LdapAttr> Properties => Division.Props;
-        protected override string DefaultObjectClass => LdapObjectTypes.Division;
 
         [JsonProperty("DepartmentId")]
         [LdapAttr(LdapProperties.DepartmentId, typeof(int))]

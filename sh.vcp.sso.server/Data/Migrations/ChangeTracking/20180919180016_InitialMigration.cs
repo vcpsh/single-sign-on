@@ -6,12 +6,10 @@ namespace sh.vcp.sso.server.Migrations
 {
     public partial class InitialMigration : Migration
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
+        protected override void Up(MigrationBuilder migrationBuilder) {
             migrationBuilder.CreateTable(
                 name: "Changes",
-                columns: table => new
-                {
+                columns: table => new {
                     guid = table.Column<Guid>(nullable: false),
                     concurrency_token = table.Column<DateTime>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.ComputedColumn),
@@ -23,14 +21,10 @@ namespace sh.vcp.sso.server.Migrations
                     property = table.Column<string>(nullable: true),
                     new_value = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Changes", x => x.guid);
-                });
+                constraints: table => { table.PrimaryKey("PK_Changes", x => x.guid); });
         }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
+        protected override void Down(MigrationBuilder migrationBuilder) {
             migrationBuilder.DropTable(
                 name: "Changes");
         }

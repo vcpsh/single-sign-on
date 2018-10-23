@@ -42,7 +42,7 @@ namespace sh.vcp.sso.server
                 services.Configure<MvcOptions>(options => { options.Filters.Add(new RequireHttpsAttribute()); });
 
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-            
+
             // configure proxy stuff
             if (this._configuration.GetValue("Proxy", false))
                 services.Configure<ForwardedHeadersOptions>(options => {

@@ -8,6 +8,10 @@ namespace sh.vcp.identity.Model
 {
     public class LdapUser : LdapModel
     {
+        public LdapUser() : base() {
+            this.DefaultObjectClasses.Add(LdapObjectTypes.User);
+        }
+
         private static readonly Dictionary<PropertyInfo, LdapAttr>
             Props = LdapAttrHelper.GetLdapAttrs(typeof(LdapUser));
 
@@ -18,7 +22,6 @@ namespace sh.vcp.identity.Model
         }.Concat(LdapModel.LoadProperties).ToArray();
 
         protected override Dictionary<PropertyInfo, LdapAttr> Properties => LdapUser.Props;
-        protected override string DefaultObjectClass => LdapObjectTypes.User;
 
         [JsonProperty("Username")]
         [LdapAttr(LdapProperties.Uid, true)]

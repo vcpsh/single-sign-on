@@ -11,6 +11,10 @@ namespace sh.vcp.identity.Models
 {
     public class LdapGroup : LdapModel
     {
+        public LdapGroup() : base() {
+            this.DefaultObjectClasses.Add(LdapObjectTypes.Group);
+        }
+
         /// <summary>
         /// Workaround group type, to keep the group type on transfer.
         /// </summary>
@@ -36,7 +40,6 @@ namespace sh.vcp.identity.Models
         }.Concat(LdapModel.LoadProperties).ToArray();
 
         protected override Dictionary<PropertyInfo, LdapAttr> Properties => LdapGroup.Props;
-        protected override string DefaultObjectClass => LdapObjectTypes.Group;
 
         /// <summary>
         ///     DisplayName of the group. Should be used in the uid.
@@ -57,7 +60,7 @@ namespace sh.vcp.identity.Models
         [Required]
         [DivisionIdValidation]
         public string DivisionId { get; set; }
-        
+
         [JsonProperty("OfficialMail")]
         [LdapAttr(LdapProperties.OfficialMail, true)]
         [EmailAddress]
@@ -79,32 +82,30 @@ namespace sh.vcp.identity.Models
             base.ProvideEntry(entry);
             if (this.DisplayName == null) this.DisplayName = this.Id;
             this.DivisionId = this.GetDivisionName();
-            switch (this.ObjectClass) {
-                case LdapObjectTypes.Division:
-                    this.Type = GroupType.Division;
-                    break;
-                case LdapObjectTypes.Tribe:
-                    this.Type = GroupType.Tribe;
-                    break;
-                case LdapObjectTypes.TribeGs:
-                    this.Type = GroupType.TribeGs;
-                    break;
-                case LdapObjectTypes.TribeSl:
-                    this.Type = GroupType.TribeSl;
-                    break;
-                case LdapObjectTypes.TribeLr:
-                    this.Type = GroupType.TribeLr;
-                    break;
-                case LdapObjectTypes.TribeLv:
-                    this.Type = GroupType.TribeLv;
-                    break;
-                case LdapObjectTypes.VotedGroup:
-                    this.Type = GroupType.VotedGroup;
-                    break;
-                default:
-                    this.Type = GroupType.Group;
-                    break;
-            }
+            // Maybe this is not needed anymore, because we send the object class over the wire
+//            this.Type = GroupType.Group;
+//
+//            if (this.ObjectClasses.Contains(LdapObjectTypes.VotedGroup)) {
+//                this.ObjectClasses.Add(LdapObjectTypes.VotedGroup);
+//            }
+//            else if (this.ObjectClasses.Contains(LdapObjectTypes.TribeLv)) {
+//                this.ObjectClasses.Add(LdapObjectTypes.TribeLv);
+//            }
+//            else if (this.ObjectClasses.Contains(LdapObjectTypes.TribeLr)) {
+//                this.ObjectClasses.Add(LdapObjectTypes.TribeLr);
+//            }
+//            else if (this.ObjectClasses.Contains(LdapObjectTypes.TribeSl)) {
+//                this.ObjectClasses.Add(LdapObjectTypes.TribeSl);
+//            }
+//            else if (this.ObjectClasses.Contains(LdapObjectTypes.TribeGs)) {
+//                this.ObjectClasses.Add(LdapObjectTypes.TribeGs);
+//            }
+//            else if (this.ObjectClasses.Contains(LdapObjectTypes.Tribe)) {
+//                this.ObjectClasses.Add(LdapObjectTypes.Tribe);
+//            }
+//            else if (this.ObjectClasses.Contains(LdapObjectTypes.Division)) {
+//                this.ObjectClasses.Add(LdapObjectTypes.Division);
+//            }
         }
     }
 }

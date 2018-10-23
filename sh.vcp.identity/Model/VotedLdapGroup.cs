@@ -13,11 +13,14 @@ namespace sh.vcp.identity.Models
 {
     public class VotedLdapGroup : LdapGroup, ILdapModelWithChildren
     {
+        public VotedLdapGroup() : base() {
+            this.DefaultObjectClasses.Add(LdapObjectTypes.VotedGroup);
+        }
+
         private static readonly Dictionary<PropertyInfo, LdapAttr> Props =
             LdapAttrHelper.GetLdapAttrs(typeof(VotedLdapGroup));
 
         protected override Dictionary<PropertyInfo, LdapAttr> Properties => VotedLdapGroup.Props;
-        protected override string DefaultObjectClass => LdapObjectTypes.VotedGroup;
 
         [JsonProperty("ActiveVoteEntries")]
         public ICollection<VoteEntry> ActiveVoteEntries { get; set; } = new List<VoteEntry>();
@@ -25,8 +28,7 @@ namespace sh.vcp.identity.Models
         [JsonProperty("InactiveVoteEntries")]
         public ICollection<VoteEntry> InactiveVoteEntries { get; set; } = new List<VoteEntry>();
 
-        public async Task LoadChildren(ILdapConnection connection, CancellationToken cancellationToken = default)
-        {
+        public async Task LoadChildren(ILdapConnection connection, CancellationToken cancellationToken = default) {
             ICollection<VoteEntry> entries = await connection.Search<VoteEntry>(this.Dn, null,
                 LdapObjectTypes.VotedEntry, LdapConnection.SCOPE_ONE, VoteEntry.LoadProperties, cancellationToken);
             foreach (var voteEntry in entries)
@@ -36,8 +38,7 @@ namespace sh.vcp.identity.Models
                     this.InactiveVoteEntries.Add(voteEntry);
         }
 
-        public ICollection<LdapModel> GetChildren()
-        {
+        public ICollection<LdapModel> GetChildren() {
             return (ICollection<LdapModel>) this.ActiveVoteEntries.Concat(this.InactiveVoteEntries);
         }
     }
