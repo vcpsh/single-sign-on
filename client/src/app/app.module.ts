@@ -52,6 +52,7 @@ import { ConfirmComponent } from './components/confirm/confirm.component';
       client_id: 'sh.vcp.sso-client@1.0.0',
       response_type: 'id_token token',
       scope: 'openid profile sh.vcp.sso@1.0.0',
+      route_after_user_unloaded: '/login',
       automaticSilentRenew: true,
       loadUserInfo: true,
       debug: true,
