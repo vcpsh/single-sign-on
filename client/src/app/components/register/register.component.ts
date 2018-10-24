@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Title} from '@angular/platform-browser';
 import {BaseComponent} from '@vcpsh/sso-client-lib';
 import {AccountService} from '../../services/account.service';
 import {PasswordValidator} from '../../util/password-validator';
@@ -14,9 +15,11 @@ export class RegisterComponent extends BaseComponent {
   public Success = false;
   constructor(
     fb: FormBuilder,
+    title: Title,
     private _service: AccountService,
   ) {
     super();
+    title.setTitle('Register - vcp.sh');
     this.Form = fb.group({
       id: ['', [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       username: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9]*$/)]],

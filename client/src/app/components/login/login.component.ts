@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Title} from '@angular/platform-browser';
 import {ActivatedRoute} from '@angular/router';
 import {BaseComponent} from '@vcpsh/sso-client-lib';
 import {AccountService} from '../../services/account.service';
@@ -15,9 +16,11 @@ export class LoginComponent extends BaseComponent {
   constructor(
     fb: FormBuilder,
     route: ActivatedRoute,
+    title: Title,
     private _service: AccountService,
   ) {
     super();
+    title.setTitle('Login - vcp.sh');
     this.Form = fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],

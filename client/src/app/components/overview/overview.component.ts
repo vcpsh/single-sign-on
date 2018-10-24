@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {Title} from '@angular/platform-browser';
 import {Router} from '@angular/router';
 import {BaseComponent, OidcService} from '@vcpsh/sso-client-lib';
 
@@ -12,7 +13,9 @@ export class OverviewComponent extends BaseComponent {
   constructor(
     router: Router,
     oidc: OidcService,
+    title: Title,
   ) {
     super();
+    title.setTitle('Your Account - vcp.sh');
   }
 }

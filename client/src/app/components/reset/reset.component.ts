@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Title} from '@angular/platform-browser';
 import {ActivatedRoute} from '@angular/router';
 import {BaseComponent} from '@vcpsh/sso-client-lib';
 import {AccountService} from '../../services/account.service';
@@ -20,8 +21,10 @@ export class ResetComponent extends BaseComponent {
     fb: FormBuilder,
     private _service: AccountService,
     route: ActivatedRoute,
+    title: Title,
   ) {
     super();
+    title.setTitle('Reset - vcp.sh');
     this.Form = fb.group({
       token: [''],
       password: ['', Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/)],

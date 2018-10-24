@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-page-not-found-component',
@@ -7,7 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PageNotFoundComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    title: Title,
+  ) {
+
+    title.setTitle('404 - Page not found - vcp.sh');
+  }
 
   ngOnInit() {
   }

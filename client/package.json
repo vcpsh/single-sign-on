@@ -4,8 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "build:production": "ng build --prod",
+    "build": "node version.js && ng build",
+    "build:production": "node version.js && ng build --prod --vendor-chunk",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -39,6 +39,7 @@
     "@types/jasminewd2": "~2.0.5",
     "@types/node": "~10.12.0",
     "codelyzer": "~4.5.0",
+    "git-describe": "^4.0.3",
     "jasmine-core": "~3.2.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~3.1.1",

@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {Title} from '@angular/platform-browser';
 import {ActivatedRoute} from '@angular/router';
 import {BaseComponent} from '@vcpsh/sso-client-lib';
 import {AccountService} from '../../services/account.service';
@@ -15,8 +16,10 @@ export class ConfirmComponent extends BaseComponent {
   constructor(
     service: AccountService,
     route: ActivatedRoute,
+    title: Title,
   ) {
     super();
+    title.setTitle('Confirm - vcp.sh');
     this.addSub(route.queryParams.subscribe(params => {
       if (params.token) {
         const token = Jwt.parse(params.token);
@@ -29,7 +32,7 @@ export class ConfirmComponent extends BaseComponent {
             } else {
               this.Error = true;
             }
-          })
+          });
           console.log(token);
         }
       } else {

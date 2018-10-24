@@ -7,6 +7,9 @@
     </profile>
     <version value="1.0" />
   </component>
+  <component name="JavaScriptSettings">
+    <option name="languageLevel" value="ES6" />
+  </component>
   <component name="ProjectDictionaryState">
     <dictionary name="jan-hendrik">
       <words>
@@ -17,7 +20,6 @@
   </component>
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/angular/angular.iml" filepath="$PROJECT_DIR$/angular/angular.iml" />
       <module fileurl="file://$PROJECT_DIR$/client/client.iml" filepath="$PROJECT_DIR$/client/client.iml" />
     </modules>
   </component>

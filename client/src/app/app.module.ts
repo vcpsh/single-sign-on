@@ -1,4 +1,5 @@
 import {HttpClientModule, HttpClientXsrfModule} from '@angular/common/http';
+import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
   MatButtonModule,
@@ -8,25 +9,26 @@ import {
   MatInputModule,
   MatProgressSpinnerModule,
 } from '@angular/material';
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {BrowserModule} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RouterModule} from '@angular/router';
 import {SsoClientLibModule} from '@vcpsh/sso-client-lib';
 import {environment} from '../environments/environment';
 
-import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LoginComponent } from './components/login/login.component';
+import {AppComponent} from './app.component';
+import {ConfirmComponent} from './components/confirm/confirm.component';
+import {ForgotComponent} from './components/forgot/forgot.component';
+import {LoginComponent} from './components/login/login.component';
+import {LogoutComponent} from './components/logout/logout.component';
+import {OverviewComponent} from './components/overview/overview.component';
+import {PageNotFoundComponent} from './components/page-not-found/page-not-found.component';
+import {PrivacyComponent} from './components/privacy/privacy.component';
+import {RegisterComponent} from './components/register/register.component';
+import {ResetComponent} from './components/reset/reset.component';
 import {AuthGuard} from './guards/auth-guard';
 import {routes} from './routes';
-import { PageNotFoundComponent } from './components/page-not-found-component/page-not-found.component';
-import { RegisterComponent } from './components/register/register.component';
-import { ForgotComponent } from './components/forgot/forgot.component';
-import { OverviewComponent } from './components/overview/overview.component';
-import { LogoutComponent } from './components/logout/logout.component';
 import {AccountService} from './services/account.service';
-import { ResetComponent } from './components/reset/reset.component';
-import { ConfirmComponent } from './components/confirm/confirm.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,8 @@ import { ConfirmComponent } from './components/confirm/confirm.component';
     OverviewComponent,
     LogoutComponent,
     ResetComponent,
-    ConfirmComponent
+    ConfirmComponent,
+    PrivacyComponent,
   ],
   imports: [
     BrowserModule,
@@ -70,6 +73,7 @@ import { ConfirmComponent } from './components/confirm/confirm.component';
     MatFormFieldModule,
     MatInputModule,
     MatProgressSpinnerModule,
+    MatToolbarModule,
   ],
   providers: [
     AccountService,

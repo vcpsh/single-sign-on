@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Title} from '@angular/platform-browser';
 import {BaseComponent} from '@vcpsh/sso-client-lib';
 import {AccountService} from '../../services/account.service';
 
@@ -14,9 +15,11 @@ export class ForgotComponent extends BaseComponent {
 
   constructor(
     fb: FormBuilder,
+    title: Title,
     private _service: AccountService,
   ) {
     super();
+    title.setTitle('Forgot Password - vcp.sh');
     this.Form = fb.group({
       email: ['', [Validators.email, Validators.required]]
     });

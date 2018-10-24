@@ -1,6 +1,12 @@
+@import '~@angular/material/theming';
+@import '../theme';
+
+$primary: map-get($theme, primary);
+$background: map-get($theme, background);
+
 :host {
   display: grid;
-  grid-template-rows: auto min-content auto;
+  grid-template-rows: auto min-content auto 64px;
   height: 100%;
   background-size: cover;
   background-image: url('/assets/background.jpg');
@@ -34,4 +40,21 @@ mat-card {
       margin-bottom: 1em;
     }
   }
+}
+
+.bottomBar {
+  height: 40px;
+  background-color: mat-color($background, status-bar);
+}
+
+.privacy {
+  z-index: 2;
+  position: absolute;
+  width: 100%;
+  text-align: center;
+}
+
+.version {
+  z-index: 1;
+  position: relative;
 }

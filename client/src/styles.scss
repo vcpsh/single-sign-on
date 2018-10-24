@@ -1,15 +1,25 @@
 @import '~@angular/material/theming';
-@import 'theme.scss';
+@import './theme';
 
-@include mat-core();
-@include angular-material-theme($app-theme);
+$primary: map-get($theme, primary);
 
 html, body {
   height: 100%;
   width: 100%;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
 }
-body { margin: 0; font-family: 'Roboto', sans-serif; }
 
 .spacer {
   flex: 1 0 auto;
+}
+
+.link {
+  margin: 0 auto;
+  text-decoration: none;
+  &:hover {
+    cursor: pointer;
+    color: mat-color($primary);
+  }
+  color: black;
 }
