@@ -1,5 +1,6 @@
 FROM node:alpine AS yarninstall
 RUN apk add yarn
+RUN apk add git
 RUN yarn global add @angular/cli
 WORKDIR /src
 COPY client/package.json ./package.json
