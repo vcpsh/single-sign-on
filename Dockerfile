@@ -2,7 +2,9 @@ FROM node:alpine AS yarninstall
 RUN apk add yarn
 RUN apk add git
 RUN yarn global add @angular/cli
-WORKDIR /src
+WORKDIR /repo
+COPY .git .
+WORKDIR /repo/src
 COPY client/package.json ./package.json
 COPY client/yarn.lock ./yarn.lock
 RUN yarn --pure-lockfile
@@ -10,19 +12,19 @@ RUN yarn --pure-lockfile
 FROM yarninstall AS yarninstall_projects
 COPY client/projects/vcpsh/sso-client-lib/package.json ./projects/vcpsh/sso-client-lib/package.json
 COPY client/projects/vcpsh/sso-client-lib/yarn.lock ./projects/vcpsh/sso-client-lib/yarn.lock
-WORKDIR /src/projects/vcpsh/sso-client-lib
+WORKDIR /repo/src/projects/vcpsh/sso-client-lib
 RUN yarn --pure-lockfile
 
 FROM yarninstall_projects AS copy_client_sources
-WORKDIR /src
+WORKDIR /repo/src
 COPY client .
 
 FROM copy_client_sources AS ngbuild_projects
-WORKDIR /src
+WORKDIR /repo/src
 RUN ng build --project @vcpsh/sso-client-lib
 
 FROM ngbuild_projects AS ngbuild
-WORKDIR /src
+WORKDIR /repo/src
 RUN yarn run build:production
 
 FROM microsoft/dotnet:2.1-aspnetcore-runtime AS base
@@ -45,5 +47,5 @@ RUN dotnet publish sh.vcp.sso.server.csproj -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-COPY --from=ngbuild /src/dist/client/ ./wwwroot/
+COPY --from=ngbuild /repo/src/dist/client/ ./wwwroot/
 ENTRYPOINT ["dotnet", "sh.vcp.sso.server.dll"]
