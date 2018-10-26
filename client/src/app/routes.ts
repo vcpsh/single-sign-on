@@ -11,14 +11,14 @@ import {ResetComponent} from './components/reset/reset.component';
 import {AuthGuard} from './guards/auth-guard';
 
 export const routes: Route[] = [
-  { path: 'start', pathMatch: 'full', redirectTo: '/' },
-  { path: 'login', component: LoginComponent },
-  { path: 'logout', component: LogoutComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'confirm', component: ConfirmComponent },
-  { path: 'forgot', component: ForgotComponent },
-  { path: 'reset', component: ResetComponent},
-  {path: 'privacy', component: PrivacyComponent},
-  { path: '', pathMatch: 'full', component: OverviewComponent, canActivate: [AuthGuard]},
-  { path: '**', component: PageNotFoundComponent },
+  {path: 'start', pathMatch: 'full', redirectTo: '/'},
+  {path: 'login', component: LoginComponent},
+  {path: 'logout', component: LogoutComponent},
+  {path: 'register', component: RegisterComponent},
+  {path: 'confirm', component: ConfirmComponent},
+  {path: 'forgot', component: ForgotComponent},
+  {path: 'reset', component: ResetComponent},
+  {path: 'privacy', component: PrivacyComponent, data: {wide: true}},
+  {path: '', pathMatch: 'full', component: OverviewComponent, canActivate: [AuthGuard]},
+  {path: '**', component: PageNotFoundComponent},
 ];

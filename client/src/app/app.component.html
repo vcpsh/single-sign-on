@@ -1,6 +1,6 @@
 <ng-container *ngIf="!AuthGuardActive" class="container mat-typography">
   <div></div>
-  <mat-card>
+  <mat-card [class.wide-card]="Wide">
     <mat-card-header>
       <div mat-card-avatar class="header-image"></div>
     </mat-card-header>
@@ -14,7 +14,7 @@
     </mat-toolbar-row>
     <mat-toolbar-row>
       <div class="privacy"><a class="mat-subheading-1 link" routerLink="/privacy">Datenschutzerklärung</a></div>
-      <div class="version"><a class="mat-caption">Version {{ Version.version }} ({{ Version.suffix }})</a></div>
+      <div class="version"><a class="mat-caption">Version {{ Version.version }} ({{ Version.hash }})</a></div>
     </mat-toolbar-row>
   </mat-toolbar>
 </ng-container>

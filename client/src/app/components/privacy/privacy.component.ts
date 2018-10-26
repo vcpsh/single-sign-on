@@ -12,7 +12,7 @@ export class PrivacyComponent extends BaseComponent {
     title: Title,
   ) {
     super();
-    title.setTitle('Privacy - vcp.sh');
+    title.setTitle('Datenschutzerklärung - vcp.sh');
   }
 
 }

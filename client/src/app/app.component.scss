@@ -16,6 +16,11 @@ mat-card {
   width: 500px;
   margin-left: auto;
   margin-right: auto;
+
+  &.wide-card {
+    width: 90%;
+    max-height: 90%;
+  }
 }
 
 .header-image {

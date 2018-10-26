@@ -39,8 +39,13 @@ namespace sh.vcp.ldap.Caching
         public void SetSearch(string baseDn, int scope, string filter, string[] attributes,
             IEnumerable<string> entries) {
             var key = LdapCache.GenerateSearchKey(baseDn, scope, filter, attributes);
+            if (!this._searchEntries.ContainsKey(key)) {
+                this._searchEntries.Add(key, baseDn);
+            }
+            else {
+                this._searchEntries[key] = baseDn;
+            }
             this.Set(key, new SearchCacheEntry {Entries = entries});
-            this._searchEntries.Add(key, baseDn);
         }
 
         public void InvalidateSearch(string key) {
@@ -53,14 +58,7 @@ namespace sh.vcp.ldap.Caching
         }
 
         private void InvalidateSearchInternal(string key) {
-            this._searchEntries = this._searchEntries.Where(kvp => {
-                if (!key.Contains(kvp.Value)) {
-                    return true;
-                }
-
-                this.Remove(kvp.Value);
-                return false;
-            }).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            this._searchEntries.Remove(key);
         }
     }
 }

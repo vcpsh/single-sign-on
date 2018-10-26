@@ -173,7 +173,7 @@ namespace sh.vcp.ldap
                     throw ldapEx;
                 }
 
-                this._logger.LogError(ex, LdapLogCodes.LdapReadError);
+                this._logger.LogError(ex, $"{LdapLogCodes.LdapReadError} ({dn})");
                 return null;
             }
         }
