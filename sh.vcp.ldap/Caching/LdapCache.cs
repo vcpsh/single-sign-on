@@ -20,7 +20,7 @@ namespace sh.vcp.ldap.Caching
         public bool TryGetValue<T>(string key, out T value) {
             return this._cache.TryGetValue(key, out value);
         }
-
+ 
         public void Set<T>(string key, T value) {
             this._cache.Set(key, value, this._defaultOptions);
         }
