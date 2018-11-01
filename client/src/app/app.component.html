@@ -1,10 +1,12 @@
-<ng-container *ngIf="!AuthGuardActive" class="container mat-typography">
+<div [class.wide-card]="Wide" *ngIf="!AuthGuardActive" class="container mat-typography">
   <div></div>
   <mat-card [class.wide-card]="Wide">
     <mat-card-header>
       <div mat-card-avatar class="header-image"></div>
     </mat-card-header>
-    <router-outlet></router-outlet>
+    <div class="card-content">
+      <router-outlet></router-outlet>
+    </div>
   </mat-card>
   <div></div>
   <mat-toolbar class="bottomBar">
@@ -17,4 +19,4 @@
       <div class="version"><a class="mat-caption">Version {{ Version.version }} ({{ Version.hash }})</a></div>
     </mat-toolbar-row>
   </mat-toolbar>
-</ng-container>
+</div>

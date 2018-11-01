@@ -4,12 +4,17 @@
 $primary: map-get($theme, primary);
 $background: map-get($theme, background);
 
-:host {
+.container {
   display: grid;
   grid-template-rows: auto min-content auto 64px;
   height: 100%;
+  max-height: 100%;
   background-size: cover;
   background-image: url('/assets/background.jpg');
+
+  .wide-card {
+    grid-template-rows: auto 80% auto 64px;
+  }
 }
 
 mat-card {
@@ -18,8 +23,9 @@ mat-card {
   margin-right: auto;
 
   &.wide-card {
-    width: 90%;
-    max-height: 90%;
+    width: 80%;
+    max-height: 100%;
+    overflow-y: scroll;
   }
 }
 
@@ -48,7 +54,6 @@ mat-card {
 }
 
 .bottomBar {
-  height: 40px;
   background-color: mat-color($background, status-bar);
 }
 
