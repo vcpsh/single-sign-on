@@ -38,9 +38,6 @@ namespace sh.vcp.sso.server
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services) {
-            if (this._env.IsProduction())
-                services.Configure<MvcOptions>(options => { options.Filters.Add(new RequireHttpsAttribute()); });
-
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
             // configure proxy stuff
@@ -111,6 +108,8 @@ namespace sh.vcp.sso.server
                 identityServerBuilder.AddSigningCredential(new X509Certificate2(
                     Path.Combine(Directory.GetCurrentDirectory(),
                         this._configuration.GetValue<string>("SigningCredential"))));
+            
+            services.AddSpaStaticFiles(config => config.RootPath = this._configuration["WebRootFolder"]);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -119,6 +118,7 @@ namespace sh.vcp.sso.server
                 app.UseDeveloperExceptionPage();
             else
                 app.UseHsts();
+            app.UseHttpsRedirection();
 
             if (this._configuration.GetValue("Proxy", false)) app.UseForwardedHeaders();
 
@@ -138,23 +138,21 @@ namespace sh.vcp.sso.server
                     await ctx.Response.SendFileAsync(Path.Combine(this._env.WebRootPath, "index.html"));
                 }
             });
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
-            app.UseMvcWithDefaultRoute();
+            app.UseSpaStaticFiles();
+            app.UseMvc();
+            app.UseSpa(spa => {
+                spa.Options.SourcePath = this._configuration["WebRootFolder"];
+
+                if (env.IsDevelopment()) {
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+                }
+            });
+            
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope()) {
                 var configCtx = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
                 configCtx.Database.Migrate();
                 serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
             }
-
-            // Disabled because of an issue
-            //            if (env.IsProduction())
-            //            {
-            //                var options = new RewriteOptions()
-            //                .AddRedirectToHttps();
-            //
-            //                app.UseRewriter(options);
-            //            }
         }
     }
 }
