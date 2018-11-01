@@ -13,6 +13,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RouterModule} from '@angular/router';
+import {ServiceWorkerModule} from '@angular/service-worker';
 import {SsoClientLibModule} from '@vcpsh/sso-client-lib';
 import {environment} from '../environments/environment';
 
@@ -74,6 +75,7 @@ import {AccountService} from './services/account.service';
     MatInputModule,
     MatProgressSpinnerModule,
     MatToolbarModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
   ],
   providers: [
     AccountService,
