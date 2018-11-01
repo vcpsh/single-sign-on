@@ -109,7 +109,7 @@ namespace sh.vcp.sso.server
                     Path.Combine(Directory.GetCurrentDirectory(),
                         this._configuration.GetValue<string>("SigningCredential"))));
             
-            services.AddSpaStaticFiles(config => config.RootPath = this._configuration["WebRootFolder"]);
+//            services.AddSpaStaticFiles(config => config.RootPath = this._configuration["WebRootFolder"]);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -138,13 +138,14 @@ namespace sh.vcp.sso.server
                     await ctx.Response.SendFileAsync(Path.Combine(this._env.WebRootPath, "index.html"));
                 }
             });
-            app.UseSpaStaticFiles();
             app.UseMvc();
             app.UseSpa(spa => {
-                spa.Options.SourcePath = this._configuration["WebRootFolder"];
 
                 if (env.IsDevelopment()) {
                     spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+                }
+                else {
+                    spa.Options.SourcePath = this._configuration["WebRootFolder"];
                 }
             });
             
