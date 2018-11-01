@@ -2,6 +2,7 @@
 @import './theme';
 
 $primary: map-get($theme, primary);
+$accent: map-get($theme, accent);
 
 html, body {
   height: 100%;
@@ -17,9 +18,9 @@ html, body {
 .link {
   margin: 0 auto;
   text-decoration: none;
+  color: mat-color($primary);
   &:hover {
     cursor: pointer;
-    color: mat-color($primary);
+    color: mat-color($accent);
   }
-  color: black;
 }
