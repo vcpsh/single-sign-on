@@ -1,7 +1,9 @@
 import {Component} from '@angular/core';
-import {ActivatedRoute, ActivationEnd, Router} from '@angular/router';
+import {MatDialog} from '@angular/material';
+import {ActivatedRoute} from '@angular/router';
 import {BaseComponent} from '@vcpsh/sso-client-lib';
 import {VERSION} from '../environments/version';
+import {PrivacyComponent} from './components/privacy/privacy.component';
 import {AuthGuard} from './guards/auth-guard';
 
 @Component({
@@ -13,11 +15,11 @@ export class AppComponent extends BaseComponent {
   public Version = VERSION;
   public Date = {FullYear: new Date(Date.now()).getFullYear()};
   public AuthGuardActive = false;
-  public Wide = false;
+
   constructor(
     authGuard: AuthGuard,
     activatedRoute: ActivatedRoute,
-    private _router: Router,
+    private _dialog: MatDialog,
   ) {
     super();
     const pendingRedirect = localStorage.getItem('pendingRedirect');
@@ -26,15 +28,11 @@ export class AppComponent extends BaseComponent {
       window.location.href = pendingRedirect;
     }
     this.addSub(authGuard.IsActive.subscribe(value => this.AuthGuardActive = value));
-    this.addOnInit(() => this.onInit());
   }
 
-  private onInit() {
-    this.addSub(this._router.events.subscribe((val) => {
-      if (val instanceof ActivationEnd) {
-        this.Wide = val.snapshot.data.wide === true;
-      }
-    }));
+  public onPrivacyClick() {
+    const dialogRef = this._dialog.open(PrivacyComponent, {
+      disableClose: true,
+    });
   }
-
 }
