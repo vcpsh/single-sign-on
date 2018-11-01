@@ -32,8 +32,10 @@
       <mat-error *ngIf="Form.controls['confirmPassword'].hasError('required')">Pflichtfeld</mat-error>
       <mat-error *ngIf="Form.controls['confirmPassword'].hasError('matchPassword')">Passwörter stimmen nicht überein
       </mat-error>
-
     </mat-form-field>
+    <p>Solltest du bei der Registrierung Probleme haben, kannst du dich gerne an die <a class="link"
+                                                                                        href="mailto:lgs@vcp.sh">Landesgeschäftsstelle</a>
+      wenden.</p>
     <div class="actions">
       <div class="spacer"></div>
       <button mat-button color="primary" type="button" routerLink="/login" tabindex="7">Abbrechen</button>
