@@ -18,7 +18,7 @@ export class PrivacyComponent extends BaseComponent {
     this._oldTitle = title.getTitle();
     title.setTitle('Datenschutzerklärung - vcp.sh');
     console.log('hi from dialog');
-    this._dialogRef.afterClosed(() => title.setTitle(this._oldTitle));
+    this.addSub(this._dialogRef.afterClosed().subscribe(() => title.setTitle(this._oldTitle)));
   }
 
 }
