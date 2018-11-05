@@ -69,7 +69,8 @@ namespace sh.vcp.sso.server
             });
 
             services.AddAntiforgery(options => { options.HeaderName = "X-XSRF-TOKEN"; });
-
+            services.AddCors();
+            
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -102,14 +103,14 @@ namespace sh.vcp.sso.server
                 .AddProfileService<ProfileManager>();
 
             // TODO: don't use the developer signing credential and add cert generation to the docker container
-            if (this._env.IsDevelopment())
+            if (this._env.IsDevelopment()) {
                 identityServerBuilder.AddDeveloperSigningCredential();
-            else
+            }
+            else {
                 identityServerBuilder.AddSigningCredential(new X509Certificate2(
                     Path.Combine(Directory.GetCurrentDirectory(),
                         this._configuration.GetValue<string>("SigningCredential"))));
-            
-//            services.AddSpaStaticFiles(config => config.RootPath = this._configuration["WebRootFolder"]);
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -138,9 +139,9 @@ namespace sh.vcp.sso.server
                     await ctx.Response.SendFileAsync(Path.Combine(this._env.WebRootPath, "index.html"));
                 }
             });
+            app.UseCors();
             app.UseMvc();
             app.UseSpa(spa => {
-
                 if (env.IsDevelopment()) {
                     spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
                 }
@@ -148,7 +149,7 @@ namespace sh.vcp.sso.server
                     spa.Options.SourcePath = this._configuration["WebRootFolder"];
                 }
             });
-            
+
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope()) {
                 var configCtx = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
                 configCtx.Database.Migrate();
