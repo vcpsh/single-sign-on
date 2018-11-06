@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using IdentityServer4.EntityFramework.DbContexts;
+using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -41,17 +42,18 @@ namespace sh.vcp.sso.server
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
             // configure proxy stuff
-            if (this._configuration.GetValue("Proxy", false))
+            if (this._configuration.GetValue("Proxy", false)) {
                 services.Configure<ForwardedHeadersOptions>(options => {
                     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
                     options.RequireHeaderSymmetry = false;
                 });
+            }
 
-            // configure jwt secret
-            services.AddSingleton(
-                new SigningCredentials(
-                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this._configuration.GetValue<string>("JwtSecret"))),
-                    SecurityAlgorithms.HmacSha256));
+            services.AddHttpsRedirection(options => {
+                options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+                options.HttpsPort = 443;
+            });
+
 
             // configure smtp
             services.AddMailKit(optionsBuilder => {
@@ -102,14 +104,22 @@ namespace sh.vcp.sso.server
                 })
                 .AddProfileService<ProfileManager>();
 
-            // TODO: don't use the developer signing credential and add cert generation to the docker container
-            if (this._env.IsDevelopment()) {
+
+            // configure jwt secret
+            services.AddSingleton(
+                new SigningCredentials(
+                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this._configuration.GetValue<string>("JwtSecret"))),
+                    SecurityAlgorithms.HmacSha256));
+
+            // configure identity server signing credential
+            if (this._configuration.GetValue<string>("SigningCredential").IsNullOrEmpty()) {
                 identityServerBuilder.AddDeveloperSigningCredential();
             }
             else {
-                identityServerBuilder.AddSigningCredential(new X509Certificate2(
-                    Path.Combine(Directory.GetCurrentDirectory(),
-                        this._configuration.GetValue<string>("SigningCredential"))));
+                var cert = new X509Certificate2(
+                    this._configuration.GetValue<string>("SigningCredential"),
+                    this._configuration.GetValue<string>("SigningCredentialPassword"));
+                identityServerBuilder.AddSigningCredential(cert);
             }
         }
 
