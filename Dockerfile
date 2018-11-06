@@ -1,6 +1,7 @@
 FROM node:alpine AS yarninstall
 RUN apk add yarn
 RUN apk add git
+RUN apk add python2
 RUN yarn global add @angular/cli
 WORKDIR /repo
 COPY .git .
