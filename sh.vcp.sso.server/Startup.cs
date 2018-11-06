@@ -70,7 +70,7 @@ namespace sh.vcp.sso.server
 
             services.AddAntiforgery(options => { options.HeaderName = "X-XSRF-TOKEN"; });
             services.AddCors();
-            
+
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -115,10 +115,13 @@ namespace sh.vcp.sso.server
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
-            if (env.IsDevelopment())
+            if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
-            else
+            }
+            else {
                 app.UseHsts();
+            }
+
             app.UseHttpsRedirection();
 
             if (this._configuration.GetValue("Proxy", false)) app.UseForwardedHeaders();
@@ -141,14 +144,13 @@ namespace sh.vcp.sso.server
             });
             app.UseCors();
             app.UseMvc();
-            app.UseSpa(spa => {
-                if (bool.TryParse(this._configuration["SpaProxy"], out var spaProxy) && spaProxy == true) {
-                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
-                }
-                else {
-                    spa.Options.SourcePath = this._configuration["WebRootFolder"];
-                }
-            });
+            if (bool.TryParse(this._configuration["SpaProxy"], out var spaProxy) && spaProxy) {
+                app.UseSpa(spa => { spa.UseProxyToSpaDevelopmentServer("http://localhost:4200"); });
+            }
+            else {
+                app.UseStaticFiles();
+                app.UseDefaultFiles();
+            }
 
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope()) {
                 var configCtx = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
