@@ -142,7 +142,7 @@ namespace sh.vcp.sso.server
             app.UseCors();
             app.UseMvc();
             app.UseSpa(spa => {
-                if (env.IsDevelopment()) {
+                if (bool.TryParse(this._configuration["SpaProxy"], out var spaProxy) && spaProxy == true) {
                     spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
                 }
                 else {
