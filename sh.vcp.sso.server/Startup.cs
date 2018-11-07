@@ -49,14 +49,6 @@ namespace sh.vcp.sso.server
                 });
             }
 
-            services.AddHttpsRedirection(options => {
-                options.RedirectStatusCode = this._env.IsDevelopment()
-                    ? StatusCodes.Status307TemporaryRedirect
-                    : StatusCodes.Status308PermanentRedirect;
-                options.HttpsPort = 443;
-            });
-
-
             // configure smtp
             services.AddMailKit(optionsBuilder => {
                 var options = new MailKitOptions();
@@ -131,7 +123,6 @@ namespace sh.vcp.sso.server
             }
             else {
                 app.UseHsts();
-                app.UseHttpsRedirection();
             }
 
             if (this._configuration.GetValue("Proxy", false)) {
