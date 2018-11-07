@@ -446,10 +446,10 @@
   resolved "https://registry.yarnpkg.com/@types/selenium-webdriver/-/selenium-webdriver-3.0.12.tgz#6affe5aed1ba379175075a889adbe2bc3aa62159"
   integrity sha512-hYn+eoOehVUIdMwp5h34ZsGAO1ydja10GDup4BwyoFCdcH5MQ35nQq+AInSaBMEMopD5hEooFCyKo2Pajbe1ag==
 
-"@vcpsh/sso-client-lib@0.2.4":
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/@vcpsh/sso-client-lib/-/sso-client-lib-0.2.4.tgz#7475ccbb621d640c88b50919b348068e48d7aabe"
-  integrity sha512-dbV0Dj5kiaHBknL3NAjgatoDIWe3SVZFIjv64XTcq7YBlIesQU20/JfE5Km3OXsZ2AXbEf9mB9qpVnL/H/uQgA==
+"@vcpsh/sso-client-lib@0.2.6":
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/@vcpsh/sso-client-lib/-/sso-client-lib-0.2.6.tgz#6bc3cb1c240852169ef5303673a25a30ad7f88ee"
+  integrity sha512-Q2zRmPP8/TbNY8aGpaBNoGFLPNZ7g8ArIlUt4vkgs2pxI0/5Sj20+IIHXUji9Dbc7Zp5PuqSywAgZ/vLpqqyqw==
   dependencies:
     tslib "^1.9.0"
 

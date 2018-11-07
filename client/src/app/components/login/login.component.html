@@ -3,10 +3,10 @@
     <span class="mat-dialog-title">Anmelden</span>
     <mat-error *ngIf="Form.hasError('error')">{{ Form.getError('error')}}</mat-error>
     <mat-form-field>
-      <input matInput placeholder="Benutzername" name="username" formControlName="username" tabindex="1">
+      <input matInput placeholder="Benutzername" name="username" formControlName="username" tabindex="1" autocomplete="username">
     </mat-form-field>
     <mat-form-field>
-      <input matInput type="password" placeholder="Passwort" name="password" formControlName="password" tabindex="2">
+      <input matInput type="password" placeholder="Passwort" name="password" formControlName="password" tabindex="2" autocomplete="current-password">
     </mat-form-field>
     <mat-checkbox name="remember" formControlName="remember">Angemeldet bleiben</mat-checkbox>
     <div class="actions">

@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {MatDialog} from '@angular/material';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {BaseComponent} from '@vcpsh/sso-client-lib';
 import {VERSION} from '../environments/version';
 import {PrivacyComponent} from './components/privacy/privacy.component';

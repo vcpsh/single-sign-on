@@ -10,7 +10,7 @@ import {OidcService} from './oidc.service';
 const routes: Route[] = [
   {
     path: 'signin',
-    component: SigninCallbackComponent
+    component: SigninCallbackComponent,
   }
   ];
 @NgModule({

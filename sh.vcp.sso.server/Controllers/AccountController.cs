@@ -192,27 +192,20 @@ namespace sh.vcp.sso.server.Controllers
         [HttpPost("reset")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Reset([FromBody] ResetViewModel vm, CancellationToken cancellationToken) {
-            try {
-                SecurityToken token;
-                JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-                var claims =
-                    new JwtSecurityTokenHandler().ValidateToken(vm.JwtTokenString, this._tokenValidationParameters,
-                        out token);
+            SecurityToken token;
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            var claims =
+                new JwtSecurityTokenHandler().ValidateToken(vm.JwtTokenString, this._tokenValidationParameters,
+                    out token);
 
-                if (!claims.HasClaim("reset_password", "yes") || vm.Password != vm.ConfirmPassword)
-                    return this.BadRequest();
-
-                var user = await this._users.FindByIdAsync(claims.GetSubjectId(), cancellationToken);
-
-                if (await this._users.SetUserPasswordAsync(user, vm.Password, cancellationToken)) return this.Ok();
-
+            if (!claims.HasClaim("reset_password", "yes") || vm.Password != vm.ConfirmPassword)
                 return this.BadRequest();
-            }
-            catch (Exception ex) {
-                return this.BadRequest();
-            }
 
-            return this.Ok();
+            var user = await this._users.FindByIdAsync(claims.GetSubjectId(), cancellationToken);
+
+            if (await this._users.SetUserPasswordAsync(user, vm.Password, cancellationToken)) return this.Ok();
+
+            return this.BadRequest();
         }
 
         /// <summary>
@@ -222,41 +215,40 @@ namespace sh.vcp.sso.server.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult>
             Register([FromBody] RegisterViewModel vm, CancellationToken cancellationToken) {
-            try {
-                if (!this.ModelState.IsValid) return this.BadRequest();
+            if (!this.ModelState.IsValid) return this.BadRequest();
 
-                if (vm.Password != vm.ConfirmPassword) return this.BadRequest("Passwords do not match");
+            if (vm.Password != vm.ConfirmPassword) return this.BadRequest("Passwords do not match");
 
-                var member = await this._users.FindByIdAsync(vm.Id, cancellationToken);
-                if (member == null) return this.BadRequest("Unknown VCP-ID");
+            var member = await this._users.FindByIdAsync(vm.Id, cancellationToken);
+            if (member == null) return this.BadRequest("Unknown VCP-ID");
 
-                if (member.UserName != null) return this.BadRequest("Account exists");
+            if (member.UserName != null) return this.BadRequest("Account exists");
 
-                var mByUsername = await this._users.FindByNameAsync(vm.Username, cancellationToken);
-                if (mByUsername != null) return this.BadRequest("Username used by another account");
+            var mByUsername = await this._users.FindByNameAsync(vm.Username, cancellationToken);
+            if (mByUsername != null) return this.BadRequest("Username used by another account");
 
-                var mByMail = await this._users.FindByEmailAsync(vm.Email, cancellationToken);
-                if (mByMail != null) return this.BadRequest("Email used by another account");
+            var mByMail = await this._users.FindByEmailAsync(vm.Email, cancellationToken);
+            if (mByMail != null) return this.BadRequest("Email used by another account");
 
-                var res = await this._users.SetUserPasswordAsync(member, vm.Password, cancellationToken);
-                if (!res) return this.ServerError(new Exception("Sett user password failed"));
+            var res = await this._users.SetUserPasswordAsync(member, vm.Password, cancellationToken);
+            if (!res) return this.ServerError(new Exception("Sett user password failed"));
 
-                Claim[] claims = {
-                    new Claim(JwtRegisteredClaimNames.Email, vm.Email),
-                    new Claim(JwtRegisteredClaimNames.UniqueName, vm.Username),
-                    new Claim("register", "yes"),
-                    new Claim(JwtClaimTypes.Subject, member.Id)
-                };
+            Claim[] claims = {
+                new Claim(JwtRegisteredClaimNames.Email, vm.Email),
+                new Claim(JwtRegisteredClaimNames.UniqueName, vm.Username),
+                new Claim("register", "yes"),
+                new Claim(JwtClaimTypes.Subject, member.Id)
+            };
 
-                var token = new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(
-                    "https://account.vcp.sh",
-                    claims: claims,
-                    expires: DateTime.UtcNow.AddHours(1),
-                    notBefore: DateTime.UtcNow,
-                    signingCredentials: this._signingCredentials
-                ));
+            var token = new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(
+                "https://account.vcp.sh",
+                claims: claims,
+                expires: DateTime.UtcNow.AddHours(1),
+                notBefore: DateTime.UtcNow,
+                signingCredentials: this._signingCredentials
+            ));
 
-                var content = $@"
+            var content = $@"
 <h3>VCP-SH-Account erstellen</h3>
 <p>Mit diesem <a href='https://account.vcp.sh/confirm?token={token}'>Link</a> kannst du die Registrierung für deinen VCP-SH-Account abschließen.</p>
 <p>Aus Sicherheitsgründen ist der Link nur eine Stunde gültig.
@@ -265,13 +257,9 @@ namespace sh.vcp.sso.server.Controllers
 <br>
 <p>Bei weiteren Fragen kannst du dich an die <a href='mailto:lgs@vcp.sh'>Landesgeschäftsstelle</a> wenden.</p>
 ";
-                await this._mail.SendAsync(vm.Email, "Registrierung abschließen", content, true);
+            await this._mail.SendAsync(vm.Email, "Registrierung abschließen", content, true);
 
-                return this.Ok();
-            }
-            catch (Exception ex) {
-                return this.BadRequest();
-            }
+            return this.Ok();
         }
 
         /// <summary>
@@ -281,25 +269,21 @@ namespace sh.vcp.sso.server.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Confirm([FromBody] ConfirmViewModel vm,
             CancellationToken cancellationToken) {
-            try {
-                SecurityToken token;
-                JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-                var claims =
-                    new JwtSecurityTokenHandler().ValidateToken(vm.JwtTokenString, this._tokenValidationParameters,
-                        out token);
+            SecurityToken token;
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            var claims =
+                new JwtSecurityTokenHandler().ValidateToken(vm.JwtTokenString, this._tokenValidationParameters,
+                    out token);
 
-                if (!claims.HasClaim("register", "yes")) return this.BadRequest();
+            if (!claims.HasClaim("register", "yes")) return this.BadRequest();
 
-                var user = await this._users.FindByIdAsync(claims.GetSubjectId(), cancellationToken);
-                user.Email = claims.Claims.First(c => c.Type == JwtRegisteredClaimNames.Email).Value;
-                user.EmailVerified = true;
-                user.UserName = claims.Claims.First(c => c.Type == JwtRegisteredClaimNames.UniqueName).Value;
+            var user = await this._users.FindByIdAsync(claims.GetSubjectId(), cancellationToken);
+            user.Email = claims.Claims.First(c => c.Type == JwtRegisteredClaimNames.Email).Value;
+            user.EmailVerified = true;
+            user.UserName = claims.Claims.First(c => c.Type == JwtRegisteredClaimNames.UniqueName).Value;
 
-                if (await this._users.CreateAsync(user, cancellationToken) != IdentityResult.Success)
-                    return this.ServerError(new Exception("Create user failed"));
-            }
-            catch (Exception ex) {
-                this.BadRequest();
+            if (await this._users.CreateAsync(user, cancellationToken) != IdentityResult.Success) {
+                return this.ServerError(new Exception("Create user failed"));
             }
 
             return this.Ok();

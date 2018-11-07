@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -40,7 +41,6 @@ namespace sh.vcp.sso.server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services) {
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-
             // configure proxy stuff
             if (this._configuration.GetValue("Proxy", false)) {
                 services.Configure<ForwardedHeadersOptions>(options => {
@@ -50,7 +50,9 @@ namespace sh.vcp.sso.server
             }
 
             services.AddHttpsRedirection(options => {
-                options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+                options.RedirectStatusCode = this._env.IsDevelopment()
+                    ? StatusCodes.Status307TemporaryRedirect
+                    : StatusCodes.Status308PermanentRedirect;
                 options.HttpsPort = 443;
             });
 
@@ -104,7 +106,6 @@ namespace sh.vcp.sso.server
                 })
                 .AddProfileService<ProfileManager>();
 
-
             // configure jwt secret
             services.AddSingleton(
                 new SigningCredentials(
@@ -130,13 +131,17 @@ namespace sh.vcp.sso.server
             }
             else {
                 app.UseHsts();
+                app.UseHttpsRedirection();
             }
 
-            app.UseHttpsRedirection();
-
-            if (this._configuration.GetValue("Proxy", false)) app.UseForwardedHeaders();
-
+            if (this._configuration.GetValue("Proxy", false)) {
+                app.UseForwardedHeaders();
+            }
+            
             app.UseIdentityServer();
+            app.UseCors();
+            app.UseMvc();
+            
             app.Use(async (ctx, next) => {
                 await next();
                 if (ctx.Response.StatusCode == 404 || ctx.Request.Path == "/") {
@@ -152,14 +157,11 @@ namespace sh.vcp.sso.server
                     await ctx.Response.SendFileAsync(Path.Combine(this._env.WebRootPath, "index.html"));
                 }
             });
-            app.UseCors();
-            app.UseMvc();
             if (bool.TryParse(this._configuration["SpaProxy"], out var spaProxy) && spaProxy) {
                 app.UseSpa(spa => { spa.UseProxyToSpaDevelopmentServer("http://localhost:4200"); });
             }
             else {
                 app.UseStaticFiles();
-                app.UseDefaultFiles();
             }
 
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope()) {
