@@ -12,7 +12,6 @@ namespace sh.vcp.ldap
     public abstract class LdapModel
     {
         public LdapModel() {
-            
         }
         protected static readonly string[] LoadProperties = {
             LdapProperties.CommonName,
@@ -20,7 +19,6 @@ namespace sh.vcp.ldap
         };
 
         [JsonProperty("ObjectClasses")]
-        [Required]
         [LdapAttr(LdapProperties.Member, typeof(List<string>), true)]
         public List<string> ObjectClasses { get; set; }
 
@@ -96,8 +94,9 @@ namespace sh.vcp.ldap
             foreach (KeyValuePair<PropertyInfo, LdapAttr> kvp in this.Properties)
                 set.Add(kvp.Value, kvp.Key.GetValue(this));
 
-            if (!set.Contains(LdapProperties.ObjectClass)) {
+            if (set.getAttribute(LdapProperties.ObjectClass) is null) {
                 set.Add(new LdapAttribute(LdapProperties.ObjectClass, this.DefaultObjectClasses.ToArray()));
+                this.DefaultObjectClasses.ForEach((oc => this.ObjectClasses.Add(oc)));
             }
 
             return set;
