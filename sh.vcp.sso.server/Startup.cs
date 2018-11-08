@@ -160,7 +160,7 @@ namespace sh.vcp.sso.server
             app.Use(async (ctx, next) => {
                 await next();
 
-                if (string.Equals(ctx.Request.Path, "/", StringComparison.OrdinalIgnoreCase) && ctx.Response.StatusCode == 404) {
+                if (string.Equals(ctx.Request.Path, "/", StringComparison.OrdinalIgnoreCase) || ctx.Response.StatusCode == 404) {
                     ctx.Response.StatusCode = 200;
                     ctx.Response.ContentType = "text/html";
                     await ctx.Response.SendFileAsync(Path.Combine(this._env.WebRootPath, "index.html"));

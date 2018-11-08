@@ -64,7 +64,6 @@ namespace sh.vcp.sso.server.Controllers
         ///     Handles postback from cancel on the login page
         /// </summary>
         [HttpPost("cancel")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Cancel([FromBody] CancelViewModel vm, CancellationToken cancellationToken) {
             var ctx = await this._interaction.GetAuthorizationContextAsync(vm.ReturnUrl);
             if (ctx != null) {
@@ -85,7 +84,6 @@ namespace sh.vcp.sso.server.Controllers
         ///     Handle postback from username/password login
         /// </summary>
         [HttpPost("login")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([FromBody] LoginModel model, CancellationToken cancellationToken) {
             // something went wrong, show form with error
             if (!this.ModelState.IsValid) return this.BadRequest();
@@ -128,7 +126,6 @@ namespace sh.vcp.sso.server.Controllers
         ///     Handle logout page postback
         /// </summary>
         [HttpPost("logout")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout([FromBody] string logoutId) {
             string idp = null;
             if (this.User?.Identity.IsAuthenticated == true) {
@@ -190,7 +187,6 @@ namespace sh.vcp.sso.server.Controllers
         ///     Handle reset page postback
         /// </summary>
         [HttpPost("reset")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Reset([FromBody] ResetViewModel vm, CancellationToken cancellationToken) {
             SecurityToken token;
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
@@ -266,7 +262,6 @@ namespace sh.vcp.sso.server.Controllers
         ///     Handle confirm page postback
         /// </summary>
         [HttpPost("confirm")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Confirm([FromBody] ConfirmViewModel vm,
             CancellationToken cancellationToken) {
             SecurityToken token;
