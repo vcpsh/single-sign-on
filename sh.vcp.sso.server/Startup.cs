@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
@@ -40,6 +41,10 @@ namespace sh.vcp.sso.server
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services) {
+            if (!this._env.IsDevelopment()) {
+                services.AddAntiforgery(options => { options.HeaderName = "X-XSRF-TOKEN"; });
+            }
+
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
             // configure proxy stuff
             if (this._configuration.GetValue("Proxy", false)) {
@@ -64,10 +69,13 @@ namespace sh.vcp.sso.server
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddAntiforgery(options => { options.HeaderName = "X-XSRF-TOKEN"; });
             services.AddCors();
 
-            services.AddMvc()
+            services.AddMvc(options => {
+                    if (!this._env.IsDevelopment()) {
+                        options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                    }
+                })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddVcpShLdap(this._configuration,
@@ -123,6 +131,22 @@ namespace sh.vcp.sso.server
             }
             else {
                 app.UseHsts();
+                app.Use(next => context =>
+                {
+                    var path = context.Request.Path.Value;
+
+                    if (
+                        string.Equals(path, "/", StringComparison.OrdinalIgnoreCase) ||
+                        string.Equals(path, "/index.html", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var antiforgery = app.ApplicationServices.GetService<IAntiforgery>();
+                        var tokens = antiforgery.GetAndStoreTokens(context);
+                        context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken, 
+                            new CookieOptions() { HttpOnly = false });
+                    }
+
+                    return next(context);
+                });
             }
 
             if (this._configuration.GetValue("Proxy", false)) {
@@ -135,14 +159,8 @@ namespace sh.vcp.sso.server
             
             app.Use(async (ctx, next) => {
                 await next();
-                if (ctx.Response.StatusCode == 404 || ctx.Request.Path == "/") {
-                    var antiforgery = app.ApplicationServices.GetService<IAntiforgery>();
-                    var tokens = antiforgery.GetAndStoreTokens(ctx);
-                    ctx.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken,
-                        new CookieOptions {HttpOnly = false, Path = "/"});
-                }
 
-                if (ctx.Response.StatusCode == 404) {
+                if (string.Equals(ctx.Request.Path, "/", StringComparison.OrdinalIgnoreCase) && ctx.Response.StatusCode == 404) {
                     ctx.Response.StatusCode = 200;
                     ctx.Response.ContentType = "text/html";
                     await ctx.Response.SendFileAsync(Path.Combine(this._env.WebRootPath, "index.html"));

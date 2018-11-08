@@ -156,7 +156,7 @@ namespace sh.vcp.identity.Stores
             try {
                 List<Claim> claims = new List<Claim>();
                 List<Claim> additionalClaims = new List<Claim>();
-
+                
                 // load divisions
                 claims.AddRange((await this._connection.Search<Division>(this._config.GroupDn,
                         $"{LdapProperties.Member}={user.Id}",
