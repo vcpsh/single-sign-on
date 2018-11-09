@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using IdentityModel;
 using IdentityServer4.AspNetIdentity;
 using IdentityServer4.Extensions;
 using IdentityServer4.Models;
@@ -43,6 +45,19 @@ namespace sh.vcp.identity.Managers
             var sub = context.Subject.GetSubjectId();
             var user = await this._userManager.FindByIdAsync(sub);
             var principal = await this._claimsFactory.CreateAsync(user);
+            if (context.RequestedClaimTypes.Contains(JwtClaimTypes.Email)) {
+                var email = user.Email;
+                if (user is LdapMember ldapMember && !ldapMember.OfficialMail.IsNullOrEmpty()) {
+                    email = ldapMember.OfficialMail;
+                }
+                if (!email.IsNullOrEmpty()) {
+                    context.AddRequestedClaims(new[] {
+                        new Claim(JwtClaimTypes.Email, email),
+                        new Claim(JwtClaimTypes.EmailVerified, user.EmailVerified.ToString()),
+                    });
+                }
+            }
+
             IList<Claim> customClaims = await this._userManager.GetClaimsAsync(user);
             IEnumerable<IdentityResource> filteredIdentityResources =
                 context.RequestedResources.IdentityResources.Where(res =>

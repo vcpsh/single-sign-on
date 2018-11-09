@@ -98,9 +98,9 @@ namespace sh.vcp.sso.server.Controllers
                     // only set explicit expiration here if user chooses "remember me". 
                     // otherwise we rely upon expiration configured in cookie middleware.
                     var props = new AuthenticationProperties();
-                    if (AccountOptions.AllowRememberLogin && model.Remember) {
+                    if (model.Remember) {
                         props.IsPersistent = true;
-                        props.ExpiresUtc = DateTime.UtcNow.Add(AccountOptions.RememberMeLoginDuration);
+                        props.ExpiresUtc = DateTime.UtcNow.Add(TimeSpan.FromDays(30));
                     }
 
                     props.AllowRefresh = true;
