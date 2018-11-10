@@ -137,7 +137,8 @@ namespace sh.vcp.sso.server
 
                     if (
                         string.Equals(path, "/", StringComparison.OrdinalIgnoreCase) ||
-                        string.Equals(path, "/index.html", StringComparison.OrdinalIgnoreCase))
+                        string.Equals(path, "/index.html", StringComparison.OrdinalIgnoreCase) ||
+                        !path.StartsWith("/api/", StringComparison.OrdinalIgnoreCase))
                     {
                         var antiforgery = app.ApplicationServices.GetService<IAntiforgery>();
                         var tokens = antiforgery.GetAndStoreTokens(context);
