@@ -80,7 +80,7 @@ import {AccountService} from './services/account.service';
     MatInputModule,
     MatProgressSpinnerModule,
     MatToolbarModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
+    // ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
   ],
   providers: [
     AccountService,
