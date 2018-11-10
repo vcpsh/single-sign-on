@@ -131,37 +131,31 @@ namespace sh.vcp.sso.server
             }
             else {
                 app.UseHsts();
-                app.Use(next => context =>
-                {
-                    var path = context.Request.Path.Value;
-
-                    if (
-                        string.Equals(path, "/", StringComparison.OrdinalIgnoreCase) ||
-                        string.Equals(path, "/index.html", StringComparison.OrdinalIgnoreCase) ||
-                        !path.StartsWith("/api/", StringComparison.OrdinalIgnoreCase))
-                    {
-                        var antiforgery = app.ApplicationServices.GetService<IAntiforgery>();
-                        var tokens = antiforgery.GetAndStoreTokens(context);
-                        context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken, 
-                            new CookieOptions() { HttpOnly = false });
-                    }
-
-                    return next(context);
-                });
             }
 
             if (this._configuration.GetValue("Proxy", false)) {
                 app.UseForwardedHeaders();
             }
-            
+
             app.UseIdentityServer();
             app.UseCors();
             app.UseMvc();
-            
+
             app.Use(async (ctx, next) => {
                 await next();
+                var path = ctx.Request.Path;
+                if (!this._env.IsDevelopment() && (
+                        string.Equals(path, "/", StringComparison.OrdinalIgnoreCase) ||
+                        string.Equals(path, "/index.html", StringComparison.OrdinalIgnoreCase) ||
+                        ctx.Response.StatusCode == StatusCodes.Status404NotFound)) {
+                    var antiforgery = app.ApplicationServices.GetService<IAntiforgery>();
+                    var tokens = antiforgery.GetAndStoreTokens(ctx);
+                    ctx.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken,
+                        new CookieOptions() {HttpOnly = false});
+                }
 
-                if (string.Equals(ctx.Request.Path, "/", StringComparison.OrdinalIgnoreCase) || ctx.Response.StatusCode == 404) {
+                if (string.Equals(ctx.Request.Path, "/", StringComparison.OrdinalIgnoreCase) ||
+                    ctx.Response.StatusCode == 404) {
                     ctx.Response.StatusCode = 200;
                     ctx.Response.ContentType = "text/html";
                     await ctx.Response.SendFileAsync(Path.Combine(this._env.WebRootPath, "index.html"));
