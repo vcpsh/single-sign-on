@@ -6,6 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.Extensions;
+using IdentityServer4.Models;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
