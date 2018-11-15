@@ -45,6 +45,9 @@ namespace sh.vcp.ldap.ChangeTracking
 
         [Column("new_value")]
         public string NewValue { get; set; }
+        
+        [Column("changed_by")]
+        public string ChangedBy { get; set; }
 
         public enum TypeEnum
         {

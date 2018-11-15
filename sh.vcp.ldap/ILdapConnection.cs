@@ -20,15 +20,15 @@ namespace sh.vcp.ldap
 
         Task<bool> Bind(string dn, string password, CancellationToken cancellationToken = default);
 
-        Task<TModel> Add<TModel>(TModel model, CancellationToken cancellationToken = default) where TModel : LdapModel;
+        Task<TModel> Add<TModel>(TModel model, string changedBy, CancellationToken cancellationToken = default) where TModel : LdapModel;
 
-        Task<TModel> AddChildren<TModel>(TModel model, CancellationToken cancellationToken = default)
+        Task<TModel> AddChildren<TModel>(TModel model, string changedBy, CancellationToken cancellationToken = default)
             where TModel : LdapModel, ILdapModelWithChildren;
 
-        Task<bool> Update<TModel>(TModel model, CancellationToken cancellationToken = default)
+        Task<bool> Update<TModel>(TModel model, string changedBy, CancellationToken cancellationToken = default)
             where TModel : LdapModel, new();
 
-        Task<bool> Update<TModel>(string dn, LdapModification[] ldapModifications,
+        Task<bool> Update<TModel>(string dn, LdapModification[] ldapModifications, string changedBy,
             CancellationToken cancellationToken = default) where TModel : LdapModel, new();
     }
 }

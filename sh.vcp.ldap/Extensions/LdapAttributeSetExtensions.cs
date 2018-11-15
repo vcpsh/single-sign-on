@@ -19,7 +19,7 @@ namespace sh.vcp.ldap.Extensions
             return set;
         }
 
-        public static IEnumerable<Change> ToChangesAdd(this LdapAttributeSet set, string dn) {
+        public static IEnumerable<Change> ToChangesAdd(this LdapAttributeSet set, string dn, string changedBy) {
             List<Change> changes = new List<Change>();
             string objectClass = set.getAttribute(LdapProperties.ObjectClass).StringValue;
             foreach (LdapAttribute attr in set) {
@@ -31,13 +31,14 @@ namespace sh.vcp.ldap.Extensions
                     ObjectClass = objectClass,
                     Property = attr.Name,
                     NewValue = attr.StringValue,
+                    ChangedBy = changedBy,
                 });
             }
 
             return changes;
         }
 
-        public static IEnumerable<Change> ToChangesModify(this LdapModification[] modifications, string dn,
+        public static IEnumerable<Change> ToChangesModify(this LdapModification[] modifications, string dn, string changedBy,
             List<string> objectClasses) {
             List<Change> changes = new List<Change>();
             foreach (var modification in modifications) {
@@ -61,7 +62,8 @@ namespace sh.vcp.ldap.Extensions
                     Type = change,
                     ObjectClass = objectClasses.Aggregate("", (str, oc) => str == "" ? oc : $"{str};{oc}"),
                     Property = modification.Attribute.Name,
-                    NewValue = modification.Attribute.StringValue
+                    NewValue = modification.Attribute.StringValue,
+                    ChangedBy = changedBy,
                 });
             }
 

@@ -63,7 +63,7 @@ namespace sh.vcp.identity.Stores
                     new[] {
                         new LdapModification(LdapModification.REPLACE,
                             new LdapAttribute(LdapProperties.UserPassword, password))
-                    }, cancellationToken);
+                    }, nameof(LdapUserStore), cancellationToken);
             }
             catch (Exception ex) {
                 this._logger.LogError(ex, IdentityErrorCodes.SetUserPasswordAsync);
@@ -98,7 +98,11 @@ namespace sh.vcp.identity.Stores
         }
 
         public async Task<IdentityResult> CreateAsync(LdapUser user, CancellationToken cancellationToken) {
-            var res = await this._connection.Update(user, cancellationToken);
+            throw new NotImplementedException();
+        }
+        
+        public async Task<IdentityResult> CreateAsync(LdapUser user, string changedBy, CancellationToken cancellationToken) {
+            var res = await this._connection.Update(user, changedBy, cancellationToken);
             return res ? IdentityResult.Success : IdentityResult.Failed();
         }
 

@@ -28,7 +28,7 @@ using sh.vcp.sso.server.Utilities;
 namespace sh.vcp.sso.server.Controllers
 {
     [Route("/api/account")]
-    public class LoginController : Controller
+    public class AccountController : Controller
     {
         private readonly IEventService _events;
         private readonly IIdentityServerInteractionService _interaction;
@@ -39,7 +39,7 @@ namespace sh.vcp.sso.server.Controllers
         private readonly ILdapUserStore<LdapUser> _users;
         private readonly IViewRenderService _viewRenderService;
 
-        public LoginController(IIdentityServerInteractionService interaction, ILdapUserStore<LdapUser> users,
+        public AccountController(IIdentityServerInteractionService interaction, ILdapUserStore<LdapUser> users,
             IEventService events, ILoginManager<LdapUser> login, IEmailService mail,
             IViewRenderService viewRenderService, SigningCredentials signingCredentials) {
             this._interaction = interaction;
@@ -277,7 +277,7 @@ namespace sh.vcp.sso.server.Controllers
             user.EmailVerified = true;
             user.UserName = claims.Claims.First(c => c.Type == JwtRegisteredClaimNames.UniqueName).Value;
 
-            if (await this._users.CreateAsync(user, cancellationToken) != IdentityResult.Success) {
+            if (await this._users.CreateAsync(user, nameof(AccountController) + nameof(this.Confirm), cancellationToken) != IdentityResult.Success) {
                 return this.ServerError(new Exception("Create user failed"));
             }
 

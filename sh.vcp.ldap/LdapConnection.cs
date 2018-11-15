@@ -196,14 +196,14 @@ namespace sh.vcp.ldap
             }, cancellationToken);
         }
 
-        public async Task<TModel> Add<TModel>(TModel model, CancellationToken cancellationToken)
+        public async Task<TModel> Add<TModel>(TModel model, string changedBy, CancellationToken cancellationToken)
             where TModel : LdapModel {
             try {
                 if (!this._connected) this.Connect();
                 var entry = model.ToEntry();
                 this.Add(entry);
                 if (this._config.LogChanges) {
-                    IEnumerable<Change> changes = entry.getAttributeSet().ToChangesAdd(model.Dn);
+                    IEnumerable<Change> changes = entry.getAttributeSet().ToChangesAdd(model.Dn, changedBy);
                     await this._trackingDbContext.AddRangeAsync(changes, cancellationToken);
                     await this._trackingDbContext.SaveChangesAsync(cancellationToken);
                 }
@@ -226,10 +226,10 @@ namespace sh.vcp.ldap
             }
         }
 
-        public async Task<TModel> AddChildren<TModel>(TModel model, CancellationToken cancellationToken)
+        public async Task<TModel> AddChildren<TModel>(TModel model, string changedBy, CancellationToken cancellationToken)
             where TModel : LdapModel, ILdapModelWithChildren {
             try {
-                foreach (var ldapModel in model.GetChildren()) await this.Add(ldapModel, cancellationToken);
+                foreach (var ldapModel in model.GetChildren()) await this.Add(ldapModel, changedBy, cancellationToken);
                 return model;
             }
             catch (LdapException ex) {
@@ -238,13 +238,13 @@ namespace sh.vcp.ldap
             }
         }
 
-        public Task<bool> Update<TModel>(TModel model, CancellationToken cancellationToken)
+        public Task<bool> Update<TModel>(TModel model, string changedBy, CancellationToken cancellationToken)
             where TModel : LdapModel, new() {
-            return Task.Run(() => this.Update<TModel>(model.Dn, model.GetModifications(), cancellationToken),
+            return Task.Run(() => this.Update<TModel>(model.Dn, model.GetModifications(), changedBy, cancellationToken),
                 cancellationToken);
         }
 
-        public async Task<bool> Update<TModel>(string dn, LdapModification[] ldapModifications,
+        public async Task<bool> Update<TModel>(string dn, LdapModification[] ldapModifications, string changedBy,
             CancellationToken cancellationToken = default) where TModel : LdapModel, new() {
             try {
                 if (ldapModifications.Length <= 0) return true;
@@ -254,7 +254,7 @@ namespace sh.vcp.ldap
 
                 if (this._config.LogChanges) {
                     var oldObject = await this.Read<TModel>(dn, cancellationToken);
-                    IEnumerable<Change> changes = ldapModifications.ToChangesModify(dn, oldObject.ObjectClasses);
+                    IEnumerable<Change> changes = ldapModifications.ToChangesModify(dn, changedBy, oldObject.ObjectClasses);
                     await this._trackingDbContext.AddRangeAsync(changes, cancellationToken);
                     await this._trackingDbContext.SaveChangesAsync(cancellationToken);
                 }
