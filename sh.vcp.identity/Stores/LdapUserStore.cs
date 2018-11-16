@@ -34,6 +34,26 @@ namespace sh.vcp.identity.Stores
             this._logger = logger;
         }
 
+        public Task SetEmailAsync(LdapUser user, string email, CancellationToken cancellationToken) {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> GetEmailAsync(LdapUser user, CancellationToken cancellationToken) {
+            if (user is LdapMember ldapMember) {
+                return Task.FromResult(ldapMember.OfficialMail ?? ldapMember.Email);
+            }
+
+            return Task.FromResult(user.Email);
+        }
+
+        public Task<bool> GetEmailConfirmedAsync(LdapUser user, CancellationToken cancellationToken) {
+            return Task.FromResult(user.EmailVerified);
+        }
+
+        public Task SetEmailConfirmedAsync(LdapUser user, bool confirmed, CancellationToken cancellationToken) {
+            throw new NotImplementedException();
+        }
+
         public async Task<LdapUser> FindByEmailAsync(string email, CancellationToken cancellationToken) {
             try {
                 return await this._connection.SearchFirst<LdapUser>(this._config.MemberDn,
@@ -54,6 +74,14 @@ namespace sh.vcp.identity.Stores
             }
 
             return null;
+        }
+
+        public Task<string> GetNormalizedEmailAsync(LdapUser user, CancellationToken cancellationToken) {
+            throw new NotImplementedException();
+        }
+
+        public Task SetNormalizedEmailAsync(LdapUser user, string normalizedEmail, CancellationToken cancellationToken) {
+            throw new NotImplementedException();
         }
 
         public async Task<bool> SetUserPasswordAsync(LdapUser user, string password,
