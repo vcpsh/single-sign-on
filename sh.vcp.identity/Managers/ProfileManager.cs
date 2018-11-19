@@ -55,6 +55,12 @@ namespace sh.vcp.identity.Managers
 
             var claimsPrincipal = await this._claimsFactory.CreateAsync(user);
             if (claimsPrincipal == null) throw new Exception("ClaimsFactory failed to create a principal");
+            IList<Claim> customClaims = await this._userManager.GetClaimsAsync(user);
+            IEnumerable<IdentityResource> filteredIdentityResources =
+                context.RequestedResources.IdentityResources.Where(res =>
+                    context.Client.AllowedScopes.Contains(res.Name));
+            context.IssuedClaims.AddRange(customClaims.Where(claim =>
+                filteredIdentityResources.Any(res => res.UserClaims.Contains(claim.Type))));
             context.AddRequestedClaims(claimsPrincipal.Claims);
         }
 
