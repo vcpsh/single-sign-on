@@ -125,7 +125,7 @@ namespace sh.vcp.identity.Stores
             throw new NotImplementedException();
         }
 
-        public async Task<IdentityResult> CreateAsync(LdapUser user, CancellationToken cancellationToken) {
+        public Task<IdentityResult> CreateAsync(LdapUser user, CancellationToken cancellationToken) {
             throw new NotImplementedException();
         }
         

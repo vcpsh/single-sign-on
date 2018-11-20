@@ -15,6 +15,6 @@ namespace sh.vcp.identity.Stores
         [Obsolete("Use CreateAsync with changedBy", true)]
         new Task<IdentityResult> CreateAsync(TUser user, CancellationToken cancellationToken = default);
         
-        new Task<IdentityResult> CreateAsync(TUser user, string changedBy, CancellationToken cancellationToken = default);
+        Task<IdentityResult> CreateAsync(TUser user, string changedBy, CancellationToken cancellationToken = default);
     }
 }

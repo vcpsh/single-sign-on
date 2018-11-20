@@ -163,7 +163,7 @@ namespace sh.vcp.sso.server
                 }
             });
             if (bool.TryParse(this._configuration["SpaProxy"], out var spaProxy) && spaProxy) {
-                app.UseSpa(spa => { spa.UseProxyToSpaDevelopmentServer("http://localhost:4200"); });
+                app.UseSpa(spa => { spa.UseProxyToSpaDevelopmentServer(this._configuration["SpaProxyPath"]); });
             }
             else {
                 app.UseStaticFiles();
