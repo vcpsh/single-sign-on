@@ -48,6 +48,9 @@ namespace sh.vcp.ldap.ChangeTracking
         
         [Column("changed_by")]
         public string ChangedBy { get; set; }
+        
+        [Column("change_context")]
+        public Guid ChangeContext { get; set; }
 
         public enum TypeEnum
         {

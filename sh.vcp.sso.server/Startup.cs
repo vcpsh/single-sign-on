@@ -23,6 +23,7 @@ using NETCore.MailKit.Infrastructure.Internal;
 using sh.vcp.identity.Extensions;
 using sh.vcp.identity.Managers;
 using sh.vcp.identity.Model;
+using sh.vcp.ldap.ChangeTracking;
 using sh.vcp.ldap.Extensions;
 using sh.vcp.sso.server.Utilities;
 
@@ -173,6 +174,9 @@ namespace sh.vcp.sso.server
                 var configCtx = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
                 configCtx.Database.Migrate();
                 serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
+                
+                var changeCtx = serviceScope.ServiceProvider.GetRequiredService<ChangeTrackingDbContext>();
+                changeCtx.Database.Migrate();
             }
         }
     }
