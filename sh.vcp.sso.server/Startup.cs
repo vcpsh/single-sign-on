@@ -9,6 +9,7 @@ using IdentityServer4.Extensions;
 using IdentityServer4.Models;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -44,6 +45,9 @@ namespace sh.vcp.sso.server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services) {
             if (!this._env.IsDevelopment()) {
+                services.AddDataProtection()
+                    .PersistKeysToFileSystem(new DirectoryInfo("/keys/"));  
+        
                 services.AddAntiforgery(options => { options.HeaderName = "X-XSRF-TOKEN"; });
             }
 
