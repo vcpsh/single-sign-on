@@ -60,7 +60,8 @@ namespace sh.vcp.ldap
                         value = entry.GetIntAttribute(kv.Value);
                         break;
                     case TypeCode.Boolean:
-                        value = entry.GetBoolAttribute(kv.Value);
+                        bool? boolval = entry.GetBoolAttribute(kv.Value);
+                        value = boolval ?? false;
                         break;
                     case TypeCode.DateTime:
                         value = entry.GetDateTimeAttribute(kv.Value);
