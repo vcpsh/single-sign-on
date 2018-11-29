@@ -150,7 +150,6 @@ namespace sh.vcp.sso.server.Controllers
         ///     Handle forgot page postback
         /// </summary>
         [HttpPost("forgot")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Forgot([FromBody] ForgotViewModel vm, CancellationToken cancellationToken) {
             var user = await this._users.FindByEmailAsync(vm.Email, cancellationToken);
             if (user == null) return this.BadRequest();
@@ -208,7 +207,6 @@ namespace sh.vcp.sso.server.Controllers
         ///     Handle register page postback
         /// </summary>
         [HttpPost("register")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult>
             Register([FromBody] RegisterViewModel vm, CancellationToken cancellationToken) {
             if (!this.ModelState.IsValid) return this.BadRequest();

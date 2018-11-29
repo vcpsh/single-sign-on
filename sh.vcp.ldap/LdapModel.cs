@@ -132,7 +132,7 @@ namespace sh.vcp.ldap
                         bool? oldVal = this.Entry.GetBoolAttribute(kv.Value);
                         var newVal = (bool) kv.Key.GetValue(this);
                         if (oldVal == null || oldVal != newVal) {
-                            mod = new LdapModification(oldVal == null ? LdapModification.REPLACE : LdapModification.ADD,
+                            mod = new LdapModification(oldVal == null ? LdapModification.ADD : LdapModification.REPLACE,
                                 kv.Value.CreateLdapAttribute(newVal));
                         }
 
