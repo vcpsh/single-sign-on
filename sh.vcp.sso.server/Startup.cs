@@ -35,10 +35,9 @@ namespace sh.vcp.sso.server
         private readonly IConfiguration _configuration;
         private readonly IHostingEnvironment _env;
 
-        public Startup(IConfiguration configuration, IHostingEnvironment env, ILoggerFactory loggerFactory) {
+        public Startup(IConfiguration configuration, IHostingEnvironment env) {
             this._configuration = configuration;
             this._env = env;
-            loggerFactory.AddConsole(this._configuration.GetSection("Logging"));
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -50,6 +49,11 @@ namespace sh.vcp.sso.server
         
                 services.AddAntiforgery(options => { options.HeaderName = "X-XSRF-TOKEN"; });
             }
+
+            services.AddLogging(config => {
+                config.AddConfiguration(this._configuration);
+                config.AddConsole();
+            });
 
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
             // configure proxy stuff

@@ -29,11 +29,11 @@ FROM ngbuild_projects AS ngbuild
 WORKDIR /repo/src
 RUN yarn run build:production
 
-FROM microsoft/dotnet:2.1-aspnetcore-runtime AS base
+FROM microsoft/dotnet:2.2-aspnetcore-runtime AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM microsoft/dotnet:2.1-sdk AS build
+FROM microsoft/dotnet:2.2-sdk AS build
 WORKDIR /src
 COPY sh.vcp.sso.server/sh.vcp.sso.server.csproj sh.vcp.sso.server/
 COPY sh.vcp.ldap/sh.vcp.ldap.csproj sh.vcp.ldap/
