@@ -1,36 +1,40 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using IdentityModel;
 using IdentityServer4.AspNetIdentity;
 using IdentityServer4.Extensions;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using sh.vcp.identity.Model;
 
 namespace sh.vcp.identity.Managers
 {
-    /// <summary>
-    ///     IProfileService to integrate with ASP.NET Identity.
-    /// </summary>
-    /// <seealso cref="IdentityServer4.Services.IProfileService" />
+    /// <inheritdoc />
     public class ProfileManager : IProfileService
     {
         private readonly IUserClaimsPrincipalFactory<LdapUser> _claimsFactory;
         private readonly UserManager<LdapUser> _userManager;
+        private readonly ILogger<ProfileManager> _logger;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ProfileService{TUser}" /> class.
         /// </summary>
         /// <param name="userManager">The user manager.</param>
         /// <param name="claimsFactory">The claims factory.</param>
+        /// <param name="logger">The logger</param>
         public ProfileManager(
             UserManager<LdapUser> userManager,
-            IUserClaimsPrincipalFactory<LdapUser> claimsFactory
+            IUserClaimsPrincipalFactory<LdapUser> claimsFactory,
+            ILogger<ProfileManager> logger
         ) {
             this._userManager = userManager;
             this._claimsFactory = claimsFactory;
+            this._logger = logger;
         }
 
         /// <summary>
@@ -39,17 +43,19 @@ namespace sh.vcp.identity.Managers
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        public virtual async Task GetProfileDataAsync(ProfileDataRequestContext context) {
-            var sub = context.Subject.GetSubjectId();
+        public async Task GetProfileDataAsync(ProfileDataRequestContext context) {
+            var sub = context.Subject?.GetSubjectId();
+            if (sub == null) throw new Exception("No sub claim present");
+
             var user = await this._userManager.FindByIdAsync(sub);
-            var principal = await this._claimsFactory.CreateAsync(user);
-            IList<Claim> customClaims = await this._userManager.GetClaimsAsync(user);
-            IEnumerable<IdentityResource> filteredIdentityResources =
-                context.RequestedResources.IdentityResources.Where(res =>
-                    context.Client.AllowedScopes.Contains(res.Name));
-            context.IssuedClaims.AddRange(customClaims.Where(claim =>
-                filteredIdentityResources.Any(res => res.UserClaims.Contains(claim.Type))));
-            context.AddRequestedClaims(principal.Claims);
+            if (user == null) {
+                this._logger?.LogWarning("No user found matching subject Id: {0}", sub);
+                return;
+            }
+
+            var claimsPrincipal = await this._claimsFactory.CreateAsync(user);
+            if (claimsPrincipal == null) throw new Exception("ClaimsFactory failed to create a principal");
+            context.AddRequestedClaims(claimsPrincipal.Claims);
         }
 
         /// <summary>
@@ -59,9 +65,15 @@ namespace sh.vcp.identity.Managers
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        public virtual async Task IsActiveAsync(IsActiveContext context) {
-            var sub = context.Subject.GetSubjectId();
+        public async Task IsActiveAsync(IsActiveContext context) {
+            var sub = context.Subject?.GetSubjectId();
+            if (sub == null) throw new Exception("No subject Id claim present");
+
             var user = await this._userManager.FindByIdAsync(sub);
+            if (user == null) {
+                this._logger?.LogWarning("No user found matching subject Id: {0}", sub);
+            }
+
             context.IsActive = user != null;
         }
     }

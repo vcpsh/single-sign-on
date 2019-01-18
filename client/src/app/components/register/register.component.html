@@ -5,6 +5,7 @@
       <input matInput placeholder="VCP-Nummer" name="id" formControlName="id" tabindex="1">
       <mat-error *ngIf="Form.controls['id'].hasError('required')">Pflichtfeld</mat-error>
       <mat-error *ngIf="Form.controls['id'].hasError('pattern') || Form.controls['id'].hasError('invalidId')">Keine gültige VCP-Nummer</mat-error>
+      <mat-error *ngIf="Form.controls['id'].hasError('used')">Es gibt bereits einen Account zu dieser VCP-Nummer</mat-error>
     </mat-form-field>
     <mat-form-field>
       <input matInput placeholder="Benutzername" name="username" formControlName="username" tabindex="2">
@@ -14,13 +15,13 @@
 
     </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="Email" name="email" type="email" formControlName="email" tabindex="3">
+      <input matInput placeholder="Email" name="email" type="email" formControlName="email" tabindex="3" autocomplete="username email">
       <mat-error *ngIf="Form.controls['email'].hasError('required')">Pflichtfeld</mat-error>
       <mat-error *ngIf="Form.controls['email'].hasError('email')">Keine gültige Email</mat-error>
       <mat-error *ngIf="Form.controls['email'].hasError('used')">Email bereits in Verwendung</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input matInput type="password" placeholder="Passwort" name="password" formControlName="password" tabindex="4">
+      <input matInput type="password" placeholder="Passwort" name="password" formControlName="password" tabindex="4" autocomplete="new-password">
       <mat-error *ngIf="Form.controls['password'].hasError('required')">Pflichtfeld</mat-error>
       <mat-error *ngIf="Form.controls['password'].hasError('Pattern')">Mindestens 8 Zeichen, ein Groß- und ein
         Kleinbuchstabe und eine Zahl
@@ -28,7 +29,7 @@
     </mat-form-field>
     <mat-form-field>
       <input matInput type="password" placeholder="Passwort wiederholen" name="confirmPassword"
-             formControlName="confirmPassword" tabindex="5">
+             formControlName="confirmPassword" tabindex="5" autocomplete="new-password">
       <mat-error *ngIf="Form.controls['confirmPassword'].hasError('required')">Pflichtfeld</mat-error>
       <mat-error *ngIf="Form.controls['confirmPassword'].hasError('matchPassword')">Passwörter stimmen nicht überein
       </mat-error>

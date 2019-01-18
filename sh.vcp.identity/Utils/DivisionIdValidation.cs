@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using sh.vcp.ldap;
+using sh.vcp.ldap.Extensions;
 
 namespace sh.vcp.identity.Utils
 {
@@ -20,7 +21,7 @@ namespace sh.vcp.identity.Utils
                 return new ValidationResult("Validated Object is no LdapGroup");
             }
 
-            var divisionId = model.Dn.Replace($",{ldapConfig.GroupDn}", "");
+            var divisionId = model.Dn.Replace($",{ldapConfig.GroupDn}", "", StringComparison.OrdinalIgnoreCase);
             divisionId = divisionId.Substring(divisionId.LastIndexOf(",", StringComparison.Ordinal)).Replace(",cn=", "");
             return divisionId == value.ToString()
                 ? ValidationResult.Success

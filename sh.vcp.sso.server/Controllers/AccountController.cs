@@ -28,7 +28,7 @@ using sh.vcp.sso.server.Utilities;
 namespace sh.vcp.sso.server.Controllers
 {
     [Route("/api/account")]
-    public class LoginController : Controller
+    public class AccountController : Controller
     {
         private readonly IEventService _events;
         private readonly IIdentityServerInteractionService _interaction;
@@ -39,7 +39,7 @@ namespace sh.vcp.sso.server.Controllers
         private readonly ILdapUserStore<LdapUser> _users;
         private readonly IViewRenderService _viewRenderService;
 
-        public LoginController(IIdentityServerInteractionService interaction, ILdapUserStore<LdapUser> users,
+        public AccountController(IIdentityServerInteractionService interaction, ILdapUserStore<LdapUser> users,
             IEventService events, ILoginManager<LdapUser> login, IEmailService mail,
             IViewRenderService viewRenderService, SigningCredentials signingCredentials) {
             this._interaction = interaction;
@@ -64,7 +64,6 @@ namespace sh.vcp.sso.server.Controllers
         ///     Handles postback from cancel on the login page
         /// </summary>
         [HttpPost("cancel")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Cancel([FromBody] CancelViewModel vm, CancellationToken cancellationToken) {
             var ctx = await this._interaction.GetAuthorizationContextAsync(vm.ReturnUrl);
             if (ctx != null) {
@@ -85,7 +84,6 @@ namespace sh.vcp.sso.server.Controllers
         ///     Handle postback from username/password login
         /// </summary>
         [HttpPost("login")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([FromBody] LoginModel model, CancellationToken cancellationToken) {
             // something went wrong, show form with error
             if (!this.ModelState.IsValid) return this.BadRequest();
@@ -100,9 +98,9 @@ namespace sh.vcp.sso.server.Controllers
                     // only set explicit expiration here if user chooses "remember me". 
                     // otherwise we rely upon expiration configured in cookie middleware.
                     var props = new AuthenticationProperties();
-                    if (AccountOptions.AllowRememberLogin && model.Remember) {
+                    if (model.Remember) {
                         props.IsPersistent = true;
-                        props.ExpiresUtc = DateTime.UtcNow.Add(AccountOptions.RememberMeLoginDuration);
+                        props.ExpiresUtc = DateTime.UtcNow.Add(TimeSpan.FromDays(30));
                     }
 
                     props.AllowRefresh = true;
@@ -128,7 +126,6 @@ namespace sh.vcp.sso.server.Controllers
         ///     Handle logout page postback
         /// </summary>
         [HttpPost("logout")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout([FromBody] string logoutId) {
             string idp = null;
             if (this.User?.Identity.IsAuthenticated == true) {
@@ -153,7 +150,6 @@ namespace sh.vcp.sso.server.Controllers
         ///     Handle forgot page postback
         /// </summary>
         [HttpPost("forgot")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Forgot([FromBody] ForgotViewModel vm, CancellationToken cancellationToken) {
             var user = await this._users.FindByEmailAsync(vm.Email, cancellationToken);
             if (user == null) return this.BadRequest();
@@ -190,7 +186,6 @@ namespace sh.vcp.sso.server.Controllers
         ///     Handle reset page postback
         /// </summary>
         [HttpPost("reset")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Reset([FromBody] ResetViewModel vm, CancellationToken cancellationToken) {
             SecurityToken token;
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
@@ -212,7 +207,6 @@ namespace sh.vcp.sso.server.Controllers
         ///     Handle register page postback
         /// </summary>
         [HttpPost("register")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult>
             Register([FromBody] RegisterViewModel vm, CancellationToken cancellationToken) {
             if (!this.ModelState.IsValid) return this.BadRequest();
@@ -266,7 +260,6 @@ namespace sh.vcp.sso.server.Controllers
         ///     Handle confirm page postback
         /// </summary>
         [HttpPost("confirm")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Confirm([FromBody] ConfirmViewModel vm,
             CancellationToken cancellationToken) {
             SecurityToken token;
@@ -282,7 +275,7 @@ namespace sh.vcp.sso.server.Controllers
             user.EmailVerified = true;
             user.UserName = claims.Claims.First(c => c.Type == JwtRegisteredClaimNames.UniqueName).Value;
 
-            if (await this._users.CreateAsync(user, cancellationToken) != IdentityResult.Success) {
+            if (await this._users.CreateAsync(user, nameof(AccountController) + nameof(this.Confirm), cancellationToken) != IdentityResult.Success) {
                 return this.ServerError(new Exception("Create user failed"));
             }
 

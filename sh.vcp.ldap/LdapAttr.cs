@@ -59,9 +59,10 @@ namespace sh.vcp.ldap
 
                     break;
                 case TypeCode.String:
-                default:
                     ldapAttr = new LdapAttribute(this.LdapName, (string) value);
                     break;
+                default:
+                    throw new NotSupportedException($"Type not supported ({nameof(this.Type)}, {Type.GetTypeCode(this.Type)})");
             }
 
             return ldapAttr;

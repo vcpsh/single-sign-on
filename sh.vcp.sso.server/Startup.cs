@@ -1,12 +1,15 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.Extensions;
+using IdentityServer4.Models;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -21,6 +24,7 @@ using NETCore.MailKit.Infrastructure.Internal;
 using sh.vcp.identity.Extensions;
 using sh.vcp.identity.Managers;
 using sh.vcp.identity.Model;
+using sh.vcp.ldap.ChangeTracking;
 using sh.vcp.ldap.Extensions;
 using sh.vcp.sso.server.Utilities;
 
@@ -40,6 +44,13 @@ namespace sh.vcp.sso.server
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services) {
+            if (!this._env.IsDevelopment()) {
+                services.AddDataProtection()
+                    .PersistKeysToFileSystem(new DirectoryInfo("/keys/"));  
+        
+                services.AddAntiforgery(options => { options.HeaderName = "X-XSRF-TOKEN"; });
+            }
+
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
             // configure proxy stuff
             if (this._configuration.GetValue("Proxy", false)) {
@@ -64,10 +75,13 @@ namespace sh.vcp.sso.server
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddAntiforgery(options => { options.HeaderName = "X-XSRF-TOKEN"; });
             services.AddCors();
 
-            services.AddMvc()
+            services.AddMvc(options => {
+                    if (!this._env.IsDevelopment()) {
+                        options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                    }
+                })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddVcpShLdap(this._configuration,
@@ -128,28 +142,33 @@ namespace sh.vcp.sso.server
             if (this._configuration.GetValue("Proxy", false)) {
                 app.UseForwardedHeaders();
             }
-            
+
             app.UseIdentityServer();
             app.UseCors();
             app.UseMvc();
-            
+
             app.Use(async (ctx, next) => {
                 await next();
-                if (ctx.Response.StatusCode == 404 || ctx.Request.Path == "/") {
+                var path = ctx.Request.Path;
+                if (!this._env.IsDevelopment() && (
+                        string.Equals(path, "/", StringComparison.OrdinalIgnoreCase) ||
+                        string.Equals(path, "/index.html", StringComparison.OrdinalIgnoreCase) ||
+                        ctx.Response.StatusCode == StatusCodes.Status404NotFound)) {
                     var antiforgery = app.ApplicationServices.GetService<IAntiforgery>();
                     var tokens = antiforgery.GetAndStoreTokens(ctx);
                     ctx.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken,
-                        new CookieOptions {HttpOnly = false, Path = "/"});
+                        new CookieOptions() {HttpOnly = false});
                 }
 
-                if (ctx.Response.StatusCode == 404) {
+                if (string.Equals(ctx.Request.Path, "/", StringComparison.OrdinalIgnoreCase) ||
+                    ctx.Response.StatusCode == 404) {
                     ctx.Response.StatusCode = 200;
                     ctx.Response.ContentType = "text/html";
                     await ctx.Response.SendFileAsync(Path.Combine(this._env.WebRootPath, "index.html"));
                 }
             });
             if (bool.TryParse(this._configuration["SpaProxy"], out var spaProxy) && spaProxy) {
-                app.UseSpa(spa => { spa.UseProxyToSpaDevelopmentServer("http://localhost:4200"); });
+                app.UseSpa(spa => { spa.UseProxyToSpaDevelopmentServer(this._configuration["SpaProxyPath"]); });
             }
             else {
                 app.UseStaticFiles();
@@ -159,6 +178,9 @@ namespace sh.vcp.sso.server
                 var configCtx = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
                 configCtx.Database.Migrate();
                 serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
+                
+                var changeCtx = serviceScope.ServiceProvider.GetRequiredService<ChangeTrackingDbContext>();
+                changeCtx.Database.Migrate();
             }
         }
     }
