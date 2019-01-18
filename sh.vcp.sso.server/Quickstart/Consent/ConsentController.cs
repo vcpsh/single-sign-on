@@ -55,7 +55,6 @@ namespace IdentityServer4.Quickstart.UI
         /// Handles the consent screen postback
         /// </summary>
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(ConsentInputModel model) {
             var result = await this.ProcessConsent(model);
 

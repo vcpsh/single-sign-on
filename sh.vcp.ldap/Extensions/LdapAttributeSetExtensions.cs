@@ -19,27 +19,32 @@ namespace sh.vcp.ldap.Extensions
             return set;
         }
 
-        public static IEnumerable<Change> ToChangesAdd(this LdapAttributeSet set, string dn) {
+        public static IEnumerable<Change> ToChangesAdd(this LdapAttributeSet set, string dn, string changedBy) {
             List<Change> changes = new List<Change>();
-            string objectClass = set.getAttribute(LdapProperties.ObjectClass).StringValue;
+            var objectClass = set.getAttribute(LdapProperties.ObjectClass).StringValue;
+            var guid = Guid.NewGuid();
             foreach (LdapAttribute attr in set) {
-                changes.Add(new Change {
+                changes.AddRange(attr.StringValueArray.Select(val => new Change
+                {
                     Dn = dn,
                     Type = attr.Name == LdapProperties.CommonName
                         ? Change.TypeEnum.Created
                         : Change.TypeEnum.CreatedAttribute,
                     ObjectClass = objectClass,
                     Property = attr.Name,
-                    NewValue = attr.StringValue,
-                });
+                    NewValue = attr.Name == LdapProperties.UserPassword ? "****" : attr.StringValue,
+                    ChangeContext = guid,
+                    ChangedBy = changedBy,
+                }));
             }
 
             return changes;
         }
 
-        public static IEnumerable<Change> ToChangesModify(this LdapModification[] modifications, string dn,
+        public static IEnumerable<Change> ToChangesModify(this LdapModification[] modifications, string dn, string changedBy,
             List<string> objectClasses) {
             List<Change> changes = new List<Change>();
+            var guid = Guid.NewGuid();
             foreach (var modification in modifications) {
                 Change.TypeEnum change;
                 switch (modification.Op) {
@@ -55,14 +60,16 @@ namespace sh.vcp.ldap.Extensions
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
-
-                changes.Add(new Change {
+                changes.AddRange(modification.Attribute.StringValueArray.Select(val => new Change
+                {
                     Dn = dn,
                     Type = change,
                     ObjectClass = objectClasses.Aggregate("", (str, oc) => str == "" ? oc : $"{str};{oc}"),
                     Property = modification.Attribute.Name,
-                    NewValue = modification.Attribute.StringValue
-                });
+                    NewValue = modification.Attribute.Name == LdapProperties.UserPassword ? "****" : val,
+                    ChangedBy = changedBy,
+                    ChangeContext = guid,
+                }));
             }
 
             return changes;

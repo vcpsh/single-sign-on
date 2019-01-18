@@ -11,3 +11,4 @@ obj
 sh.vcp.sso.server/wwwroot
 *.iws
 version.ts
+*.user

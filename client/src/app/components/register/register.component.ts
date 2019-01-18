@@ -47,6 +47,9 @@ export class RegisterComponent extends BaseComponent {
             case 'Username used by another account':
               this.Form.controls['username'].setErrors({ used: true});
               break;
+            case 'Account exists':
+              this.Form.controls['id'].setErrors({ used: true});
+              break;
             case true:
               this.Success = true;
               break;

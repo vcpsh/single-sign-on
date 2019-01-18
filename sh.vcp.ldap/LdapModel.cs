@@ -20,7 +20,7 @@ namespace sh.vcp.ldap
 
         [JsonProperty("ObjectClasses")]
         [LdapAttr(LdapProperties.Member, typeof(List<string>), true)]
-        public List<string> ObjectClasses { get; set; }
+        public List<string> ObjectClasses { get; set; } = new List<string>();
 
         protected List<string> DefaultObjectClasses { get; } = new List<string>();
         protected virtual Dictionary<PropertyInfo, LdapAttr> Properties => new Dictionary<PropertyInfo, LdapAttr>();
@@ -60,7 +60,8 @@ namespace sh.vcp.ldap
                         value = entry.GetIntAttribute(kv.Value);
                         break;
                     case TypeCode.Boolean:
-                        value = entry.GetBoolAttribute(kv.Value);
+                        bool? boolval = entry.GetBoolAttribute(kv.Value);
+                        value = boolval ?? false;
                         break;
                     case TypeCode.DateTime:
                         value = entry.GetDateTimeAttribute(kv.Value);
@@ -132,7 +133,7 @@ namespace sh.vcp.ldap
                         bool? oldVal = this.Entry.GetBoolAttribute(kv.Value);
                         var newVal = (bool) kv.Key.GetValue(this);
                         if (oldVal == null || oldVal != newVal) {
-                            mod = new LdapModification(oldVal == null ? LdapModification.REPLACE : LdapModification.ADD,
+                            mod = new LdapModification(oldVal == null ? LdapModification.ADD : LdapModification.REPLACE,
                                 kv.Value.CreateLdapAttribute(newVal));
                         }
 
