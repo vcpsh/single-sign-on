@@ -6,6 +6,7 @@
     "start": "ng serve",
     "build": "node version.js && ng build",
     "build:production": "node version.js && ng build --prod --vendor-chunk",
+    "build:client-lib": "ng build --project @vcpsh/sso-client-lib",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

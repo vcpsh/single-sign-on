@@ -3,7 +3,6 @@ RUN apk add yarn
 RUN apk add git
 RUN apk add python2
 RUN apk add build-base
-RUN yarn global add @angular/cli
 WORKDIR /repo
 COPY .git .
 WORKDIR /repo/src
@@ -23,7 +22,7 @@ COPY client .
 
 FROM copy_client_sources AS ngbuild_projects
 WORKDIR /repo/src
-RUN ng build --project @vcpsh/sso-client-lib
+RUN yarn run build:client-lib
 
 FROM ngbuild_projects AS ngbuild
 WORKDIR /repo/src
