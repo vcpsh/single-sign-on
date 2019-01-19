@@ -40,25 +40,10 @@ namespace sh.vcp.ldap.Extensions
 
         public static List<string> GetStringListAttribute(this LdapEntry entry, LdapAttr attr) {
             List<string> list = entry.getAttribute(attr.LdapName)?.StringValueArray.ToList();
-            if (list == null && !attr.Optional)
+            if ((list == null || list.Count == 0) && !attr.Optional)
                 throw new LdapMandatoryAttributeMissingException(attr.LdapName, entry.DN);
 
             return list ?? new List<string>();
-        }
-
-        [Obsolete]
-        public static bool GetOptionalBoolAttribute(this LdapEntry entry, string attributeName) {
-            return entry.GetOptionalAttribute(attributeName) == "TRUE";
-        }
-
-        [Obsolete]
-        public static string GetOptionalAttribute(this LdapEntry entry, string attributeName) {
-            return entry.getAttribute(attributeName)?.StringValue;
-        }
-
-        [Obsolete]
-        public static List<string> GetOptionalListAttribute(this LdapEntry entry, string attributeName) {
-            return entry.getAttribute(attributeName)?.StringValueArray.ToList() ?? new List<string>();
         }
     }
 }

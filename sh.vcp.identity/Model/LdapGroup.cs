@@ -11,13 +11,11 @@ namespace sh.vcp.identity.Models
 {
     public class LdapGroup : LdapModel
     {
-        public LdapGroup() : base() {
+        public LdapGroup() : base()
+        {
             this.DefaultObjectClasses.Add(LdapObjectTypes.Group);
         }
 
-        /// <summary>
-        /// Workaround group type, to keep the group type on transfer.
-        /// </summary>
         public enum GroupType
         {
             Group,
@@ -33,7 +31,8 @@ namespace sh.vcp.identity.Models
         private static readonly Dictionary<PropertyInfo, LdapAttr> Props =
             LdapAttrHelper.GetLdapAttrs(typeof(LdapGroup));
 
-        public new static readonly string[] LoadProperties = new[] {
+        public new static readonly string[] LoadProperties = new[]
+        {
             LdapProperties.Member,
             LdapProperties.DisplayName,
             LdapProperties.OfficialMail,
@@ -54,7 +53,7 @@ namespace sh.vcp.identity.Models
         /// </summary>
         [JsonProperty("MemberIds")]
         [LdapAttr(LdapProperties.Member, typeof(List<string>), true)]
-        public List<string> MemberIds { get; set; }
+        public List<string> MemberIds { get; set; } = new List<string>();
 
         [JsonProperty("DivisionId")]
         [Required]
@@ -67,45 +66,51 @@ namespace sh.vcp.identity.Models
         public string OfficialMail { get; set; }
 
         [JsonProperty("Type")]
-        public GroupType Type { get; set; }
+        public GroupType Type
+        {
+            get
+            {
+                if (this.ObjectClasses.Contains(LdapObjectTypes.VotedGroup))
+                    return GroupType.VotedGroup;
+
+                if (this.ObjectClasses.Contains(LdapObjectTypes.TribeLv))
+                    return GroupType.TribeLv;
+
+                if (this.ObjectClasses.Contains(LdapObjectTypes.TribeLr))
+                    return GroupType.TribeLr;
+
+                if (this.ObjectClasses.Contains(LdapObjectTypes.TribeSl))
+                    return GroupType.TribeSl;
+
+                if (this.ObjectClasses.Contains(LdapObjectTypes.TribeGs))
+                    return GroupType.TribeGs;
+
+                if (this.ObjectClasses.Contains(LdapObjectTypes.Tribe))
+                    return GroupType.Tribe;
+
+                // ReSharper disable once ConvertIfStatementToReturnStatement
+                if (this.ObjectClasses.Contains(LdapObjectTypes.Division))
+                    return GroupType.Division;
+
+                return GroupType.Group;
+            }
+        }
 
         /// <summary>
         ///     Returns the division this group is in.
         /// </summary>
         /// <returns></returns>
-        private string GetDivisionName() {
+        private string GetDivisionName()
+        {
             string[] dnParts = this.Dn.Split(',');
             return dnParts.Length - 4 < 0 ? "" : dnParts[dnParts.Length - 4].Substring(3);
         }
 
-        public override void ProvideEntry(LdapEntry entry) {
+        public override void ProvideEntry(LdapEntry entry)
+        {
             base.ProvideEntry(entry);
             if (this.DisplayName == null) this.DisplayName = this.Id;
             this.DivisionId = this.GetDivisionName();
-            // Maybe this is not needed anymore, because we send the object class over the wire
-//            this.Type = GroupType.Group;
-//
-//            if (this.ObjectClasses.Contains(LdapObjectTypes.VotedGroup)) {
-//                this.ObjectClasses.Add(LdapObjectTypes.VotedGroup);
-//            }
-//            else if (this.ObjectClasses.Contains(LdapObjectTypes.TribeLv)) {
-//                this.ObjectClasses.Add(LdapObjectTypes.TribeLv);
-//            }
-//            else if (this.ObjectClasses.Contains(LdapObjectTypes.TribeLr)) {
-//                this.ObjectClasses.Add(LdapObjectTypes.TribeLr);
-//            }
-//            else if (this.ObjectClasses.Contains(LdapObjectTypes.TribeSl)) {
-//                this.ObjectClasses.Add(LdapObjectTypes.TribeSl);
-//            }
-//            else if (this.ObjectClasses.Contains(LdapObjectTypes.TribeGs)) {
-//                this.ObjectClasses.Add(LdapObjectTypes.TribeGs);
-//            }
-//            else if (this.ObjectClasses.Contains(LdapObjectTypes.Tribe)) {
-//                this.ObjectClasses.Add(LdapObjectTypes.Tribe);
-//            }
-//            else if (this.ObjectClasses.Contains(LdapObjectTypes.Division)) {
-//                this.ObjectClasses.Add(LdapObjectTypes.Division);
-//            }
         }
     }
 }
