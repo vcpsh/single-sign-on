@@ -19,7 +19,7 @@ namespace sh.vcp.ldap
         };
 
         [JsonProperty("ObjectClasses")]
-        [LdapAttr(LdapProperties.Member, typeof(List<string>), true)]
+        [LdapAttr(LdapProperties.ObjectClass, typeof(List<string>), true)]
         public List<string> ObjectClasses { get; set; } = new List<string>();
 
         protected List<string> DefaultObjectClasses { get; } = new List<string>();
