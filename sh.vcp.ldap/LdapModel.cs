@@ -11,18 +11,23 @@ namespace sh.vcp.ldap
 {
     public abstract class LdapModel
     {
-        public LdapModel() {
+        protected LdapModel() {
         }
+        
         protected static readonly string[] LoadProperties = {
             LdapProperties.CommonName,
             LdapProperties.ObjectClass
         };
+        
+        // ReSharper disable once CollectionNeverUpdated.Global
+        protected static readonly List<string> DefaultObjectClassesStatic = new List<string>();
 
-        [JsonProperty("ObjectClasses")]
+        [JsonIgnore]
         [LdapAttr(LdapProperties.ObjectClass, typeof(List<string>), true)]
         public List<string> ObjectClasses { get; set; } = new List<string>();
 
-        protected List<string> DefaultObjectClasses { get; } = new List<string>();
+        protected List<string> DefaultObjectClasses { get; } = LdapModel.DefaultObjectClassesStatic;
+        
         protected virtual Dictionary<PropertyInfo, LdapAttr> Properties => new Dictionary<PropertyInfo, LdapAttr>();
 
         protected LdapEntry Entry { get; private set; }
@@ -88,21 +93,16 @@ namespace sh.vcp.ldap
         /// </summary>
         /// <param name="set"></param>
         /// <returns></returns>
-        protected virtual LdapAttributeSet GetAttributeSet(LdapAttributeSet set = null) {
+        private LdapAttributeSet GetAttributeSet(LdapAttributeSet set = null) {
             set = set ?? new LdapAttributeSet();
             set.Add(new LdapAttribute(LdapProperties.CommonName, this.Id));
 
             foreach (KeyValuePair<PropertyInfo, LdapAttr> kvp in this.Properties)
                 set.Add(kvp.Value, kvp.Key.GetValue(this));
 
-            if (set.getAttribute(LdapProperties.ObjectClass) is null) {
-                set.Add(new LdapAttribute(LdapProperties.ObjectClass, this.DefaultObjectClasses.ToArray()));
-                this.DefaultObjectClasses.ForEach((oc => this.ObjectClasses.Add(oc)));
-            }
-
             return set;
         }
-
+        
         /// <summary>
         /// Creates a modifications list for the ldap model.
         /// </summary>

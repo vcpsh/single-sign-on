@@ -17,7 +17,7 @@ namespace sh.vcp.ldap.Extensions
             config.GetSection("ldap").Bind(ldapConfig);
             ldapConfig.AuthorizationConfigurationSection = config.GetSection("Authorization");
             services.AddSingleton(ldapConfig);
-            services.AddTransient<ILdapConnection, LdapConnection>();
+            services.AddScoped<ILdapConnection, LdapConnection>();
 
             // add change tracking context
             if (ldapConfig.LogChanges) {

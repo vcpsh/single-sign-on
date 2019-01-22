@@ -47,7 +47,7 @@ namespace sh.vcp.ldap
             bool expectUnique, CancellationToken cancellationToken) where TModel : LdapModel, new() {
             if (objectClass == null) throw new ArgumentNullException(nameof(objectClass));
             return await Task.Run(async () => {
-                if (!this._connected) this.Connect();
+                if (!this._connected) this.ConnectIfDisconnected();
 
                 List<TModel> entries = new List<TModel>();
                 if (filter == null) {
@@ -99,7 +99,7 @@ namespace sh.vcp.ldap
             int scope, string[] attributes,
             CancellationToken cancellationToken = default) where TModel : LdapModel, new() {
             if (objectClass == null) throw new ArgumentNullException(nameof(objectClass));
-            if (!this._connected) this.Connect();
+            if (!this._connected) this.ConnectIfDisconnected();
 
             filter = string.IsNullOrEmpty(filter)
                 ? $"{LdapProperties.ObjectClass}={objectClass}"
@@ -142,10 +142,40 @@ namespace sh.vcp.ldap
             return entries;
         }
 
+        public async Task<TModel> ReadSafe<TModel>(string dn, CancellationToken cancellationToken)
+            where TModel : LdapModel, new()
+        {
+            try {
+                this.ConnectIfDisconnected();
+
+                if (this._config.UseCache && !this._cache.TryGetValue(dn, out TModel model)) {
+                    var entry = this.Read(dn);
+                    model = new TModel();
+                    model.ProvideEntry(entry);
+                    this._cache.Set(dn, model);
+                }
+                else {
+                    var entry = this.Read(dn);
+                    model = new TModel();
+                    model.ProvideEntry(entry);
+                }
+
+                if (typeof(ILdapModelWithChildren).IsAssignableFrom(typeof(TModel))) {
+                    await ((ILdapModelWithChildren) model).LoadChildren(this, cancellationToken);
+                }
+
+                return model;
+            }
+            catch (LdapException ex) when(ex.ResultCode == 34) {
+                return null;
+            }
+        }
+
+
         public async Task<TModel> Read<TModel>(string dn, CancellationToken cancellationToken = default)
             where TModel : LdapModel, new() {
             try {
-                if (!this._connected) this.Connect();
+                if (!this._connected) this.ConnectIfDisconnected();
 
                 TModel model;
                 if (this._config.UseCache) {
@@ -183,7 +213,7 @@ namespace sh.vcp.ldap
                 try {
                     using (var con =
                         new LdapConnection(this._config, this._logger, this._trackingDbContext, this._cache)) {
-                        con.Connect();
+                        con.ConnectIfDisconnected();
                         return con.Bound;
                     }
                 }
@@ -199,7 +229,7 @@ namespace sh.vcp.ldap
         public async Task<TModel> Add<TModel>(TModel model, string changedBy, CancellationToken cancellationToken)
             where TModel : LdapModel {
             try {
-                if (!this._connected) this.Connect();
+                if (!this._connected) this.ConnectIfDisconnected();
                 var entry = model.ToEntry();
                 this.Add(entry);
                 if (this._config.LogChanges) {
@@ -248,7 +278,7 @@ namespace sh.vcp.ldap
             CancellationToken cancellationToken = default) where TModel : LdapModel, new() {
             try {
                 if (ldapModifications.Length <= 0) return true;
-                if (!this._connected) this.Connect();
+                if (!this._connected) this.ConnectIfDisconnected();
 
                 this.Modify(dn, ldapModifications);
 
@@ -270,8 +300,10 @@ namespace sh.vcp.ldap
                 return false;
             }
         }
+        
+        #region InternalMethods
 
-        private void Connect() {
+        private void ConnectIfDisconnected() {
             if (this._connected) return;
             try {
                 this.Connect(this._config.Hostname, this._config.Port);
@@ -284,5 +316,8 @@ namespace sh.vcp.ldap
                 this._connected = false;
             }
         }
+        
+        #endregion InternalMethods
+        
     }
 }

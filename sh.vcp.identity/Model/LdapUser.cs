@@ -11,6 +11,9 @@ namespace sh.vcp.identity.Model
         public LdapUser() : base() {
             this.DefaultObjectClasses.Add(LdapObjectTypes.User);
         }
+        
+        protected new static readonly List<string> DefaultObjectClassesStatic =
+            LdapModel.DefaultObjectClassesStatic.Concat(new List<string> {LdapObjectTypes.User}).ToList();
 
         private static readonly Dictionary<PropertyInfo, LdapAttr>
             Props = LdapAttrHelper.GetLdapAttrs(typeof(LdapUser));

@@ -15,6 +15,9 @@ namespace sh.vcp.identity.Model.Tribe
             this.DefaultObjectClasses.Add(LdapObjectTypes.Tribe);
         }
 
+        protected new static readonly List<string> DefaultObjectClassesStatic =
+            LdapGroup.DefaultObjectClassesStatic.Concat(new List<string> {LdapObjectTypes.Tribe}).ToList();
+        
         private static readonly Dictionary<PropertyInfo, LdapAttr> Props = LdapAttrHelper.GetLdapAttrs(typeof(Tribe));
 
         public new static readonly string[] LoadProperties = new[] {
@@ -40,10 +43,10 @@ namespace sh.vcp.identity.Model.Tribe
         public int DepartmentId { get; set; }
 
         public async Task LoadChildren(ILdapConnection connection, CancellationToken cancellationToken = default) {
-            this.Sl = await connection.Read<TribeSl>($"cn={this.Id}_sl,{this.Dn}", cancellationToken);
-            this.Gs = await connection.Read<TribeGs>($"cn={this.Id}_gs,{this.Dn}", cancellationToken);
-            this.Lr = await connection.Read<TribeLr>($"cn={this.Id}_lr,{this.Dn}", cancellationToken);
-            this.Lv = await connection.Read<TribeLv>($"cn={this.Id}_lv,{this.Dn}", cancellationToken);
+            this.Sl = await connection.ReadSafe<TribeSl>($"cn={this.Id}_sl,{this.Dn}", cancellationToken);
+            this.Gs = await connection.ReadSafe<TribeGs>($"cn={this.Id}_gs,{this.Dn}", cancellationToken);
+            this.Lr = await connection.ReadSafe<TribeLr>($"cn={this.Id}_lr,{this.Dn}", cancellationToken);
+            this.Lv = await connection.ReadSafe<TribeLv>($"cn={this.Id}_lv,{this.Dn}", cancellationToken);
         }
 
         public ICollection<LdapModel> GetChildren() {

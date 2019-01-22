@@ -5,8 +5,10 @@ namespace sh.vcp.identity.Claims
 {
     public class IsDivisionLgsClaim : Claim
     {
-        public IsDivisionLgsClaim(Division division) : base(LdapClaims.IsDivisionLgsClaim, division.Id) { }
+        public static string ClaimType => LdapClaims.IsDivisionLgsClaim;
+        
+        public IsDivisionLgsClaim(Division division) : base(ClaimType, division.Id) { }
 
-        public IsDivisionLgsClaim(string divisionId) : base(LdapClaims.IsDivisionLgsClaim, divisionId) { }
+        public IsDivisionLgsClaim(string divisionId) : base(ClaimType, divisionId) { }
     }
 }

@@ -12,6 +12,9 @@ namespace sh.vcp.identity.Model
         public VoteEntry() : base() {
             this.DefaultObjectClasses.Add(LdapObjectTypes.VotedEntry);
         }
+        
+        protected new static readonly List<string> DefaultObjectClassesStatic =
+            LdapModel.DefaultObjectClassesStatic.Concat(new List<string> {LdapObjectTypes.VotedEntry}).ToList();
 
         private static readonly Dictionary<PropertyInfo, LdapAttr> Props =
             LdapAttrHelper.GetLdapAttrs(typeof(VoteEntry));

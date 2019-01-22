@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
 using Novell.Directory.Ldap;
+using sh.vcp.identity.Model.Tribe;
 using sh.vcp.identity.Utils;
 using sh.vcp.ldap;
 
@@ -25,8 +27,12 @@ namespace sh.vcp.identity.Models
             TribeGs,
             TribeSl,
             TribeLr,
-            TribeLv
+            TribeLv,
+            TribeGroup,
         }
+
+        protected new static readonly List<string> DefaultObjectClassesStatic =
+            LdapModel.DefaultObjectClassesStatic.Concat(new List<string> {LdapObjectTypes.Group}).ToList();
 
         private static readonly Dictionary<PropertyInfo, LdapAttr> Props =
             LdapAttrHelper.GetLdapAttrs(typeof(LdapGroup));
@@ -85,6 +91,9 @@ namespace sh.vcp.identity.Models
                 if (this.ObjectClasses.Contains(LdapObjectTypes.TribeGs))
                     return GroupType.TribeGs;
 
+                if (this.ObjectClasses.Contains(LdapObjectTypes.TribeGroup))
+                    return GroupType.TribeGroup;
+
                 if (this.ObjectClasses.Contains(LdapObjectTypes.Tribe))
                     return GroupType.Tribe;
 
@@ -93,6 +102,40 @@ namespace sh.vcp.identity.Models
                     return GroupType.Division;
 
                 return GroupType.Group;
+            }
+            set
+            {
+                switch (value) {
+                    case GroupType.Group:
+                        this.ObjectClasses.AddRange(LdapModel.DefaultObjectClassesStatic);
+                        break;
+                    case GroupType.Division:
+                        this.ObjectClasses.AddRange(Division.DefaultObjectClassesStatic);
+                        break;
+                    case GroupType.VotedGroup:
+                        this.ObjectClasses.AddRange(VotedLdapGroup.DefaultObjectClassesStatic);
+                        break;
+                    case GroupType.Tribe:
+                        this.ObjectClasses.AddRange(Tribe.DefaultObjectClassesStatic);
+                        break;
+                    case GroupType.TribeGs:
+                        this.ObjectClasses.AddRange(TribeGs.DefaultObjectClassesStatic);
+                        break;
+                    case GroupType.TribeSl:
+                        this.ObjectClasses.AddRange(TribeSl.DefaultObjectClassesStatic);
+                        break;
+                    case GroupType.TribeLr:
+                        this.ObjectClasses.AddRange(TribeLr.DefaultObjectClassesStatic);
+                        break;
+                    case GroupType.TribeLv:
+                        this.ObjectClasses.AddRange(TribeLv.DefaultObjectClassesStatic);
+                        break;
+                    case GroupType.TribeGroup:
+                        this.ObjectClasses.AddRange(TribeGroup.DefaultObjectClassesStatic);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(value), value, null);
+                }
             }
         }
 

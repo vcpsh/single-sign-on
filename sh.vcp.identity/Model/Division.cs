@@ -12,6 +12,9 @@ namespace sh.vcp.identity.Models
             this.DefaultObjectClasses.Add(LdapObjectTypes.Division);
         }
 
+        protected new static readonly List<string> DefaultObjectClassesStatic =
+            LdapGroup.DefaultObjectClassesStatic.Concat(new List<string> {LdapObjectTypes.Division}).ToList();
+        
         private static readonly Dictionary<PropertyInfo, LdapAttr>
             Props = LdapAttrHelper.GetLdapAttrs(typeof(Division));
 

@@ -35,6 +35,7 @@
         public const string TribeSl = "x-sh-vcp-tribe-sl";
         public const string TribeLr = "x-sh-vcp-tribe-lr";
         public const string TribeLv = "x-sh-vcp-tribe-lv";
+        public const string TribeGroup = "x-sh-vcp-tribe-group";
         public const string WaitingUser = "x-sh-vcp-waiting-user";
         public const string Group = "x-sh-vcp-group";
         public const string Division = "x-sh-vcp-division";

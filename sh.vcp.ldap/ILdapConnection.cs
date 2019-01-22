@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Novell.Directory.Ldap;
@@ -15,6 +16,10 @@ namespace sh.vcp.ldap
             string[] attributes,
             CancellationToken cancellationToken = default) where TModel : LdapModel, new();
 
+        Task<TModel> ReadSafe<TModel>(string dn, CancellationToken cancellationToken)
+            where TModel : LdapModel, new();
+
+        [Obsolete("Use ReadSafe instead")]
         Task<TModel> Read<TModel>(string dn, CancellationToken cancellationToken = default)
             where TModel : LdapModel, new();
 
