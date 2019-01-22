@@ -4,30 +4,26 @@ import {Route, RouterModule} from '@angular/router';
 import {AuthInterceptorService} from './auth-interceptor.service';
 import {SsoConfigToken} from './config';
 import {SsoConfig} from './config.model';
-import {SigninCallbackComponent} from './signin-callback.component';
 import {OidcService} from './oidc.service';
+import {SigninCallbackComponent} from './signin-callback.component';
 
 const routes: Route[] = [
   {
     path: 'signin',
     component: SigninCallbackComponent,
-  }
-  ];
+  },
+];
+
 @NgModule({
   imports: [
     RouterModule.forChild(routes),
   ],
   declarations: [SigninCallbackComponent],
+  exports: [
+    RouterModule,
+  ],
   providers: [
     OidcService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptorService,
-      multi: true
-    }
-  ],
-  exports: [
-        RouterModule
   ],
 })
 export class SsoClientLibModule {
@@ -38,6 +34,11 @@ export class SsoClientLibModule {
         {
           provide: SsoConfigToken,
           useValue: ssoConfig,
+        },
+        {
+          provide: HTTP_INTERCEPTORS,
+          useClass: AuthInterceptorService,
+          multi: true,
         },
       ],
     };

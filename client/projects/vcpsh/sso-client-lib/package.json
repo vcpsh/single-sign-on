@@ -1,6 +1,6 @@
 {
   "name": "@vcpsh/sso-client-lib",
-  "version": "0.2.7",
+  "version": "0.2.9",
   "license": "MIT",
   "peerDependencies": {
     "@angular/cdk": "^7.0.0",
