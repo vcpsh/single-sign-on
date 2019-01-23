@@ -20,15 +20,5 @@ steps:
     dockerRegistryConnection: 'vcp-sh-docker-hub-ssoserver'
     imageName: vcpsh/ssoserver
 
-- task: Docker@0
-  displayName: 'Push an image'
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-  inputs:
-    containerregistrytype: 'Container Registry'
-    dockerRegistryConnection: 'vcp-sh-docker-hub-ssoserver'
-    action: 'Push an image'
-    imageName: vcpsh/ssoserver
-    includeLatestTag: true
-
 resources:
 - repo: self
