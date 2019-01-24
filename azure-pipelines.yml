@@ -17,7 +17,6 @@ steps:
   displayName: 'Build an image'
   inputs:
     containerregistrytype: 'Container Registry'
-    dockerRegistryConnection: 'vcp-sh-docker-hub-ssoserver'
     imageName: vcpsh/ssoserver
 
 resources:
