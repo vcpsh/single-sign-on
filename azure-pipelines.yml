@@ -16,7 +16,9 @@ steps:
 - task: Docker@0
   displayName: 'Build an image'
   inputs:
+    action: 'Build an image'
     containerregistrytype: 'Container Registry'
+    dockerFile: '**/Dockerfile'
     imageName: vcpsh/single-sign-on
 
 resources:
