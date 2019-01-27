@@ -17,7 +17,7 @@ steps:
   displayName: 'Build an image'
   inputs:
     containerregistrytype: 'Container Registry'
-    imageName: vcpsh/ssoserver
+    imageName: vcpsh/single-sign-on
 
 resources:
 - repo: self
