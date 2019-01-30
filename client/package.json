@@ -27,7 +27,7 @@
     "@vcpsh/sso-client-lib": "0.2.9",
     "core-js": "^2.6.3",
     "oidc-client": "^1.6.1",
-    "rxjs": "^6.3.3",
+    "rxjs": "^6.4.0",
     "zone.js": "~0.8.29"
   },
   "devDependencies": {
