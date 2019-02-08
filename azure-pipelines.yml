@@ -2,6 +2,7 @@ resources:
 - repo: self
 
 jobs:
+
 - job: Job_1
   displayName: Build client
   condition: succeeded()
@@ -35,11 +36,11 @@ jobs:
       ProjectDirectory: client
       Arguments: 'build:production'
 
-  - task: PublishPipelineArtifact@0
-    displayName: 'Publish Pipeline Artifact'
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: client'
     inputs:
-      artifactName: 'angular-client'
-      targetPath: client/dist/client
+      PathtoPublish: client/dist/client
+      ArtifactName: client
 
 
 - job: Job_2
@@ -67,10 +68,38 @@ jobs:
       arguments: '-c Release'
       zipAfterPublish: false
 
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: server'
+    inputs:
+      PathtoPublish: sh.vcp.sso.server/bin/Release/netcoreapp2.2/publish/
+      ArtifactName: server
+
+
+- job: Job_3
+  displayName: Publish artifacts
+  dependsOn:
+  - Job_1
+  - Job_2
+  condition: succeeded()
+  pool:
+    vmImage: ubuntu-16.04
+  steps:
+  - task: DownloadBuildArtifacts@0
+    displayName: 'Download Build Artifacts'
+    inputs:
+      artifactName: client
+      downloadPath: client/dist/client
+
+  - task: DownloadBuildArtifacts@0
+    displayName: 'Download Build Artifacts'
+    inputs:
+      artifactName: server
+      downloadPath: sh.vcp.sso.server/bin/Release/netcoreapp2.2/publish/
+
   - task: PublishPipelineArtifact@0
     displayName: 'Publish Pipeline Artifact'
     inputs:
-      artifactName: server
-      targetPath: sh.vcp.sso.server/bin/Release/netcoreapp2.2/publish/
+      artifactName: everything
+      targetPath: .
 
 
