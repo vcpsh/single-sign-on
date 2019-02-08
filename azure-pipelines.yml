@@ -1,0 +1,76 @@
+resources:
+- repo: self
+
+jobs:
+- job: Job_1
+  displayName: Build client
+  condition: succeeded()
+  pool:
+    vmImage: Hosted Ubuntu 1604
+  steps:
+  - task: geeklearningio.gl-vsts-tasks-yarn.yarn-installer-task.YarnInstaller@2
+    displayName: 'Use Yarn 1.x'
+
+  - task: geeklearningio.gl-vsts-tasks-yarn.yarn-task.Yarn@2
+    displayName: 'yarn install sso-client-lib'
+    inputs:
+      ProjectDirectory: client/projects/vcpsh
+      Arguments: '--pure-lockfile'
+
+  - task: geeklearningio.gl-vsts-tasks-yarn.yarn-task.Yarn@2
+    displayName: 'yarn install'
+    inputs:
+      ProjectDirectory: client
+      Arguments: '--pure-lockfile'
+
+  - task: geeklearningio.gl-vsts-tasks-yarn.yarn-task.Yarn@2
+    displayName: 'yarn build sso-client-lib'
+    inputs:
+      ProjectDirectory: client
+      Arguments: 'build:client-lib'
+
+  - task: geeklearningio.gl-vsts-tasks-yarn.yarn-task.Yarn@2
+    displayName: 'yarn build'
+    inputs:
+      ProjectDirectory: client
+      Arguments: 'build:production'
+
+  - task: PublishPipelineArtifact@0
+    displayName: 'Publish Pipeline Artifact'
+    inputs:
+      artifactName: 'angular-client'
+      targetPath: client/dist/client
+
+
+- job: Job_2
+  displayName: Build server
+  condition: succeeded()
+  pool:
+    vmImage: Hosted Ubuntu 1604
+  steps:
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet restore'
+    inputs:
+      command: restore
+      projects: '**/*.csproj'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet build'
+    inputs:
+      projects: sh.vcp.sso.server/sh.vcp.sso.server.csproj
+      arguments: '-c Release'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet publish'
+    inputs:
+      command: publish
+      arguments: '-c Release'
+      zipAfterPublish: false
+
+  - task: PublishPipelineArtifact@0
+    displayName: 'Publish Pipeline Artifact'
+    inputs:
+      artifactName: server
+      targetPath: sh.vcp.sso.server/bin/Release/netcoreapp2.2/publish/
+
+
