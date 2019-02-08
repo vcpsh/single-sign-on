@@ -30,15 +30,15 @@ namespace sh.vcp.ldap.Caching
             this._cache.Remove(key);
         }
 
-        public bool TryGetSearch(string baseDn, int scope, string filter, IEnumerable<string> attributes,
+        public bool TryGetSearch(string baseDn, int scope, string filter,
             out SearchCacheEntry search) {
-            var key = LdapCache.GenerateSearchKey(baseDn, scope, filter, attributes);
+            var key = LdapCache.GenerateSearchKey(baseDn, scope, filter);
             return this.TryGetValue(key, out search);
         }
 
-        public void SetSearch(string baseDn, int scope, string filter, string[] attributes,
+        public void SetSearch(string baseDn, int scope, string filter,
             IEnumerable<string> entries) {
-            var key = LdapCache.GenerateSearchKey(baseDn, scope, filter, attributes);
+            var key = LdapCache.GenerateSearchKey(baseDn, scope, filter);
             if (!this._searchEntries.ContainsKey(key)) {
                 this._searchEntries.Add(key, baseDn);
             }
@@ -52,9 +52,8 @@ namespace sh.vcp.ldap.Caching
             this.InvalidateSearchInternal(key);
         }
 
-        private static string GenerateSearchKey(string baseDn, int scope, string filter,
-            IEnumerable<string> attributes) {
-            return $"{baseDn}_{scope}_{filter}_{attributes.Aggregate("", (s, s1) => $"{s}_{s1}")}";
+        private static string GenerateSearchKey(string baseDn, int scope, string filter) {
+            return $"{baseDn}_{scope}_{filter}";
         }
 
         private void InvalidateSearchInternal(string key) {

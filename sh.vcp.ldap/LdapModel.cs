@@ -35,14 +35,14 @@ namespace sh.vcp.ldap
         /// <summary>
         ///     Id of the object (cn=*).
         /// </summary>
-        [JsonProperty("Id")]
+        [JsonProperty("id")]
         [Required]
         public string Id { get; set; }
 
         /// <summary>
         ///     Domainname of the object.
         /// </summary>
-        [JsonProperty("Dn")]
+        [JsonProperty("dn")]
         [Required]
         public string Dn { get; set; }
 

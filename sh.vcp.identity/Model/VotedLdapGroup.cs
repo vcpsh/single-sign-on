@@ -25,10 +25,10 @@ namespace sh.vcp.identity.Models
 
         protected override Dictionary<PropertyInfo, LdapAttr> Properties => VotedLdapGroup.Props;
 
-        [JsonProperty("ActiveVoteEntries")]
+        [JsonProperty("activeVoteEntries")]
         public ICollection<VoteEntry> ActiveVoteEntries { get; set; } = new List<VoteEntry>();
 
-        [JsonProperty("InactiveVoteEntries")]
+        [JsonProperty("inactiveVoteEntries")]
         public ICollection<VoteEntry> InactiveVoteEntries { get; set; } = new List<VoteEntry>();
 
         public async Task LoadChildren(ILdapConnection connection, CancellationToken cancellationToken = default) {
@@ -41,7 +41,7 @@ namespace sh.vcp.identity.Models
                     this.InactiveVoteEntries.Add(voteEntry);
         }
 
-        public ICollection<LdapModel> GetChildren() {
+        public IEnumerable<LdapModel> GetChildren() {
             return (ICollection<LdapModel>) this.ActiveVoteEntries.Concat(this.InactiveVoteEntries);
         }
     }

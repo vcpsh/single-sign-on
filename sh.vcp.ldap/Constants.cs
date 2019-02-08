@@ -39,12 +39,13 @@
         public const string WaitingUser = "x-sh-vcp-waiting-user";
         public const string Group = "x-sh-vcp-group";
         public const string Division = "x-sh-vcp-division";
+        public const string OrgUnit = "x-sh-vcp-org-unit";
         public const string VotedGroup = "x-sh-vcp-voted-group";
         public const string VotedEntry = "x-sh-vcp-vote-entry";
     }
 
     public static class LdapConstants
     {
-        public static readonly string DateFormat = "yyyyMMddHHmmssZ";
+        public const string DateFormat = "yyyyMMddHHmmssZ";
     }
 }

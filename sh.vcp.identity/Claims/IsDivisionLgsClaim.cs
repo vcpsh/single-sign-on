@@ -3,6 +3,10 @@ using sh.vcp.identity.Models;
 
 namespace sh.vcp.identity.Claims
 {
+    /// <inheritdoc />
+    /// <summary>
+    /// Claim for division lgs.
+    /// </summary>
     public class IsDivisionLgsClaim : Claim
     {
         public static string ClaimType => LdapClaims.IsDivisionLgsClaim;

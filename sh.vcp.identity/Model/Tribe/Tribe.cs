@@ -26,19 +26,19 @@ namespace sh.vcp.identity.Model.Tribe
 
         protected override Dictionary<PropertyInfo, LdapAttr> Properties => Tribe.Props;
 
-        [JsonProperty("Sl")]
+        [JsonProperty("sl")]
         public TribeSl Sl { get; set; }
 
-        [JsonProperty("Gs")]
+        [JsonProperty("gs")]
         public TribeGs Gs { get; set; }
 
-        [JsonProperty("Lr")]
+        [JsonProperty("lr")]
         public TribeLr Lr { get; set; }
 
-        [JsonProperty("Lv")]
+        [JsonProperty("lv")]
         public TribeLv Lv { get; set; }
 
-        [JsonProperty("TribeId")]
+        [JsonProperty("tribeId")]
         [LdapAttr(LdapProperties.DepartmentId, typeof(int))]
         public int DepartmentId { get; set; }
 
@@ -49,7 +49,7 @@ namespace sh.vcp.identity.Model.Tribe
             this.Lv = await connection.ReadSafe<TribeLv>($"cn={this.Id}_lv,{this.Dn}", cancellationToken);
         }
 
-        public ICollection<LdapModel> GetChildren() {
+        public IEnumerable<LdapModel> GetChildren() {
             return new List<LdapModel> {
                 this.Gs,
                 this.Lr,

@@ -42,6 +42,7 @@ namespace sh.vcp.ldap
             this._trackingDbContext = trackingDbContext;
         }
 
+        #region SEARCH
         public async Task<TModel> SearchFirst<TModel>(string baseDn, string filter, string objectClass, int scope,
             string[] attributes,
             bool expectUnique, CancellationToken cancellationToken) where TModel : LdapModel, new() {
@@ -56,7 +57,7 @@ namespace sh.vcp.ldap
 
                 if (this._config.UseCache) {
                     SearchCacheEntry search;
-                    if (!this._cache.TryGetSearch(baseDn, scope, filter, attributes, out search)) {
+                    if (!this._cache.TryGetSearch(baseDn, scope, filter, out search)) {
                         var queue = this.Search(baseDn, scope, filter,
                             attributes,
                             false);
@@ -68,7 +69,7 @@ namespace sh.vcp.ldap
                             entries.Add(m);
                         }
 
-                        this._cache.SetSearch(baseDn, scope, filter, attributes, entries.Select(e => e.Dn));
+                        this._cache.SetSearch(baseDn, scope, filter, entries.Select(e => e.Dn));
                     }
                     else {
                         await search.Entries.ForEachAsync(async entry =>
@@ -108,7 +109,7 @@ namespace sh.vcp.ldap
             ICollection<TModel> entries = new List<TModel>();
             if (this._config.UseCache) {
                 SearchCacheEntry search;
-                if (!this._cache.TryGetSearch(baseDn, scope, filter, attributes, out search)) {
+                if (!this._cache.TryGetSearch(baseDn, scope, filter, out search)) {
                     var queue = this.Search(baseDn, scope, filter, attributes,
                         false);
                     while (queue.HasMore()) {
@@ -119,7 +120,7 @@ namespace sh.vcp.ldap
                         entries.Add(m);
                     }
 
-                    this._cache.SetSearch(baseDn, scope, filter, attributes, entries.Select(e => e.Dn));
+                    this._cache.SetSearch(baseDn, scope, filter, entries.Select(e => e.Dn));
                 }
                 else {
                     await search.Entries.ForEachAsync(async entry =>
@@ -141,7 +142,51 @@ namespace sh.vcp.ldap
 
             return entries;
         }
+        
+        public async Task<ICollection<TModel>> SearchSafe<TModel>(string baseDn, string filter, string objectClass,
+            int scope,
+            CancellationToken cancellationToken) where TModel : LdapModel, new() {
+            if (objectClass == null) throw new ArgumentNullException(nameof(objectClass));
+            if (!this._connected) this.ConnectIfDisconnected();
 
+            filter = string.IsNullOrEmpty(filter)
+                ? $"{LdapProperties.ObjectClass}={objectClass}"
+                : $"(&({LdapProperties.ObjectClass}={objectClass})({filter}))";
+
+            ICollection<TModel> entries = new List<TModel>();
+            if (this._config.UseCache) {
+                if (!this._cache.TryGetSearch(baseDn, scope, filter, out var search)) {
+                    var queue = this.Search(baseDn, scope, filter, new [] { LdapProperties.ObjectClass }, false);
+                    while (queue.HasMore()) {
+                        var m = new TModel();
+                        m.ProvideEntry(queue.Next());
+                        entries.Add(m);
+                    }
+
+                    this._cache.SetSearch(baseDn, scope, filter, entries.Select(e => e.Dn));
+                }
+                else {
+                    await search.Entries.ForEachAsync(async entry =>
+                        entries.Add(await this.Read<TModel>(entry, cancellationToken))
+                    );
+                }
+            }
+            else {
+                var queue = this.Search(baseDn, scope, filter, new [] { LdapProperties.ObjectClass },
+                    false);
+                while (queue.HasMore()) {
+                    var m = new TModel();
+                    m.ProvideEntry(queue.Next());
+                    entries.Add(m);
+                }
+            }
+
+            return entries;
+        }
+        
+        #endregion SEARCH
+
+        #region READ
         public async Task<TModel> ReadSafe<TModel>(string dn, CancellationToken cancellationToken)
             where TModel : LdapModel, new()
         {
@@ -207,6 +252,8 @@ namespace sh.vcp.ldap
                 return null;
             }
         }
+        
+        #endregion READ
 
         public Task<bool> Bind(string dn, string password, CancellationToken cancellationToken) {
             return Task.Run(() => {

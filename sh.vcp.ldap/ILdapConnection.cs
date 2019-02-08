@@ -12,6 +12,14 @@ namespace sh.vcp.ldap
             string[] attributes,
             bool expectUnique, CancellationToken cancellationToken = default) where TModel : LdapModel, new();
 
+        /// <summary>
+        /// Searches for subentries of a given dn
+        /// </summary>
+        /// <remarks>Does NOT load the properties. Use <see cref="ReadSafe{TModel}"/> for that.</remarks>
+        Task<ICollection<TModel>> SearchSafe<TModel>(string baseDn, string filter, string objectClass, int scope, CancellationToken cancellationToken)
+            where TModel : LdapModel, new();
+        
+        [Obsolete("Use SearchSave instead")]
         Task<ICollection<TModel>> Search<TModel>(string baseDn, string filter, string objectClass, int scope,
             string[] attributes,
             CancellationToken cancellationToken = default) where TModel : LdapModel, new();

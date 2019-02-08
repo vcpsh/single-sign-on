@@ -30,27 +30,27 @@ namespace sh.vcp.identity.Model
 
         protected override Dictionary<PropertyInfo, LdapAttr> Properties => VoteEntry.Props;
 
-        [JsonProperty("MemberId")]
+        [JsonProperty("memberId")]
         [LdapAttr(LdapProperties.Member)]
         public string MemberUid { get; set; }
 
-        [JsonProperty("Active")]
+        [JsonProperty("active")]
         [LdapAttr(LdapProperties.Active, typeof(bool))]
         public bool Active { get; set; }
 
-        [JsonProperty("VoteStartDate")]
+        [JsonProperty("voteStartDate")]
         [LdapAttr(LdapProperties.VoteStartDate, typeof(DateTime))]
         public DateTime VoteStartDate { get; set; }
 
-        [JsonProperty("VoteEndDate")]
+        [JsonProperty("voteEndDate")]
         [LdapAttr(LdapProperties.VoteEndDate, typeof(DateTime), true)]
         public DateTime? VoteEndDate { get; set; }
 
-        [JsonProperty("VoteStartEvent")]
+        [JsonProperty("voteStartEvent")]
         [LdapAttr(LdapProperties.VoteStartEvent)]
         public string VoteStartEvent { get; set; }
 
-        [JsonProperty("VoteEndEvent")]
+        [JsonProperty("voteEndEvent")]
         [LdapAttr(LdapProperties.VoteEndEvent, true)]
         public string VoteEndEvent { get; set; }
     }

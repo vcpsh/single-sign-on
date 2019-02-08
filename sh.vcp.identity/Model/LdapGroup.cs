@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
 using Novell.Directory.Ldap;
+using sh.vcp.identity.Model;
 using sh.vcp.identity.Model.Tribe;
 using sh.vcp.identity.Utils;
 using sh.vcp.ldap;
@@ -29,6 +30,7 @@ namespace sh.vcp.identity.Models
             TribeLr,
             TribeLv,
             TribeGroup,
+            OrgUnit,
         }
 
         protected new static readonly List<string> DefaultObjectClassesStatic =
@@ -49,7 +51,7 @@ namespace sh.vcp.identity.Models
         /// <summary>
         ///     DisplayName of the group. Should be used in the uid.
         /// </summary>
-        [JsonProperty("DisplayName")]
+        [JsonProperty("displayName")]
         [Required]
         [LdapAttr(LdapProperties.DisplayName, true)]
         public string DisplayName { get; set; }
@@ -57,21 +59,21 @@ namespace sh.vcp.identity.Models
         /// <summary>
         ///     Ids of the members in the group.
         /// </summary>
-        [JsonProperty("MemberIds")]
+        [JsonProperty("memberIds")]
         [LdapAttr(LdapProperties.Member, typeof(List<string>), true)]
         public List<string> MemberIds { get; set; } = new List<string>();
 
-        [JsonProperty("DivisionId")]
+        [JsonProperty("divisionId")]
         [Required]
         [DivisionIdValidation]
         public string DivisionId { get; set; }
 
-        [JsonProperty("OfficialMail")]
+        [JsonProperty("officialMail")]
         [LdapAttr(LdapProperties.OfficialMail, true)]
         [EmailAddress]
         public string OfficialMail { get; set; }
 
-        [JsonProperty("Type")]
+        [JsonProperty("type")]
         public GroupType Type
         {
             get
@@ -97,9 +99,15 @@ namespace sh.vcp.identity.Models
                 if (this.ObjectClasses.Contains(LdapObjectTypes.Tribe))
                     return GroupType.Tribe;
 
-                // ReSharper disable once ConvertIfStatementToReturnStatement
                 if (this.ObjectClasses.Contains(LdapObjectTypes.Division))
                     return GroupType.Division;
+                
+                if (this.ObjectClasses.Contains(LdapObjectTypes.TribeGroup))
+                    return GroupType.TribeGroup;
+                    
+                // ReSharper disable once ConvertIfStatementToReturnStatement
+                if (this.ObjectClasses.Contains(LdapObjectTypes.OrgUnit))
+                    return GroupType.OrgUnit;
 
                 return GroupType.Group;
             }
@@ -132,6 +140,9 @@ namespace sh.vcp.identity.Models
                         break;
                     case GroupType.TribeGroup:
                         this.ObjectClasses.AddRange(TribeGroup.DefaultObjectClassesStatic);
+                        break;
+                    case GroupType.OrgUnit:
+                        this.ObjectClasses.AddRange(OrgUnit.DefaultObjectClassesStatic);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(value), value, null);

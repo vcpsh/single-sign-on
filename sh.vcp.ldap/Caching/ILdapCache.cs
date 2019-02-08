@@ -36,10 +36,9 @@ namespace sh.vcp.ldap.Caching
         /// <param name="baseDn"></param>
         /// <param name="scope"></param>
         /// <param name="filter"></param>
-        /// <param name="attributes"></param>
         /// <param name="search"></param>
         /// <returns></returns>
-        bool TryGetSearch(string baseDn, int scope, string filter, IEnumerable<string> attributes,
+        bool TryGetSearch(string baseDn, int scope, string filter,
             out SearchCacheEntry search);
 
         /// <summary>
@@ -48,9 +47,8 @@ namespace sh.vcp.ldap.Caching
         /// <param name="baseDn"></param>
         /// <param name="scope"></param>
         /// <param name="filter"></param>
-        /// <param name="attributes"></param>
         /// <param name="select"></param>
-        void SetSearch(string baseDn, int scope, string filter, string[] attributes, IEnumerable<string> entries);
+        void SetSearch(string baseDn, int scope, string filter, IEnumerable<string> entries);
 
         /// <summary>
         /// Invalidates a search if entries get updated or added
