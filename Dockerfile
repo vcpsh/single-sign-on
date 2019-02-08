@@ -1,9 +1,52 @@
+FROM node:alpine AS yarninstall
+RUN apk add yarn
+RUN apk add git
+RUN apk add python2
+RUN apk add build-base
+WORKDIR /repo
+COPY .git .
+WORKDIR /repo/src
+COPY client/package.json ./package.json
+COPY client/yarn.lock ./yarn.lock
+RUN yarn --pure-lockfile
+
+FROM yarninstall AS yarninstall_projects
+COPY client/projects/vcpsh/sso-client-lib/package.json ./projects/vcpsh/sso-client-lib/package.json
+COPY client/projects/vcpsh/sso-client-lib/yarn.lock ./projects/vcpsh/sso-client-lib/yarn.lock
+WORKDIR /repo/src/projects/vcpsh/sso-client-lib
+RUN yarn --pure-lockfile
+
+FROM yarninstall_projects AS copy_client_sources
+WORKDIR /repo/src
+COPY client .
+
+FROM copy_client_sources AS ngbuild_projects
+WORKDIR /repo/src
+RUN yarn run build:client-lib
+
+FROM ngbuild_projects AS ngbuild
+WORKDIR /repo/src
+RUN yarn run build:production
+
 FROM microsoft/dotnet:2.2-aspnetcore-runtime AS base
 WORKDIR /app
 EXPOSE 80
 
+FROM microsoft/dotnet:2.2-sdk AS build
+WORKDIR /src
+COPY sh.vcp.sso.server/sh.vcp.sso.server.csproj sh.vcp.sso.server/
+COPY sh.vcp.ldap/sh.vcp.ldap.csproj sh.vcp.ldap/
+COPY sh.vcp.identity/sh.vcp.identity.csproj sh.vcp.identity/
+RUN dotnet restore sh.vcp.sso.server/sh.vcp.sso.server.csproj
+COPY . .
+WORKDIR /src/sh.vcp.sso.server
+RUN dotnet build sh.vcp.sso.server.csproj -c Release -o /app
+
+FROM build AS publish
+RUN dotnet publish sh.vcp.sso.server.csproj -c Release -o /app
+
 FROM base AS final
 WORKDIR /app
-COPY sh.vcp.sso.server/bin/Release/netcoreapp2.2/publish/ .
-COPY client/dist/client ./wwwroot/
+COPY --from=publish /app .
+COPY --from=ngbuild /repo/src/dist/client/ ./wwwroot/
 ENTRYPOINT ["dotnet", "sh.vcp.sso.server.dll"]
