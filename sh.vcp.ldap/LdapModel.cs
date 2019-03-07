@@ -11,9 +11,12 @@ namespace sh.vcp.ldap
 {
     public abstract class LdapModel
     {
-        protected LdapModel() {
+        // ReSharper disable once EmptyConstructor
+        protected LdapModel()
+        {
+
         }
-        
+
         protected static readonly string[] LoadProperties = {
             LdapProperties.CommonName,
             LdapProperties.ObjectClass
@@ -26,7 +29,7 @@ namespace sh.vcp.ldap
         [LdapAttr(LdapProperties.ObjectClass, typeof(List<string>), true)]
         public List<string> ObjectClasses { get; set; } = new List<string>();
 
-        protected List<string> DefaultObjectClasses { get; } = LdapModel.DefaultObjectClassesStatic;
+        protected List<string> DefaultObjectClasses { get; } = DefaultObjectClassesStatic;
         
         protected virtual Dictionary<PropertyInfo, LdapAttr> Properties => new Dictionary<PropertyInfo, LdapAttr>();
 

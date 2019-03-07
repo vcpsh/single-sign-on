@@ -4,9 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
+using sh.vcp.identity.Model;
 using sh.vcp.ldap;
 
-namespace sh.vcp.identity.Model
+namespace sh.vcp.identity.Models
 {
     public class LdapMember : LdapUser
     {
@@ -14,13 +15,13 @@ namespace sh.vcp.identity.Model
             this.DefaultObjectClasses.Add(LdapObjectTypes.Member);
         }
         
-        protected new static readonly List<string> DefaultObjectClassesStatic =
+        protected static new readonly List<string> DefaultObjectClassesStatic =
             LdapUser.DefaultObjectClassesStatic.Concat(new List<string> {LdapObjectTypes.Member}).ToList();
 
         private static readonly Dictionary<PropertyInfo, LdapAttr> Props =
             LdapAttrHelper.GetLdapAttrs(typeof(LdapMember));
 
-        public new static readonly string[] LoadProperties = new[] {
+        public static new readonly string[] LoadProperties = new[] {
             LdapProperties.FirstName,
             LdapProperties.LastName,
             LdapProperties.DateOfBirth,
@@ -29,7 +30,7 @@ namespace sh.vcp.identity.Model
             LdapProperties.OfficialMail,
         }.Concat(LdapUser.LoadProperties).ToArray();
 
-        protected override Dictionary<PropertyInfo, LdapAttr> Properties => LdapMember.Props;
+        protected override Dictionary<PropertyInfo, LdapAttr> Properties => Props;
 
         [JsonProperty("FirstName")]
         [LdapAttr(LdapProperties.FirstName)]

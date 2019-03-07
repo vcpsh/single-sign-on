@@ -46,18 +46,39 @@ namespace sh.vcp.ldap
         public async Task<TModel> SearchFirst<TModel>(string baseDn, string filter, string objectClass, int scope,
             string[] attributes,
             bool expectUnique, CancellationToken cancellationToken) where TModel : LdapModel, new() {
-            if (objectClass == null) throw new ArgumentNullException(nameof(objectClass));
-            return await Task.Run(async () => {
-                if (!this._connected) this.ConnectIfDisconnected();
+            return objectClass == null
+                ? throw new ArgumentNullException(nameof(objectClass))
+                : await Task.Run(async () => {
+                   this.ConnectIfDisconnected();
 
-                List<TModel> entries = new List<TModel>();
-                if (filter == null) {
-                    filter = $"{LdapProperties.ObjectClass}={objectClass}";
-                }
+                    var entries = new List<TModel>();
+                    if (filter == null) {
+                        filter = $"{LdapProperties.ObjectClass}={objectClass}";
+                    }
 
-                if (this._config.UseCache) {
-                    SearchCacheEntry search;
-                    if (!this._cache.TryGetSearch(baseDn, scope, filter, out search)) {
+                    if (this._config.UseCache) {
+                        if (!this._cache.TryGetSearch(baseDn, scope, filter, out var search)) {
+                            var queue = this.Search(baseDn, scope, filter,
+                                attributes,
+                                false);
+                            while (queue.HasMore()) {
+                                var m = new TModel();
+                                m.ProvideEntry(queue.Next());
+                                if (typeof(ILdapModelWithChildren).IsAssignableFrom(typeof(TModel))) {
+                                    await ((ILdapModelWithChildren) m).LoadChildren(this, cancellationToken);
+                                }
+                                entries.Add(m);
+                            }
+
+                            this._cache.SetSearch(baseDn, scope, filter, entries.Select(e => e.Dn));
+                        }
+                        else {
+                            await search.Entries.ForEachAsync(async entry =>
+                                entries.Add(await this.Read<TModel>(entry, cancellationToken))
+                            );
+                        }
+                    }
+                    else {
                         var queue = this.Search(baseDn, scope, filter,
                             attributes,
                             false);
@@ -68,39 +89,20 @@ namespace sh.vcp.ldap
                                 await ((ILdapModelWithChildren) m).LoadChildren(this, cancellationToken);
                             entries.Add(m);
                         }
-
-                        this._cache.SetSearch(baseDn, scope, filter, entries.Select(e => e.Dn));
                     }
-                    else {
-                        await search.Entries.ForEachAsync(async entry =>
-                            entries.Add(await this.Read<TModel>(entry, cancellationToken))
-                        );
-                    }
-                }
-                else {
-                    var queue = this.Search(baseDn, scope, filter,
-                        attributes,
-                        false);
-                    while (queue.HasMore()) {
-                        var m = new TModel();
-                        m.ProvideEntry(queue.Next());
-                        if (typeof(ILdapModelWithChildren).IsAssignableFrom(typeof(TModel)))
-                            await ((ILdapModelWithChildren) m).LoadChildren(this, cancellationToken);
-                        entries.Add(m);
-                    }
-                }
 
-                if (expectUnique && entries.Count > 1) throw new LdapSearchNotUniqueException(filter, entries.Count);
+                    if (expectUnique && entries.Count > 1)
+                        throw new LdapSearchNotUniqueException(filter, entries.Count);
 
-                return entries.FirstOrDefault();
-            }, cancellationToken);
+                    return entries.FirstOrDefault();
+                }, cancellationToken);
         }
 
         public async Task<ICollection<TModel>> Search<TModel>(string baseDn, string filter, string objectClass,
             int scope, string[] attributes,
             CancellationToken cancellationToken = default) where TModel : LdapModel, new() {
-            if (objectClass == null) throw new ArgumentNullException(nameof(objectClass));
-            if (!this._connected) this.ConnectIfDisconnected();
+            if (objectClass == null) { throw new ArgumentNullException(nameof(objectClass)); }
+            this.ConnectIfDisconnected();
 
             filter = string.IsNullOrEmpty(filter)
                 ? $"{LdapProperties.ObjectClass}={objectClass}"
@@ -108,8 +110,7 @@ namespace sh.vcp.ldap
 
             ICollection<TModel> entries = new List<TModel>();
             if (this._config.UseCache) {
-                SearchCacheEntry search;
-                if (!this._cache.TryGetSearch(baseDn, scope, filter, out search)) {
+                if (!this._cache.TryGetSearch(baseDn, scope, filter, out var search)) {
                     var queue = this.Search(baseDn, scope, filter, attributes,
                         false);
                     while (queue.HasMore()) {
@@ -351,7 +352,7 @@ namespace sh.vcp.ldap
         #region InternalMethods
 
         private void ConnectIfDisconnected() {
-            if (this._connected) return;
+            if (this._connected) { return; }
             try {
                 this.Connect(this._config.Hostname, this._config.Port);
                 this.Bind(this._bindDn ?? this._config.AdminUserDn,

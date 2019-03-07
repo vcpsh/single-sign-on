@@ -1,6 +1,5 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace sh.vcp.ldap.Caching
@@ -8,13 +7,13 @@ namespace sh.vcp.ldap.Caching
     internal class LdapCache : ILdapCache
     {
         private readonly MemoryCache _cache;
-        private Dictionary<string, string> _searchEntries = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _searchEntries = new Dictionary<string, string>();
 
         private readonly MemoryCacheEntryOptions _defaultOptions =
             new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(30));
 
         public LdapCache() {
-            this._cache = new MemoryCache(new MemoryCacheOptions { });
+            this._cache = new MemoryCache(new MemoryCacheOptions());
         }
 
         public bool TryGetValue<T>(string key, out T value) {
@@ -32,13 +31,13 @@ namespace sh.vcp.ldap.Caching
 
         public bool TryGetSearch(string baseDn, int scope, string filter,
             out SearchCacheEntry search) {
-            var key = LdapCache.GenerateSearchKey(baseDn, scope, filter);
+            var key = GenerateSearchKey(baseDn, scope, filter);
             return this.TryGetValue(key, out search);
         }
 
         public void SetSearch(string baseDn, int scope, string filter,
             IEnumerable<string> entries) {
-            var key = LdapCache.GenerateSearchKey(baseDn, scope, filter);
+            var key = GenerateSearchKey(baseDn, scope, filter);
             if (!this._searchEntries.ContainsKey(key)) {
                 this._searchEntries.Add(key, baseDn);
             }

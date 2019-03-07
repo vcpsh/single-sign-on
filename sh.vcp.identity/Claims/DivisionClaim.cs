@@ -10,10 +10,9 @@ namespace sh.vcp.identity.Claims
     public class DivisionClaim : Claim
     {
         public static string ClaimType => LdapClaims.DivisionClaim;
-        private readonly Division Division;
 
-        public DivisionClaim(Division division) : base(DivisionClaim.ClaimType, division.Id) {
-            this.Division = division;
+        public DivisionClaim(Division division) : base(ClaimType, division.Id)
+        {
         }
     }
 }

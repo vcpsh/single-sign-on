@@ -24,6 +24,7 @@ using NETCore.MailKit.Infrastructure.Internal;
 using sh.vcp.identity.Extensions;
 using sh.vcp.identity.Managers;
 using sh.vcp.identity.Model;
+using sh.vcp.identity.Models;
 using sh.vcp.ldap.ChangeTracking;
 using sh.vcp.ldap.Extensions;
 using sh.vcp.sso.server.Utilities;

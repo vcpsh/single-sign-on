@@ -21,6 +21,7 @@ using Newtonsoft.Json;
 using NETCore.MailKit.Core;
 using sh.vcp.identity.Managers;
 using sh.vcp.identity.Model;
+using sh.vcp.identity.Models;
 using sh.vcp.identity.Stores;
 using sh.vcp.sso.server.Models;
 using sh.vcp.sso.server.Utilities;

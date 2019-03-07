@@ -5,7 +5,7 @@ using System.Reflection;
 using Newtonsoft.Json;
 using sh.vcp.ldap;
 
-namespace sh.vcp.identity.Model
+namespace sh.vcp.identity.Models
 {
     public class VoteEntry : LdapModel
     {
@@ -13,13 +13,13 @@ namespace sh.vcp.identity.Model
             this.DefaultObjectClasses.Add(LdapObjectTypes.VotedEntry);
         }
         
-        protected new static readonly List<string> DefaultObjectClassesStatic =
+        protected static new readonly List<string> DefaultObjectClassesStatic =
             LdapModel.DefaultObjectClassesStatic.Concat(new List<string> {LdapObjectTypes.VotedEntry}).ToList();
 
         private static readonly Dictionary<PropertyInfo, LdapAttr> Props =
             LdapAttrHelper.GetLdapAttrs(typeof(VoteEntry));
 
-        public new static readonly string[] LoadProperties = new[] {
+        public static new readonly string[] LoadProperties = new[] {
             LdapProperties.Active,
             LdapProperties.VoteStartDate,
             LdapProperties.VoteStartEvent,
@@ -28,7 +28,7 @@ namespace sh.vcp.identity.Model
             LdapProperties.Member,
         }.Concat(LdapModel.LoadProperties).ToArray();
 
-        protected override Dictionary<PropertyInfo, LdapAttr> Properties => VoteEntry.Props;
+        protected override Dictionary<PropertyInfo, LdapAttr> Properties => Props;
 
         [JsonProperty("memberId")]
         [LdapAttr(LdapProperties.Member)]

@@ -1,4 +1,4 @@
-// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
+﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
@@ -81,32 +81,37 @@ namespace IdentityServer4.Quickstart.UI
 
             ConsentResponse grantedConsent = null;
 
-            // user clicked 'no' - send back the standard 'access_denied' response
-            if (model.Button == "no") {
-                grantedConsent = ConsentResponse.Denied;
-                ;
-            }
-            // user clicked 'yes' - validate the data
-            else if (model.Button == "yes" && model != null) {
-                // if the user consented to some scope, build the response model
-                if (model.ScopesConsented != null && model.ScopesConsented.Any()) {
-                    var scopes = model.ScopesConsented;
-                    if (ConsentOptions.EnableOfflineAccess == false) {
-                        scopes = scopes.Where(x =>
-                            x != IdentityServer4.IdentityServerConstants.StandardScopes.OfflineAccess);
+            switch (model.Button) {
+                // user clicked 'no' - send back the standard 'access_denied' response
+                // user clicked 'yes' - validate the data
+                case "no":
+                    grantedConsent = ConsentResponse.Denied;
+                    ;
+                    break;
+                case "yes" when model != null:
+                {
+                    // if the user consented to some scope, build the response model
+                    if (model.ScopesConsented != null && model.ScopesConsented.Any()) {
+                        var scopes = model.ScopesConsented;
+                        if (ConsentOptions.EnableOfflineAccess == false) {
+                            scopes = scopes.Where(x =>
+                                x != IdentityServer4.IdentityServerConstants.StandardScopes.OfflineAccess);
+                        }
+
+                        grantedConsent = new ConsentResponse {
+                            RememberConsent = model.RememberConsent,
+                            ScopesConsented = scopes.ToArray()
+                        };
+                    }
+                    else {
+                        result.ValidationError = ConsentOptions.MustChooseOneErrorMessage;
                     }
 
-                    grantedConsent = new ConsentResponse {
-                        RememberConsent = model.RememberConsent,
-                        ScopesConsented = scopes.ToArray()
-                    };
+                    break;
                 }
-                else {
-                    result.ValidationError = ConsentOptions.MustChooseOneErrorMessage;
-                }
-            }
-            else {
-                result.ValidationError = ConsentOptions.InvalidSelectionErrorMessage;
+                default:
+                    result.ValidationError = ConsentOptions.InvalidSelectionErrorMessage;
+                    break;
             }
 
             if (grantedConsent != null) {
@@ -157,17 +162,17 @@ namespace IdentityServer4.Quickstart.UI
             ConsentInputModel model, string returnUrl,
             AuthorizationRequest request,
             Client client, Resources resources) {
-            var vm = new ConsentViewModel();
-            vm.RememberConsent = model?.RememberConsent ?? true;
-            vm.ScopesConsented = model?.ScopesConsented ?? Enumerable.Empty<string>();
-
-            vm.ReturnUrl = returnUrl;
-
-            vm.ClientName = client.ClientName ?? client.ClientId;
-            vm.ClientUrl = client.ClientUri;
-            vm.ClientLogoUrl = client.LogoUri;
-            vm.AllowRememberConsent = client.AllowRememberConsent;
-
+            var vm = new ConsentViewModel
+            {
+                RememberConsent = model?.RememberConsent ?? true,
+                ScopesConsented = model?.ScopesConsented ?? Enumerable.Empty<string>(),
+                ReturnUrl = returnUrl,
+                ClientName = client.ClientName ?? client.ClientId,
+                ClientUrl = client.ClientUri,
+                ClientLogoUrl = client.LogoUri,
+                AllowRememberConsent = client.AllowRememberConsent
+            };
+            
             vm.IdentityScopes = resources.IdentityResources.Select(x =>
                 this.CreateScopeViewModel(x, vm.ScopesConsented.Contains(x.Name) || model == null)).ToArray();
             vm.ResourceScopes = resources.ApiResources.SelectMany(x => x.Scopes).Select(x =>

@@ -2,10 +2,10 @@
 {
     internal static class IdentityErrorCodes
     {
-        internal const string UserStoreFindById = nameof(IdentityErrorCodes.UserStoreFindById);
-        internal const string UserStoreFindByName = nameof(IdentityErrorCodes.UserStoreFindByName);
-        internal const string UserStoreFindByEmail = nameof(IdentityErrorCodes.UserStoreFindByEmail);
-        internal const string UserStoreGetClaims = nameof(IdentityErrorCodes.UserStoreGetClaims);
-        internal const string SetUserPasswordAsync = nameof(IdentityErrorCodes.SetUserPasswordAsync);
+        internal const string UserStoreFindById = nameof(UserStoreFindById);
+        internal const string UserStoreFindByName = nameof(UserStoreFindByName);
+        internal const string UserStoreFindByEmail = nameof(UserStoreFindByEmail);
+        internal const string UserStoreGetClaims = nameof(UserStoreGetClaims);
+        internal const string SetUserPasswordAsync = nameof(SetUserPasswordAsync);
     }
 }

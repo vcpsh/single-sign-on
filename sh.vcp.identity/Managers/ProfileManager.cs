@@ -11,6 +11,7 @@ using IdentityServer4.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using sh.vcp.identity.Model;
+using sh.vcp.identity.Models;
 
 namespace sh.vcp.identity.Managers
 {

@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Reflection;
-using sh.vcp.identity.Models;
-using sh.vcp.ldap;
 using System.Linq;
+using System.Reflection;
+using sh.vcp.ldap;
 
-namespace sh.vcp.identity.Model.Tribe
+namespace sh.vcp.identity.Models.Tribe
 {
     public class TribeGs : LdapGroup
     {
@@ -13,10 +12,10 @@ namespace sh.vcp.identity.Model.Tribe
         }
         
         
-        protected new static readonly List<string> DefaultObjectClassesStatic =
+        protected static new readonly List<string> DefaultObjectClassesStatic =
             LdapGroup.DefaultObjectClassesStatic.Concat(new List<string> {LdapObjectTypes.TribeGs}).ToList();
         
         private static readonly Dictionary<PropertyInfo, LdapAttr> Props = LdapAttrHelper.GetLdapAttrs(typeof(TribeGs));
-        protected override Dictionary<PropertyInfo, LdapAttr> Properties => TribeGs.Props;
+        protected override Dictionary<PropertyInfo, LdapAttr> Properties => Props;
     }
 }

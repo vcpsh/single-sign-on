@@ -1,4 +1,4 @@
-﻿namespace sh.vcp.identity.Model
+﻿namespace sh.vcp.identity.Models
 {
     public class LdapRole
     {

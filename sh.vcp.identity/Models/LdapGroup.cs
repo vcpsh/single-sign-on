@@ -5,8 +5,6 @@ using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
 using Novell.Directory.Ldap;
-using sh.vcp.identity.Model;
-using sh.vcp.identity.Model.Tribe;
 using sh.vcp.identity.Utils;
 using sh.vcp.ldap;
 
@@ -14,7 +12,7 @@ namespace sh.vcp.identity.Models
 {
     public class LdapGroup : LdapModel
     {
-        public LdapGroup() : base()
+        public LdapGroup()
         {
             this.DefaultObjectClasses.Add(LdapObjectTypes.Group);
         }
@@ -30,23 +28,23 @@ namespace sh.vcp.identity.Models
             TribeLr,
             TribeLv,
             TribeGroup,
-            OrgUnit,
+            OrgUnit
         }
 
-        protected new static readonly List<string> DefaultObjectClassesStatic =
+        protected static new readonly List<string> DefaultObjectClassesStatic =
             LdapModel.DefaultObjectClassesStatic.Concat(new List<string> {LdapObjectTypes.Group}).ToList();
 
         private static readonly Dictionary<PropertyInfo, LdapAttr> Props =
             LdapAttrHelper.GetLdapAttrs(typeof(LdapGroup));
 
-        public new static readonly string[] LoadProperties = new[]
+        public static new readonly string[] LoadProperties = new[]
         {
             LdapProperties.Member,
             LdapProperties.DisplayName,
-            LdapProperties.OfficialMail,
+            LdapProperties.OfficialMail
         }.Concat(LdapModel.LoadProperties).ToArray();
 
-        protected override Dictionary<PropertyInfo, LdapAttr> Properties => LdapGroup.Props;
+        protected override Dictionary<PropertyInfo, LdapAttr> Properties => Props;
 
         /// <summary>
         ///     DisplayName of the group. Should be used in the uid.
@@ -118,31 +116,31 @@ namespace sh.vcp.identity.Models
                         this.ObjectClasses.AddRange(LdapModel.DefaultObjectClassesStatic);
                         break;
                     case GroupType.Division:
-                        this.ObjectClasses.AddRange(Division.DefaultObjectClassesStatic);
+                        this.ObjectClasses.AddRange(DefaultObjectClassesStatic);
                         break;
                     case GroupType.VotedGroup:
-                        this.ObjectClasses.AddRange(VotedLdapGroup.DefaultObjectClassesStatic);
+                        this.ObjectClasses.AddRange(DefaultObjectClassesStatic);
                         break;
                     case GroupType.Tribe:
-                        this.ObjectClasses.AddRange(Tribe.DefaultObjectClassesStatic);
+                        this.ObjectClasses.AddRange(DefaultObjectClassesStatic);
                         break;
                     case GroupType.TribeGs:
-                        this.ObjectClasses.AddRange(TribeGs.DefaultObjectClassesStatic);
+                        this.ObjectClasses.AddRange(DefaultObjectClassesStatic);
                         break;
                     case GroupType.TribeSl:
-                        this.ObjectClasses.AddRange(TribeSl.DefaultObjectClassesStatic);
+                        this.ObjectClasses.AddRange(DefaultObjectClassesStatic);
                         break;
                     case GroupType.TribeLr:
-                        this.ObjectClasses.AddRange(TribeLr.DefaultObjectClassesStatic);
+                        this.ObjectClasses.AddRange(DefaultObjectClassesStatic);
                         break;
                     case GroupType.TribeLv:
-                        this.ObjectClasses.AddRange(TribeLv.DefaultObjectClassesStatic);
+                        this.ObjectClasses.AddRange(DefaultObjectClassesStatic);
                         break;
                     case GroupType.TribeGroup:
-                        this.ObjectClasses.AddRange(TribeGroup.DefaultObjectClassesStatic);
+                        this.ObjectClasses.AddRange(DefaultObjectClassesStatic);
                         break;
                     case GroupType.OrgUnit:
-                        this.ObjectClasses.AddRange(OrgUnit.DefaultObjectClassesStatic);
+                        this.ObjectClasses.AddRange(DefaultObjectClassesStatic);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(value), value, null);

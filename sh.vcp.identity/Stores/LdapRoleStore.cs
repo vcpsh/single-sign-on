@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using sh.vcp.identity.Model;
+using sh.vcp.identity.Models;
 
 namespace sh.vcp.identity.Stores
 {

@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using sh.vcp.identity.Model.Tribe;
+using sh.vcp.identity.Models.Tribe;
 
 namespace sh.vcp.identity.Claims
 {

@@ -15,17 +15,17 @@ namespace sh.vcp.identity.Models
             this.DefaultObjectClasses.Add(LdapObjectTypes.Division);
         }
 
-        protected new static readonly List<string> DefaultObjectClassesStatic =
+        protected static new readonly List<string> DefaultObjectClassesStatic =
             LdapGroup.DefaultObjectClassesStatic.Concat(new List<string> {LdapObjectTypes.Division}).ToList();
         
         private static readonly Dictionary<PropertyInfo, LdapAttr>
             Props = LdapAttrHelper.GetLdapAttrs(typeof(Division));
 
-        public new static readonly string[] LoadProperties = new[] {
+        public static new readonly string[] LoadProperties = new[] {
             LdapProperties.DepartmentId
         }.Concat(LdapGroup.LoadProperties).ToArray();
 
-        protected override Dictionary<PropertyInfo, LdapAttr> Properties => Division.Props;
+        protected override Dictionary<PropertyInfo, LdapAttr> Properties => Props;
 
         [JsonProperty("departmentId")]
         [LdapAttr(LdapProperties.DepartmentId, typeof(int))]

@@ -4,10 +4,9 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using sh.vcp.identity.Models;
 using sh.vcp.ldap;
 
-namespace sh.vcp.identity.Model.Tribe
+namespace sh.vcp.identity.Models.Tribe
 {
     public class Tribe : LdapGroup, ILdapModelWithChildren
     {
@@ -15,16 +14,16 @@ namespace sh.vcp.identity.Model.Tribe
             this.DefaultObjectClasses.Add(LdapObjectTypes.Tribe);
         }
 
-        protected new static readonly List<string> DefaultObjectClassesStatic =
+        protected static new readonly List<string> DefaultObjectClassesStatic =
             LdapGroup.DefaultObjectClassesStatic.Concat(new List<string> {LdapObjectTypes.Tribe}).ToList();
         
         private static readonly Dictionary<PropertyInfo, LdapAttr> Props = LdapAttrHelper.GetLdapAttrs(typeof(Tribe));
 
-        public new static readonly string[] LoadProperties = new[] {
+        public static new readonly string[] LoadProperties = new[] {
             LdapProperties.DepartmentId
         }.Concat(LdapGroup.LoadProperties).ToArray();
 
-        protected override Dictionary<PropertyInfo, LdapAttr> Properties => Tribe.Props;
+        protected override Dictionary<PropertyInfo, LdapAttr> Properties => Props;
 
         [JsonProperty("sl")]
         public TribeSl Sl { get; set; }

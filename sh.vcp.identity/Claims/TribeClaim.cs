@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using sh.vcp.identity.Model.Tribe;
+using sh.vcp.identity.Models.Tribe;
 
 namespace sh.vcp.identity.Claims
 {
@@ -8,7 +8,7 @@ namespace sh.vcp.identity.Claims
         public const string ClaimId = LdapClaims.TribeClaim;
         internal readonly Tribe Tribe;
 
-        public TribeClaim(Tribe tribe) : base(TribeClaim.ClaimId, tribe.Id) {
+        public TribeClaim(Tribe tribe) : base(ClaimId, tribe.Id) {
             this.Tribe = tribe;
         }
     }

@@ -8,7 +8,7 @@ namespace sh.vcp.sso.server
     public class Program
     {
         public static void Main(string[] args) {
-            Program.CreateWebHostBuilder(args).Build().Run();
+            CreateWebHostBuilder(args).Build().Run();
         }
 
         private static IWebHostBuilder CreateWebHostBuilder(string[] args) {

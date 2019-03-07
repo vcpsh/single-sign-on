@@ -1,13 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2042
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28606.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "sh.vcp.sso.server", "sh.vcp.sso.server\sh.vcp.sso.server.csproj", "{A61EEDB2-7EFC-4193-BA57-2D277C92867E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "sh.vcp.identity", "sh.vcp.identity\sh.vcp.identity.csproj", "{9319341E-52F8-4F8C-8BAF-3D55ACFF8D30}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "sh.vcp.ldap", "sh.vcp.ldap\sh.vcp.ldap.csproj", "{45A0518C-7C60-4CD5-B9CD-9A709E7ABBB6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0B3DF810-CF77-469B-84DA-F407521B5BD0}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

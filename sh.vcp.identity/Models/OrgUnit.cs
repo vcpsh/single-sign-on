@@ -1,12 +1,11 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
-using sh.vcp.identity.Models;
 using sh.vcp.ldap;
 
-namespace sh.vcp.identity.Model
+namespace sh.vcp.identity.Models
 {
         public class OrgUnit : LdapGroup
         {
@@ -14,15 +13,15 @@ namespace sh.vcp.identity.Model
                 this.DefaultObjectClasses.Add(LdapObjectTypes.OrgUnit);
             }
 
-            protected new static readonly List<string> DefaultObjectClassesStatic =
+            protected static new readonly List<string> DefaultObjectClassesStatic =
                 LdapGroup.DefaultObjectClassesStatic.Concat(new List<string> {LdapObjectTypes.OrgUnit}).ToList();
         
             private static readonly Dictionary<PropertyInfo, LdapAttr>
                 Props = LdapAttrHelper.GetLdapAttrs(typeof(OrgUnit));
 
-            public new static readonly string[] LoadProperties = LdapGroup.LoadProperties;
+            public static new readonly string[] LoadProperties = LdapGroup.LoadProperties;
 
-            protected override Dictionary<PropertyInfo, LdapAttr> Properties => OrgUnit.Props;
+            protected override Dictionary<PropertyInfo, LdapAttr> Properties => Props;
 
             [JsonProperty("orgUnitType")]
             public OrgUnitTypeEnum OrgUnitType

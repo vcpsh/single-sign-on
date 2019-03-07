@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using sh.vcp.identity.Model;
+using sh.vcp.identity.Models;
 using sh.vcp.ldap;
 
 namespace sh.vcp.identity.Managers
