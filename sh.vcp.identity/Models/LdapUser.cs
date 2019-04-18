@@ -8,7 +8,8 @@ namespace sh.vcp.identity.Models
 {
     public class LdapUser : LdapModel
     {
-        public LdapUser() : base() {
+        public LdapUser()
+        {
             this.DefaultObjectClasses.Add(LdapObjectTypes.User);
         }
         

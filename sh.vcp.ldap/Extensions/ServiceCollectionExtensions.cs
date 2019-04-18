@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Reflection;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using sh.vcp.ldap.Caching;
@@ -24,7 +22,7 @@ namespace sh.vcp.ldap.Extensions
                 services.AddDbContext<ChangeTrackingDbContext>(dbContextOptionsBuilder);
             }
             else {
-                services.AddSingleton<ChangeTrackingDbContext>(_ => (ChangeTrackingDbContext) null);
+                services.AddSingleton(_ => (ChangeTrackingDbContext) null);
             }
 
             // add cache
@@ -32,7 +30,7 @@ namespace sh.vcp.ldap.Extensions
                 services.AddSingleton<ILdapCache>(new LdapCache());
             }
             else {
-                services.AddSingleton<ILdapCache>(_ => (ILdapCache) null);
+                services.AddSingleton(_ => (ILdapCache) null);
             }
         }
     }

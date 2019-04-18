@@ -10,7 +10,8 @@ namespace sh.vcp.identity.Models
 {
     public class Division : LdapGroup, ILdapModelWithChildren
     {
-        public Division() : base() {
+        public Division()
+        {
             this.DefaultObjectClasses.Add(LdapObjectTypes.Division);
         }
 

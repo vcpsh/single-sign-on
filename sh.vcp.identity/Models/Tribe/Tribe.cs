@@ -10,7 +10,8 @@ namespace sh.vcp.identity.Models.Tribe
 {
     public class Tribe : LdapGroup, ILdapModelWithChildren
     {
-        public Tribe() : base() {
+        public Tribe()
+        {
             this.DefaultObjectClasses.Add(LdapObjectTypes.Tribe);
         }
 

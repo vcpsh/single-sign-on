@@ -15,7 +15,6 @@ namespace sh.vcp.ldap
         /// <summary>
         /// Searches for subentries of a given dn
         /// </summary>
-        /// <remarks>Does NOT load the properties. Use <see cref="ReadSafe{TModel}"/> for that.</remarks>
         Task<ICollection<TModel>> SearchSafe<TModel>(string baseDn, string filter, string objectClass, int scope, CancellationToken cancellationToken)
             where TModel : LdapModel, new();
         

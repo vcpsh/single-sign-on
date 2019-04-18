@@ -9,7 +9,8 @@ namespace sh.vcp.identity.Models
 {
     public class VoteEntry : LdapModel
     {
-        public VoteEntry() : base() {
+        public VoteEntry()
+        {
             this.DefaultObjectClasses.Add(LdapObjectTypes.VotedEntry);
         }
         

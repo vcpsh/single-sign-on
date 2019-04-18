@@ -9,7 +9,8 @@ namespace sh.vcp.identity.Models
 {
         public class OrgUnit : LdapGroup
         {
-            public OrgUnit() : base() {
+            public OrgUnit()
+            {
                 this.DefaultObjectClasses.Add(LdapObjectTypes.OrgUnit);
             }
 

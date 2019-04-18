@@ -47,7 +47,7 @@ namespace sh.vcp.ldap.Caching
         /// <param name="baseDn"></param>
         /// <param name="scope"></param>
         /// <param name="filter"></param>
-        /// <param name="select"></param>
+        /// <param name="entries"></param>
         void SetSearch(string baseDn, int scope, string filter, IEnumerable<string> entries);
 
         /// <summary>

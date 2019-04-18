@@ -188,9 +188,9 @@ namespace sh.vcp.identity.Stores
                 List<Claim> additionalClaims = new List<Claim>();
                 
                 // load divisions
-                claims.AddRange((await this._connection.Search<Division>(this._config.GroupDn,
+                claims.AddRange((await this._connection.SearchSafe<Division>(this._config.GroupDn,
                         $"{LdapProperties.Member}={user.Id}",
-                        LdapObjectTypes.Division, LdapConnection.SCOPE_SUB, Division.LoadProperties, cancellationToken))
+                        LdapObjectTypes.Division, LdapConnection.SCOPE_SUB, cancellationToken))
                     .Select(div => new DivisionClaim(div)));
 
                 // load division lgs
@@ -201,7 +201,7 @@ namespace sh.vcp.identity.Stores
                         return $"{subDn},{this._config.GroupDn}";
                     }).ToList();
                 await divisionLgsGroups.ForEachAsync(async dn => {
-                    var group = await this._connection.Read<VotedLdapGroup>(dn, cancellationToken);
+                    var group = await this._connection.ReadSafe<VotedLdapGroup>(dn, cancellationToken);
                     if (group.MemberIds.Contains(user.Id)) {
                         var divisionId = dn.Replace($",{this._config.GroupDn}", "");
                         divisionId = divisionId.Substring(divisionId.LastIndexOf(",", StringComparison.Ordinal))
@@ -211,9 +211,9 @@ namespace sh.vcp.identity.Stores
                 });
 
                 // load tribes
-                claims.AddRange((await this._connection.Search<Tribe>(this._config.GroupDn,
+                claims.AddRange((await this._connection.SearchSafe<Tribe>(this._config.GroupDn,
                         $"{LdapProperties.Member}={user.Id}",
-                        LdapObjectTypes.Tribe, LdapConnection.SCOPE_SUB, Tribe.LoadProperties, cancellationToken))
+                        LdapObjectTypes.Tribe, LdapConnection.SCOPE_SUB, cancellationToken))
                     .Select(div => new TribeClaim(div)));
 
                 // load tribe admin

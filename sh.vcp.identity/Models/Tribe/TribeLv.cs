@@ -7,7 +7,8 @@ namespace sh.vcp.identity.Models.Tribe
 {
     public class TribeLv : LdapGroup
     {
-        public TribeLv() : base() {
+        public TribeLv()
+        {
             this.DefaultObjectClasses.Add(LdapObjectTypes.TribeLv);
         }
         

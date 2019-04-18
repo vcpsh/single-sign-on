@@ -17,7 +17,6 @@ namespace sh.vcp.identity.Extensions
         /// <summary>
         /// Returns all divisions a user is member of.
         /// </summary>
-        /// <param name="claims"></param>
         /// <returns></returns>
         public static IEnumerable<string> GetUserDivisions(this ClaimsPrincipal user)
         {

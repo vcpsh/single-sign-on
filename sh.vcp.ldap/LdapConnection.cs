@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Novell.Directory.Ldap;
 using sh.vcp.ldap.Caching;
@@ -15,8 +14,6 @@ namespace sh.vcp.ldap
 {
     internal class LdapConnection : Novell.Directory.Ldap.LdapConnection, ILdapConnection
     {
-        private readonly string _bindDn;
-        private readonly string _bindPassword;
         private readonly LdapConfig _config;
         private readonly ILogger<LdapConnection> _logger;
         private readonly ChangeTrackingDbContext _trackingDbContext;
@@ -30,16 +27,6 @@ namespace sh.vcp.ldap
             this._logger = logger;
             this._trackingDbContext = trackingDbContext;
             this._cache = cache;
-        }
-
-        private LdapConnection(LdapConfig config, ILogger<LdapConnection> logger, string dn, string password,
-            ChangeTrackingDbContext trackingDbContext,
-            IMemoryCache cache) {
-            this._logger = logger;
-            this._config = config ?? throw new ArgumentNullException(nameof(config));
-            this._bindDn = dn ?? throw new ArgumentNullException(nameof(dn));
-            this._bindPassword = password ?? throw new ArgumentNullException(nameof(password));
-            this._trackingDbContext = trackingDbContext;
         }
 
         #region SEARCH
@@ -355,8 +342,8 @@ namespace sh.vcp.ldap
             if (this._connected) { return; }
             try {
                 this.Connect(this._config.Hostname, this._config.Port);
-                this.Bind(this._bindDn ?? this._config.AdminUserDn,
-                    this._bindPassword ?? this._config.AdminUserPassword);
+                this.Bind(this._config.AdminUserDn,
+                    this._config.AdminUserPassword);
                 this._connected = true;
             }
             catch (LdapException ex) {

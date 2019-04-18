@@ -11,12 +11,6 @@ namespace sh.vcp.ldap
 {
     public abstract class LdapModel
     {
-        // ReSharper disable once EmptyConstructor
-        protected LdapModel()
-        {
-
-        }
-
         protected static readonly string[] LoadProperties = {
             LdapProperties.CommonName,
             LdapProperties.ObjectClass
