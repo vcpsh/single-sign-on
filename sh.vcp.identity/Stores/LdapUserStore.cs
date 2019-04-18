@@ -8,8 +8,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Novell.Directory.Ldap;
 using sh.vcp.identity.Claims;
-using sh.vcp.identity.Extensions;
-using sh.vcp.identity.Model;
 using sh.vcp.identity.Models;
 using sh.vcp.identity.Models.Tribe;
 using sh.vcp.ldap;

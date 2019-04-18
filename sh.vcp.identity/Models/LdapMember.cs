@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
-using sh.vcp.identity.Model;
 using sh.vcp.ldap;
 
 namespace sh.vcp.identity.Models

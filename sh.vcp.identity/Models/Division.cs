@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using sh.vcp.identity.Model;
 using sh.vcp.ldap;
 
 namespace sh.vcp.identity.Models

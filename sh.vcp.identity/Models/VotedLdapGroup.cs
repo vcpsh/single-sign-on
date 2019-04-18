@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Novell.Directory.Ldap;
-using sh.vcp.identity.Model;
 using sh.vcp.ldap;
 using ILdapConnection = sh.vcp.ldap.ILdapConnection;
 
