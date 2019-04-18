@@ -84,54 +84,8 @@ namespace sh.vcp.ldap
                     return entries.FirstOrDefault();
                 }, cancellationToken);
         }
-
-        public async Task<ICollection<TModel>> Search<TModel>(string baseDn, string filter, string objectClass,
-            int scope, string[] attributes,
-            CancellationToken cancellationToken = default) where TModel : LdapModel, new() {
-            if (objectClass == null) { throw new ArgumentNullException(nameof(objectClass)); }
-            this.ConnectIfDisconnected();
-
-            filter = string.IsNullOrEmpty(filter)
-                ? $"{LdapProperties.ObjectClass}={objectClass}"
-                : $"(&({LdapProperties.ObjectClass}={objectClass})({filter}))";
-
-            ICollection<TModel> entries = new List<TModel>();
-            if (this._config.UseCache) {
-                if (!this._cache.TryGetSearch(baseDn, scope, filter, out var search)) {
-                    var queue = this.Search(baseDn, scope, filter, attributes,
-                        false);
-                    while (queue.HasMore()) {
-                        var m = new TModel();
-                        m.ProvideEntry(queue.Next());
-                        if (typeof(ILdapModelWithChildren).IsAssignableFrom(typeof(TModel)))
-                            await ((ILdapModelWithChildren) m).LoadChildren(this, cancellationToken);
-                        entries.Add(m);
-                    }
-
-                    this._cache.SetSearch(baseDn, scope, filter, entries.Select(e => e.Dn));
-                }
-                else {
-                    await search.Entries.ForEachAsync(async entry =>
-                        entries.Add(await this.Read<TModel>(entry, cancellationToken))
-                    );
-                }
-            }
-            else {
-                var queue = this.Search(baseDn, scope, filter, attributes,
-                    false);
-                while (queue.HasMore()) {
-                    var m = new TModel();
-                    m.ProvideEntry(queue.Next());
-                    if (typeof(ILdapModelWithChildren).IsAssignableFrom(typeof(TModel)))
-                        await ((ILdapModelWithChildren) m).LoadChildren(this, cancellationToken);
-                    entries.Add(m);
-                }
-            }
-
-            return entries;
-        }
         
-        public async Task<ICollection<TModel>> SearchSafe<TModel>(string baseDn, string filter, string objectClass,
+        public async Task<ICollection<TModel>> Search<TModel>(string baseDn, string filter, string objectClass,
             int scope,
             CancellationToken cancellationToken) where TModel : LdapModel, new() {
             if (objectClass == null) throw new ArgumentNullException(nameof(objectClass));
@@ -146,9 +100,7 @@ namespace sh.vcp.ldap
                 if (!this._cache.TryGetSearch(baseDn, scope, filter, out var search)) {
                     var queue = this.Search(baseDn, scope, filter, new [] { LdapProperties.ObjectClass }, false);
                     while (queue.HasMore()) {
-                        var m = new TModel();
-                        m.ProvideEntry(queue.Next());
-                        entries.Add(m);
+                        entries.Add(await this.Read<TModel>(queue.Next().DN, cancellationToken));
                     }
 
                     this._cache.SetSearch(baseDn, scope, filter, entries.Select(e => e.Dn));
@@ -162,10 +114,9 @@ namespace sh.vcp.ldap
             else {
                 var queue = this.Search(baseDn, scope, filter, new [] { LdapProperties.ObjectClass },
                     false);
-                while (queue.HasMore()) {
-                    var m = new TModel();
-                    m.ProvideEntry(queue.Next());
-                    entries.Add(m);
+                while (queue.HasMore())
+                {
+                    entries.Add(await this.Read<TModel>(queue.Next().DN, cancellationToken));
                 }
             }
 
@@ -175,7 +126,7 @@ namespace sh.vcp.ldap
         #endregion SEARCH
 
         #region READ
-        public async Task<TModel> ReadSafe<TModel>(string dn, CancellationToken cancellationToken)
+        public async Task<TModel> Read<TModel>(string dn, CancellationToken cancellationToken)
             where TModel : LdapModel, new()
         {
             try {
@@ -203,44 +154,6 @@ namespace sh.vcp.ldap
                 return null;
             }
         }
-
-
-        public async Task<TModel> Read<TModel>(string dn, CancellationToken cancellationToken = default)
-            where TModel : LdapModel, new() {
-            try {
-                if (!this._connected) this.ConnectIfDisconnected();
-
-                TModel model;
-                if (this._config.UseCache) {
-                    if (!this._cache.TryGetValue(dn, out model)) {
-                        var entry = this.Read(dn);
-                        model = new TModel();
-                        model.ProvideEntry(entry);
-                        this._cache.Set(dn, model);
-                    }
-                }
-                else {
-                    var entry = this.Read(dn);
-                    model = new TModel();
-                    model.ProvideEntry(entry);
-                }
-
-                if (typeof(ILdapModelWithChildren).IsAssignableFrom(typeof(TModel)))
-                    await ((ILdapModelWithChildren) model).LoadChildren(this, cancellationToken);
-                return model;
-            }
-            catch (LdapException ex) {
-                if (ex.ResultCode == 34) {
-                    var ldapEx = new LdapDnInvalidException(dn);
-                    this._logger.LogError(ldapEx, LdapLogCodes.LdapReadError);
-                    throw ldapEx;
-                }
-
-                this._logger.LogError(ex, $"{LdapLogCodes.LdapReadError} ({dn})");
-                return null;
-            }
-        }
-        
         #endregion READ
 
         public Task<bool> Bind(string dn, string password, CancellationToken cancellationToken) {

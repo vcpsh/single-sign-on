@@ -32,7 +32,7 @@ namespace sh.vcp.identity.Models
         public ICollection<VoteEntry> InactiveVoteEntries { get; set; } = new List<VoteEntry>();
 
         public async Task LoadChildren(ILdapConnection connection, CancellationToken cancellationToken = default) {
-            var entries = await connection.SearchSafe<VoteEntry>(this.Dn, null,
+            var entries = await connection.Search<VoteEntry>(this.Dn, null,
                 LdapObjectTypes.VotedEntry, LdapConnection.SCOPE_ONE, cancellationToken);
             foreach (var voteEntry in entries)
                 if (voteEntry.Active)

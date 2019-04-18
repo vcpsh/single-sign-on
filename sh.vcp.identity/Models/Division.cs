@@ -45,10 +45,10 @@ namespace sh.vcp.identity.Models
 
         public async Task LoadChildren(ILdapConnection connection, CancellationToken cancellationToken)
         {
-            this.Events = await connection.ReadSafe<OrgUnit>($"cn=events,{this.Dn}", cancellationToken);
-            this.Groups = await connection.ReadSafe<OrgUnit>($"cn=groups,{this.Dn}", cancellationToken);
-            this.Tribes = await connection.ReadSafe<OrgUnit>($"cn=tribes,{this.Dn}", cancellationToken);
-            this.VotedGroups = await connection.ReadSafe<OrgUnit>($"cn=voted_groups,{this.Dn}", cancellationToken);
+            this.Events = await connection.Read<OrgUnit>($"cn=events,{this.Dn}", cancellationToken);
+            this.Groups = await connection.Read<OrgUnit>($"cn=groups,{this.Dn}", cancellationToken);
+            this.Tribes = await connection.Read<OrgUnit>($"cn=tribes,{this.Dn}", cancellationToken);
+            this.VotedGroups = await connection.Read<OrgUnit>($"cn=voted_groups,{this.Dn}", cancellationToken);
         }
 
         public IEnumerable<LdapModel> GetChildren()

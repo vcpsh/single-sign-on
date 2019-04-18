@@ -8,26 +8,15 @@ namespace sh.vcp.ldap
 {
     public interface ILdapConnection
     {
+        [Obsolete("This is unsafe use better alternative")]
         Task<TModel> SearchFirst<TModel>(string baseDn, string filter, string objectClass, int scope,
             string[] attributes,
             bool expectUnique, CancellationToken cancellationToken = default) where TModel : LdapModel, new();
 
-        /// <summary>
-        /// Searches for subentries of a given dn
-        /// </summary>
-        Task<ICollection<TModel>> SearchSafe<TModel>(string baseDn, string filter, string objectClass, int scope, CancellationToken cancellationToken)
+        Task<ICollection<TModel>> Search<TModel>(string baseDn, string filter, string objectClass, int scope, CancellationToken cancellationToken)
             where TModel : LdapModel, new();
         
-        [Obsolete("Use SearchSave instead")]
-        Task<ICollection<TModel>> Search<TModel>(string baseDn, string filter, string objectClass, int scope,
-            string[] attributes,
-            CancellationToken cancellationToken = default) where TModel : LdapModel, new();
-
-        Task<TModel> ReadSafe<TModel>(string dn, CancellationToken cancellationToken)
-            where TModel : LdapModel, new();
-
-        [Obsolete("Use ReadSafe instead")]
-        Task<TModel> Read<TModel>(string dn, CancellationToken cancellationToken = default)
+        Task<TModel> Read<TModel>(string dn, CancellationToken cancellationToken)
             where TModel : LdapModel, new();
 
         Task<bool> Bind(string dn, string password, CancellationToken cancellationToken = default);
