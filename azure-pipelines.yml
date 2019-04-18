@@ -94,7 +94,7 @@ jobs:
     displayName: 'Download Build Artifacts'
     inputs:
       artifactName: server
-      downloadPath: sh.vcp.sso.server/bin/Release/netcoreapp2.2/publish/server
+      downloadPath: sh.vcp.sso.server/bin/Release/netcoreapp2.2/publish/
 
   - task: PublishPipelineArtifact@0
     displayName: 'Publish Pipeline Artifact'
